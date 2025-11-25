@@ -79,4 +79,31 @@ describe('EntryList', () => {
     expect(screen.queryByText('기수')).not.toBeInTheDocument();
     expect(screen.queryByText('조교사')).not.toBeInTheDocument();
   });
+
+  describe('loading state', () => {
+    it('should display loading skeleton when isLoading is true', () => {
+      render(<EntryList entries={[]} isLoading={true} />);
+
+      expect(screen.getByTestId('loading-skeleton')).toBeInTheDocument();
+      expect(screen.queryByText('출주마 정보가 없습니다')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('error state', () => {
+    it('should display error message when error is provided', () => {
+      const error = new Error('데이터를 불러올 수 없습니다');
+      render(<EntryList entries={[]} error={error} />);
+
+      expect(screen.getByTestId('error-message')).toBeInTheDocument();
+      expect(screen.getByText('오류: 데이터를 불러올 수 없습니다')).toBeInTheDocument();
+    });
+
+    it('should not display entries when error is provided', () => {
+      const error = new Error('Error');
+      const entries = [{ no: 1, name: '번개' }];
+      render(<EntryList entries={entries} error={error} />);
+
+      expect(screen.queryByText('번개')).not.toBeInTheDocument();
+    });
+  });
 });

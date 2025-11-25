@@ -4,7 +4,17 @@ import { Entry } from '@/types';
 
 interface EntryListProps {
   entries: Entry[];
+  isLoading?: boolean;
+  error?: Error | null;
 }
+
+const LoadingSkeleton = () => (
+  <div className="animate-pulse space-y-2">
+    {[1, 2, 3].map(i => (
+      <div key={i} className="h-12 bg-gray-200 rounded" />
+    ))}
+  </div>
+);
 
 const EntryRow = ({ entry }: { entry: Entry }) => (
   <tr className="border-b last:border-b-0 hover:bg-gray-50">
@@ -28,7 +38,23 @@ const EntryRow = ({ entry }: { entry: Entry }) => (
   </tr>
 );
 
-export default function EntryList({ entries }: EntryListProps) {
+export default function EntryList({ entries, isLoading, error }: EntryListProps) {
+  if (isLoading) {
+    return (
+      <div className="py-8" data-testid="loading-skeleton">
+        <LoadingSkeleton />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <p className="text-red-500 text-center py-8" data-testid="error-message">
+        오류: {error.message}
+      </p>
+    );
+  }
+
   if (entries.length === 0) {
     return (
       <p className="text-gray-500 text-center py-8">출주마 정보가 없습니다</p>

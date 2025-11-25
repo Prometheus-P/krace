@@ -2,81 +2,87 @@
 import { mapOddsResponse, mapKRAHorseRaceToRace, mapKSPOCycleRaceToRace, mapKSPOBoatRaceToRace } from './mappers';
 
 describe('mapOddsResponse', () => {
-  it('should map KSPO odds response to Odds type', () => {
-    const kspoResponse = {
-      oddsDansng: '2.5',    // 단승 배당
-      oddsBoksng: '1.8',    // 복승 배당
-      oddsSsangsng: '5.2',  // 쌍승 배당
-    };
+  describe('valid odds values', () => {
+    it('should map KSPO odds response to Odds type', () => {
+      const kspoResponse = {
+        oddsDansng: '2.5',    // 단승 배당
+        oddsBoksng: '1.8',    // 복승 배당
+        oddsSsangsng: '5.2',  // 쌍승 배당
+      };
 
-    const result = mapOddsResponse(kspoResponse);
+      const result = mapOddsResponse(kspoResponse);
 
-    expect(result).toEqual({
-      win: 2.5,
-      place: 1.8,
-      quinella: 5.2,
+      expect(result).toEqual({
+        win: 2.5,
+        place: 1.8,
+        quinella: 5.2,
+      });
     });
   });
 
-  it('should handle null odds values', () => {
-    const kspoResponse = {
-      oddsDansng: null,
-      oddsBoksng: '1.8',
-      oddsSsangsng: null,
-    };
+  describe('null handling', () => {
+    it('should handle null odds values', () => {
+      const kspoResponse = {
+        oddsDansng: null,
+        oddsBoksng: '1.8',
+        oddsSsangsng: null,
+      };
 
-    const result = mapOddsResponse(kspoResponse);
+      const result = mapOddsResponse(kspoResponse);
 
-    expect(result).toEqual({
-      win: null,
-      place: 1.8,
-      quinella: null,
+      expect(result).toEqual({
+        win: null,
+        place: 1.8,
+        quinella: null,
+      });
+    });
+
+    it('should handle undefined odds values', () => {
+      const kspoResponse = {
+        oddsBoksng: '3.5',
+      };
+
+      const result = mapOddsResponse(kspoResponse);
+
+      expect(result).toEqual({
+        win: null,
+        place: 3.5,
+        quinella: null,
+      });
+    });
+
+    it('should handle empty string odds values', () => {
+      const kspoResponse = {
+        oddsDansng: '',
+        oddsBoksng: '',
+        oddsSsangsng: '',
+      };
+
+      const result = mapOddsResponse(kspoResponse);
+
+      expect(result).toEqual({
+        win: null,
+        place: null,
+        quinella: null,
+      });
     });
   });
 
-  it('should handle undefined odds values', () => {
-    const kspoResponse = {
-      oddsBoksng: '3.5',
-    };
+  describe('invalid input', () => {
+    it('should handle invalid number strings', () => {
+      const kspoResponse = {
+        oddsDansng: 'invalid',
+        oddsBoksng: '2.0',
+        oddsSsangsng: 'NaN',
+      };
 
-    const result = mapOddsResponse(kspoResponse);
+      const result = mapOddsResponse(kspoResponse);
 
-    expect(result).toEqual({
-      win: null,
-      place: 3.5,
-      quinella: null,
-    });
-  });
-
-  it('should handle empty string odds values', () => {
-    const kspoResponse = {
-      oddsDansng: '',
-      oddsBoksng: '',
-      oddsSsangsng: '',
-    };
-
-    const result = mapOddsResponse(kspoResponse);
-
-    expect(result).toEqual({
-      win: null,
-      place: null,
-      quinella: null,
-    });
-  });
-
-  it('should handle invalid number strings', () => {
-    const kspoResponse = {
-      oddsDansng: 'invalid',
-      oddsBoksng: '2.0',
-      oddsSsangsng: 'NaN',
-    };
-
-    const result = mapOddsResponse(kspoResponse);
-
-    expect(result).toEqual({
-      win: null,
-      place: 2.0,
-      quinella: null,
+      expect(result).toEqual({
+        win: null,
+        place: 2.0,
+        quinella: null,
+      });
     });
   });
 });
