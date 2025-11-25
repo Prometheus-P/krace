@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { fetchRaceEntries } from '@/lib/api';
 
 export async function GET(
-    request: NextRequest,
+    _request: NextRequest,
     { params }: { params: { type: string; id: string } }
 ) {
     try {
@@ -31,15 +31,16 @@ export async function GET(
             },
             { status: 200 }
         );
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Error fetching race entries:', error);
 
+        const errorMessage = error instanceof Error ? error.message : 'Internal server error';
         return NextResponse.json(
             {
                 success: false,
                 error: {
                     code: 'SERVER_ERROR',
-                    message: error.message || 'Internal server error',
+                    message: errorMessage,
                 },
                 timestamp: new Date().toISOString(),
             },
