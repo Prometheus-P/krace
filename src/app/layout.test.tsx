@@ -2,11 +2,21 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import RootLayout from './layout';
+import Script from 'next/script';
 
 // Mock the Vercel Analytics component
 jest.mock('@vercel/analytics/react', () => ({
   Analytics: () => <div data-testid="vercel-analytics" />,
 }));
+
+// Mock the next/script component
+jest.mock('next/script', () => {
+  const MockScript = (props: any) => {
+    return <script {...props} />;
+  };
+  return MockScript;
+});
+
 
 describe('RootLayout', () => {
   const OLD_ENV = process.env;
@@ -14,6 +24,7 @@ describe('RootLayout', () => {
   beforeEach(() => {
     jest.resetModules();
     process.env = { ...OLD_ENV }; // Make a copy
+    (Script as jest.Mock).mockClear();
   });
 
   afterAll(() => {
@@ -54,14 +65,25 @@ describe('RootLayout', () => {
       </RootLayout>
     );
 
-    // Using querySelector to check for the scripts in the document head
-    // as they don't have text content for react-testing-library to find easily.
-    const gtagScript = document.querySelector('script[src="https://www.googletagmanager.com/gtag/js?id=G-TEST12345"]');
-    expect(gtagScript).toBeInTheDocument();
+    // Expect the Script component to have been called twice
+    expect(Script).toHaveBeenCalledTimes(2);
 
-    const inlineGtagScript = document.querySelector('script[id="google-analytics"]');
-    expect(inlineGtagScript).toBeInTheDocument();
-    expect(inlineGtagScript?.textContent).toContain("gtag('config', 'G-TEST12345')");
+    // Check the props of the first call (gtag.js)
+    expect(Script).toHaveBeenCalledWith(
+      expect.objectContaining({
+        src: 'https://www.googletagmanager.com/gtag/js?id=G-TEST12345',
+      }),
+      expect.anything()
+    );
+
+    // Check the props of the second call (inline script)
+    expect(Script).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: 'google-analytics',
+        children: expect.stringContaining("gtag('config', 'G-TEST12345')"),
+      }),
+      expect.anything()
+    );
   });
 
   it('should not render Google Analytics scripts when GA_ID is not provided', () => {
@@ -75,7 +97,6 @@ describe('RootLayout', () => {
       </RootLayout>
     );
 
-    const gtagScript = document.querySelector('script[src*="googletagmanager"]');
-    expect(gtagScript).not.toBeInTheDocument();
+    expect(Script).not.toHaveBeenCalled();
   });
 });
