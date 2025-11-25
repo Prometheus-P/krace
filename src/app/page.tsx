@@ -28,38 +28,46 @@ export default function Home({
       </div>
 
       {/* 빠른 요약 */}
-      <Suspense fallback={<QuickStatsSkeleton />}>
-        {/* @ts-expect-error Server Component */}
-        <QuickStats />
-      </Suspense>
+      <div data-testid="quick-stats">
+        <Suspense fallback={<QuickStatsSkeleton />}>
+          {/* @ts-expect-error Server Component */}
+          <QuickStats />
+        </Suspense>
+      </div>
 
       {/* 종목별 탭 */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100">
+      <div data-testid="today-races" className="bg-white rounded-lg shadow-sm border border-gray-100">
         {/* 탭 헤더 */}
         <div className="flex border-b border-gray-100">
           <Link
             href="/?tab=horse"
+            role="tab"
+            aria-selected={currentTab === 'horse'}
             className={`flex-1 py-3 px-4 text-center font-medium transition-colors ${currentTab === 'horse'
-                ? 'text-horse bg-green-50 border-b-2 border-horse'
-                : 'text-gray-500 hover:text-horse hover:bg-green-50'
+              ? 'text-horse bg-green-50 border-b-2 border-horse'
+              : 'text-gray-500 hover:text-horse hover:bg-green-50'
               }`}
           >
             🐎 경마
           </Link>
           <Link
             href="/?tab=cycle"
+            role="tab"
+            aria-selected={currentTab === 'cycle'}
             className={`flex-1 py-3 px-4 text-center font-medium transition-colors ${currentTab === 'cycle'
-                ? 'text-cycle bg-red-50 border-b-2 border-cycle'
-                : 'text-gray-500 hover:text-cycle hover:bg-red-50'
+              ? 'text-cycle bg-red-50 border-b-2 border-cycle'
+              : 'text-gray-500 hover:text-cycle hover:bg-red-50'
               }`}
           >
             🚴 경륜
           </Link>
           <Link
             href="/?tab=boat"
+            role="tab"
+            aria-selected={currentTab === 'boat'}
             className={`flex-1 py-3 px-4 text-center font-medium transition-colors ${currentTab === 'boat'
-                ? 'text-boat bg-blue-50 border-b-2 border-boat'
-                : 'text-gray-500 hover:text-boat hover:bg-blue-50'
+              ? 'text-boat bg-blue-50 border-b-2 border-boat'
+              : 'text-gray-500 hover:text-boat hover:bg-blue-50'
               }`}
           >
             🚤 경정

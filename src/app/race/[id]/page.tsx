@@ -52,7 +52,7 @@ export default async function RaceDetailPage({ params }: { params: { id: string 
   return (
     <div className="space-y-6">
       <header className="bg-white p-4 rounded-lg shadow">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4" data-testid="race-info">
           <span className="text-4xl">{getRaceTypeEmoji(race.type)}</span>
           <div>
             <h1 className="text-2xl font-bold">{race.track} 제{race.raceNo}경주 ({race.distance}m)</h1>
@@ -65,7 +65,7 @@ export default async function RaceDetailPage({ params }: { params: { id: string 
         </div>
       </header>
 
-      <div className="bg-white p-4 rounded-lg shadow">
+      <div className="bg-white p-4 rounded-lg shadow" data-testid="entries">
         <h2 className="text-xl font-bold mb-4">출전표</h2>
         <table className="w-full text-sm">
           <thead className="bg-gray-50">
@@ -85,6 +85,20 @@ export default async function RaceDetailPage({ params }: { params: { id: string 
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="bg-white p-4 rounded-lg shadow" data-testid="odds">
+        <h2 className="text-xl font-bold mb-4">배당률</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          {race.entries.map(entry => (
+            <div key={entry.no} className="p-3 bg-gray-50 rounded">
+              <div className="flex justify-between items-center">
+                <span className="font-semibold">{entry.no}. {entry.name}</span>
+                <span className="text-lg font-bold text-primary">{entry.odds || '-'}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

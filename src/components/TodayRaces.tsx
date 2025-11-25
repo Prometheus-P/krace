@@ -6,16 +6,18 @@ import { Race } from '@/types';
 import Link from 'next/link';
 
 const RaceRow = ({ race }: { race: Race }) => (
-  <div className="flex justify-between items-center p-3 hover:bg-gray-100 rounded-md">
-    <div>
-      <span className="font-semibold">{race.track} 제{race.raceNo}경주</span>
-      <span className="text-sm text-gray-500 ml-2">{race.distance ? `${race.distance}m` : ''}</span>
+  <Link href={`/race/${race.id}`} data-testid="race-card">
+    <div className="flex justify-between items-center p-3 hover:bg-gray-100 rounded-md">
+      <div>
+        <span className="font-semibold">{race.track} 제{race.raceNo}경주</span>
+        <span className="text-sm text-gray-500 ml-2">{race.distance ? `${race.distance}m` : ''}</span>
+      </div>
+      <div className="text-right">
+        <span className="font-mono font-bold text-lg">{race.startTime}</span>
+        <span className="ml-4 text-sm text-primary hover:underline">상세보기</span>
+      </div>
     </div>
-    <div className="text-right">
-      <span className="font-mono font-bold text-lg">{race.startTime}</span>
-      <Link href={`/race/${race.id}`} className="ml-4 text-sm text-primary hover:underline">상세보기</Link>
-    </div>
-  </div>
+  </Link>
 );
 
 const RaceSection = ({ title, races, 'data-testid': dataTestId }: { title: string; races: Race[]; 'data-testid': string }) => {
