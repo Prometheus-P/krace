@@ -1,5 +1,5 @@
 // src/lib/api.ts
-import { Race } from '@/types';
+import { Race, Entry } from '@/types';
 import { mapKRAHorseRaceToRace, mapKSPOCycleRaceToRace, mapKSPOBoatRaceToRace } from './api-helpers/mappers';
 import { getDummyHorseRaces, getDummyCycleRaces, getDummyBoatRaces } from './api-helpers/dummy';
 
@@ -113,4 +113,16 @@ export async function fetchRaceById(id: string): Promise<Race | null> {
   }
 
   return races.find(race => race.id === id) || null;
+}
+
+export async function fetchRaceEntries(raceId: string): Promise<Entry[] | null> {
+  const race = await fetchRaceById(raceId);
+
+  if (!race) {
+    return null;
+  }
+
+  // For now, return the entries from the race object
+  // In the future, this will call the actual API for detailed entry information
+  return race.entries || [];
 }
