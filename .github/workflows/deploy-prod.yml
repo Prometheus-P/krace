@@ -77,6 +77,7 @@ jobs:
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
+          # Use vars for non-sensitive URL, secrets for sensitive API key
           KSPO_API_URL: ${{ vars.KSPO_API_URL }}
           KSPO_API_KEY: ${{ secrets.KSPO_API_KEY }}
 
