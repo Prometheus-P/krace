@@ -31,19 +31,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install Vercel CLI
-        run: pnpm add -g vercel@latest
+        run: npm install -g vercel@latest
 
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
@@ -80,11 +75,11 @@ jobs:
               comment.body.includes('Preview Deployment')
             );
 
-            const body = `## 🚀 Preview Deployment
+            const body = `## Preview Deployment
 
             | Name | Status | URL |
             |------|--------|-----|
-            | **Preview** | ✅ Ready | [Visit Preview](${url}) |
+            | **Preview** | Ready | [Visit Preview](${url}) |
 
             <sub>Updated: ${new Date().toISOString()}</sub>`;
 
@@ -115,25 +110,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests against preview
-        run: pnpm test:e2e
+        run: npm run test:e2e
         env:
           BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
           CI: true
@@ -145,82 +135,6 @@ jobs:
           name: preview-e2e-report
           path: playwright-report/
           retention-days: 7
-
-  # ============================================
-  # Lighthouse 성능 테스트
-  # ============================================
-  lighthouse:
-    name: Lighthouse Audit
-    runs-on: ubuntu-latest
-    needs: [deploy-preview]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Run Lighthouse
-        uses: treosh/lighthouse-ci-action@v12
-        with:
-          urls: |
-            ${{ needs.deploy-preview.outputs.preview-url }}
-            ${{ needs.deploy-preview.outputs.preview-url }}/races
-          configPath: ./lighthouserc.json
-          uploadArtifacts: true
-          temporaryPublicStorage: true
-
-      - name: Comment PR with Lighthouse scores
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-
-            // Lighthouse 결과 파일 읽기
-            let results;
-            try {
-              const manifestPath = '.lighthouseci/manifest.json';
-              if (fs.existsSync(manifestPath)) {
-                const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-                results = manifest.map(entry => {
-                  const lhr = JSON.parse(fs.readFileSync(entry.jsonPath, 'utf8'));
-                  return {
-                    url: entry.url,
-                    performance: Math.round(lhr.categories.performance.score * 100),
-                    accessibility: Math.round(lhr.categories.accessibility.score * 100),
-                    bestPractices: Math.round(lhr.categories['best-practices'].score * 100),
-                    seo: Math.round(lhr.categories.seo.score * 100),
-                  };
-                });
-              }
-            } catch (e) {
-              console.log('Could not parse Lighthouse results:', e);
-              return;
-            }
-
-            if (!results) return;
-
-            const getEmoji = (score) => {
-              if (score >= 90) return '🟢';
-              if (score >= 50) return '🟡';
-              return '🔴';
-            };
-
-            const rows = results.map(r =>
-              `| ${r.url.replace('${{ needs.deploy-preview.outputs.preview-url }}', '')} | ${getEmoji(r.performance)} ${r.performance} | ${getEmoji(r.accessibility)} ${r.accessibility} | ${getEmoji(r.bestPractices)} ${r.bestPractices} | ${getEmoji(r.seo)} ${r.seo} |`
-            ).join('\n');
-
-            const body = `## ⚡ Lighthouse Report
-
-            | Page | Performance | Accessibility | Best Practices | SEO |
-            |------|-------------|---------------|----------------|-----|
-            ${rows}
-
-            <sub>Scores: 🟢 90-100 | 🟡 50-89 | 🔴 0-49</sub>`;
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              body,
-            });
 
   # ============================================
   # 프리뷰 환경 정리 (PR 닫힘 시)
