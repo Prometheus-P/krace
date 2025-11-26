@@ -3,6 +3,12 @@ import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import RootLayout from './layout';
 
+// Mock next/navigation for Header component (useSearchParams)
+jest.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => '/',
+}));
+
 // Mock the Vercel Analytics component
 jest.mock('@vercel/analytics/react', () => ({
   Analytics: () => <div data-testid="vercel-analytics" />,
