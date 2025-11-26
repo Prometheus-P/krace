@@ -63,10 +63,11 @@ const StatCard = ({ type, value }: StatCardProps) => {
       className={`
         relative overflow-hidden
         ${isTotal ? 'bg-white' : config.bgColor}
-        p-4 rounded-xl
+        p-3 md:p-4 rounded-xl
         border ${config.borderColor}
         shadow-sm hover:shadow-md
         transition-shadow duration-150 ease-out
+        min-h-[80px]
       `}
       aria-labelledby={`stat-label-${type}`}
     >
@@ -85,7 +86,7 @@ const StatCard = ({ type, value }: StatCardProps) => {
             {config.label}
           </p>
           <p
-            className={`text-3xl font-bold tabular-nums ${config.textColor}`}
+            className={`text-2xl md:text-3xl font-bold tabular-nums ${config.textColor}`}
             aria-label={`${value}개`}
           >
             {value.toLocaleString('ko-KR')}

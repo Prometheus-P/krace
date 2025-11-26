@@ -4,6 +4,8 @@ import { fetchHorseRaceSchedules, fetchCycleRaceSchedules, fetchBoatRaceSchedule
 import { getTodayYYYYMMDD } from '@/lib/utils/date';
 import { Race, RaceType } from '@/types';
 import Link from 'next/link';
+import StatusBadge from './StatusBadge';
+import type { RaceStatus } from './StatusBadge';
 
 // Race type configuration for consistent styling
 const raceTypeConfig: Record<RaceType, {
@@ -77,7 +79,8 @@ const RaceRow = ({ race, typeConfig }: RaceRowProps) => {
           )}
         </div>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
+        <StatusBadge status={race.status as RaceStatus} />
         <time
           dateTime={race.startTime}
           className="font-mono font-bold text-lg text-gray-900"
@@ -86,7 +89,7 @@ const RaceRow = ({ race, typeConfig }: RaceRowProps) => {
         </time>
         <span
           className={`
-            text-sm font-medium ${typeConfig.textColor}
+            hidden sm:inline text-sm font-medium ${typeConfig.textColor}
             group-hover:underline group-focus:underline
           `}
           aria-hidden="true"
