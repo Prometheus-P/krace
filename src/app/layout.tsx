@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import Script from 'next/script'; // Import Script
 import './globals.css'
 import Header from '@/components/Header'; // Import Header
@@ -75,9 +76,14 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-screen bg-gray-50 flex flex-col">
-        <Header />
+        <Suspense fallback={<HeaderSkeleton />}>
+          <Header />
+        </Suspense>
         
-        <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+        <main
+          id="main-content"
+          className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full"
+        >
           {children}
         </main>
         
@@ -85,5 +91,22 @@ export default function RootLayout({
         <Analytics />
       </body>
     </html>
+  )
+}
+
+function HeaderSkeleton() {
+  return (
+    <header className="bg-white shadow-sm border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="h-8 w-24 bg-gray-200 rounded animate-pulse" />
+          <div className="hidden md:flex items-center gap-6">
+            <div className="h-4 w-16 bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 w-16 bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 w-16 bg-gray-200 rounded animate-pulse" />
+          </div>
+        </div>
+      </div>
+    </header>
   )
 }
