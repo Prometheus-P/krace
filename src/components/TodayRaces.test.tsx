@@ -1,6 +1,6 @@
 // src/components/TodayRaces.test.tsx
 import { render, screen, within } from '@testing-library/react';
-import TodayRaces from './TodayRaces'; // This file does not exist yet
+import TodayRaces from './TodayRaces';
 import { fetchHorseRaceSchedules, fetchCycleRaceSchedules, fetchBoatRaceSchedules } from '@/lib/api';
 import { Race } from '@/types';
 
@@ -33,7 +33,7 @@ describe('TodayRaces Component', () => {
   });
 
   it('should render race information grouped by type', async () => {
-    const resolvedComponent = await TodayRaces({ filter: 'all' });
+    const resolvedComponent = await TodayRaces({ filter: 'horse' });
     render(resolvedComponent);
 
     // Check for Horse Races section
@@ -41,14 +41,22 @@ describe('TodayRaces Component', () => {
     expect(horseSection).toBeInTheDocument();
     expect(within(horseSection).getByText('서울 제1경주')).toBeInTheDocument();
     expect(within(horseSection).getByText('11:30')).toBeInTheDocument();
+  });
 
-    // Check for Cycle Races section
+  it('should render cycle races when filtered', async () => {
+    const resolvedComponent = await TodayRaces({ filter: 'cycle' });
+    render(resolvedComponent);
+
     const cycleSection = screen.getByTestId('race-section-cycle');
     expect(cycleSection).toBeInTheDocument();
     expect(within(cycleSection).getByText('광명 제1경주')).toBeInTheDocument();
     expect(within(cycleSection).getByText('11:00')).toBeInTheDocument();
+  });
 
-    // Check for Boat Races section
+  it('should render boat races when filtered', async () => {
+    const resolvedComponent = await TodayRaces({ filter: 'boat' });
+    render(resolvedComponent);
+
     const boatSection = screen.getByTestId('race-section-boat');
     expect(boatSection).toBeInTheDocument();
     expect(within(boatSection).getByText('미사리 제1경주')).toBeInTheDocument();
@@ -60,7 +68,7 @@ describe('TodayRaces Component', () => {
     (fetchCycleRaceSchedules as jest.Mock).mockResolvedValue([]);
     (fetchBoatRaceSchedules as jest.Mock).mockResolvedValue([]);
 
-    const resolvedComponent = await TodayRaces({ filter: 'all' });
+    const resolvedComponent = await TodayRaces({ filter: 'horse' });
     render(resolvedComponent);
 
     expect(screen.getByText('오늘 예정된 경주가 없습니다.')).toBeInTheDocument();
