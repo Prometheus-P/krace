@@ -130,4 +130,76 @@ test.describe('API Endpoints', () => {
             }
         });
     });
+
+    test.describe('Security Tests', () => {
+        test('should handle SQL injection attempt in race ID', async ({ request }) => {
+            const maliciousId = encodeURIComponent("'; DROP TABLE races; --");
+            const response = await request.get(`${baseURL}/api/races/horse/${maliciousId}/entries`);
+
+            // Should return 404 (not found) or 400 (bad request), not 500
+            expect([400, 404]).toContain(response.status());
+            expect(response.status()).not.toBe(500);
+        });
+
+        test('should handle XSS attempt in race ID', async ({ request }) => {
+            const xssId = encodeURIComponent("<script>alert('xss')</script>");
+            const response = await request.get(`${baseURL}/api/races/horse/${xssId}/entries`);
+
+            expect([400, 404]).toContain(response.status());
+
+            const data = await response.json();
+            // Response should not contain unescaped script tag
+            expect(JSON.stringify(data)).not.toContain('<script>');
+        });
+
+        test('should handle path traversal attempt', async ({ request }) => {
+            const traversalId = encodeURIComponent('../../../etc/passwd');
+            const response = await request.get(`${baseURL}/api/races/horse/${traversalId}/entries`);
+
+            expect([400, 404]).toContain(response.status());
+        });
+
+        test('should not expose sensitive error details', async ({ request }) => {
+            const response = await request.get(`${baseURL}/api/races/invalid-type/invalid-id/entries`);
+
+            const data = await response.json();
+            // Error message should not expose internal paths or stack traces
+            if (data.error?.message) {
+                expect(data.error.message).not.toContain('/Users/');
+                expect(data.error.message).not.toContain('node_modules');
+                expect(data.error.message).not.toMatch(/at\s+\w+\s+\(/); // No stack traces
+            }
+        });
+
+        test('should handle oversized race ID gracefully', async ({ request }) => {
+            const longId = 'a'.repeat(10000);
+            const response = await request.get(`${baseURL}/api/races/horse/${longId}/entries`);
+
+            // Should handle gracefully, not crash or timeout
+            expect(response.status()).toBeLessThan(500);
+        });
+    });
+
+    test.describe('API Timestamp and Caching', () => {
+        test('API response should include ISO timestamp', async ({ request }) => {
+            const response = await request.get(`${baseURL}/api/races/horse`);
+            const data = await response.json();
+
+            expect(data.timestamp).toBeDefined();
+            expect(data.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+        });
+
+        test('API should return consistent structure for all race types', async ({ request }) => {
+            const types = ['horse', 'cycle', 'boat'];
+
+            for (const type of types) {
+                const response = await request.get(`${baseURL}/api/races/${type}`);
+                const data = await response.json();
+
+                expect(data).toHaveProperty('success');
+                expect(data).toHaveProperty('data');
+                expect(data).toHaveProperty('timestamp');
+            }
+        });
+    });
 });
