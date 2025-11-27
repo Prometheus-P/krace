@@ -22,6 +22,7 @@ language: Korean (한국어)
 |------|------|--------|----------|
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
 | 1.1.0 | 2025-11-27 | AI | OddsDisplay, ResultsTable 컴포넌트 추가, 리팩토링 |
+| 1.2.0 | 2025-11-27 | AI | UI 컴포넌트 통합 완료, E2E 테스트 추가 |
 
 ## 관련 문서 (Related Documents)
 
@@ -38,16 +39,16 @@ language: Korean (한국어)
 │  📈 프로젝트 진행률                                          │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  MVP 기능    [██████████████████░░░░░░] 80%                │
-│  테스트 커버  [████████████████░░░░░░░░] 70%                │
+│  MVP 기능    [██████████████████████░░] 90%                │
+│  테스트 커버  [██████████████████░░░░░░] 80%                │
 │  문서화      [██████████████████░░░░░░] 80%                │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
 마지막 업데이트: 2025-11-27
 현재 Phase: MVP
-현재 버전: v1.2.0
-다음 마일스톤: UI 컴포넌트 통합 및 E2E 테스트
+현재 버전: v1.2.2
+다음 마일스톤: API 배당률/결과 매퍼 및 테스트 확장
 ```
 
 ---
@@ -196,12 +197,12 @@ describe('mapOddsResponse', () => {
 | UI-008 | ResultsTable 컴포넌트 | ✅ 완료 | GREEN | `src/components/ResultsTable.tsx` |
 | UI-009 | Skeletons 컴포넌트 | ✅ 완료 | GREEN | `src/components/Skeletons.tsx` |
 
-### 3.3 UI 컴포넌트 통합 ⏳
+### 3.3 UI 컴포넌트 통합 ✅
 
 | ID | 태스크 | 상태 | TDD Phase | 파일 |
 |----|--------|------|-----------|------|
-| UI-010 | OddsDisplay를 RaceDetail에 통합 | ⏳ 대기 | - | `src/app/race/[id]/page.tsx` |
-| UI-011 | ResultsTable을 RaceDetail에 통합 | ⏳ 대기 | - | `src/app/race/[id]/page.tsx` |
+| UI-010 | OddsDisplay를 RaceDetail에 통합 | ✅ 완료 | GREEN | `src/app/race/[id]/page.tsx` |
+| UI-011 | ResultsTable을 RaceDetail에 통합 | ✅ 완료 | GREEN | `src/app/race/[id]/page.tsx` |
 
 ---
 
@@ -260,13 +261,13 @@ describe('date utilities', () => {
 | TEST-004 | KSPO 매퍼 테스트 | ⏳ 대기 | - | `src/lib/api-helpers/mappers.test.ts` |
 | TEST-005 | 더미 데이터 테스트 | ⏳ 대기 | - | `src/lib/api-helpers/dummy.test.ts` |
 
-### 4.3 E2E 테스트 확장 ⏳
+### 4.3 E2E 테스트 확장 🔄
 
 | ID | 태스크 | 상태 | TDD Phase | 파일 |
 |----|--------|------|-----------|------|
 | E2E-001 | 경주 상세 E2E 테스트 | ✅ 완료 | GREEN | `e2e/tests/race-detail.spec.ts` |
-| E2E-002 | 배당률 표시 E2E 테스트 | ⏳ 대기 | - | `e2e/tests/odds.spec.ts` |
-| E2E-003 | 결과 표시 E2E 테스트 | ⏳ 대기 | - | `e2e/tests/results.spec.ts` |
+| E2E-002 | 배당률 표시 E2E 테스트 | ✅ 완료 | GREEN | `e2e/tests/race-detail.spec.ts` |
+| E2E-003 | 결과 표시 E2E 테스트 | ✅ 완료 | GREEN | `e2e/tests/race-detail.spec.ts` |
 | E2E-004 | 탭 전환 E2E 테스트 | ⏳ 대기 | - | `e2e/tests/tabs.spec.ts` |
 
 ---
@@ -300,17 +301,17 @@ describe('date utilities', () => {
 │  🎯 다음 작업 (go 명령 시 실행)                              │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  1. [UI-010] OddsDisplay를 RaceDetail에 통합                │
-│     - 배당률 표시 섹션에 새 컴포넌트 적용                    │
+│  1. [API-007] 배당률 데이터 매퍼                            │
+│     - KSPO 응답을 Odds 타입으로 변환                        │
 │                                                             │
-│  2. [UI-011] ResultsTable을 RaceDetail에 통합               │
-│     - 경주 결과 섹션 추가                                    │
+│  2. [API-008] 배당률 타입 정의                              │
+│     - Odds 인터페이스 추가                                  │
 │                                                             │
-│  3. [E2E-002] 배당률 표시 E2E 테스트                        │
-│     - Playwright로 배당률 UI 테스트                         │
+│  3. [E2E-004] 탭 전환 E2E 테스트                            │
+│     - Playwright로 탭 전환 UI 테스트                        │
 │                                                             │
-│  4. [E2E-003] 결과 표시 E2E 테스트                          │
-│     - Playwright로 결과 UI 테스트                           │
+│  4. [TEST-001] date.ts 유틸 테스트                          │
+│     - 날짜 유틸리티 테스트 강화                             │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -361,7 +362,7 @@ describe('date utilities', () => {
 │  전체                         | 70%  | 75%  | 65%          │
 │                                                             │
 │  목표: 80% | 현재: 70% | 갭: 10%                            │
-│  테스트 수: 198개 (20 suites)                               │
+│  테스트 수: 198 Jest + 70 E2E (20 suites)                   │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -374,6 +375,10 @@ describe('date utilities', () => {
 
 | 날짜 | ID | 태스크 | 결과 |
 |------|-----|--------|------|
+| 2025-11-27 | UI-010 | OddsDisplay 통합 | ✅ 성공 |
+| 2025-11-27 | UI-011 | ResultsTable 통합 | ✅ 성공 |
+| 2025-11-27 | E2E-002 | 배당률 E2E 테스트 | ✅ 성공 |
+| 2025-11-27 | E2E-003 | 결과 E2E 테스트 | ✅ 성공 |
 | 2025-11-27 | UI-007 | OddsDisplay 컴포넌트 | ✅ 성공 |
 | 2025-11-27 | UI-008 | ResultsTable 컴포넌트 | ✅ 성공 |
 | 2025-11-27 | UI-009 | Skeletons 컴포넌트 | ✅ 성공 |
