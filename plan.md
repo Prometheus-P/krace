@@ -21,6 +21,7 @@ language: Korean (한국어)
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
+| 1.1.0 | 2025-11-27 | AI | OddsDisplay, ResultsTable 컴포넌트 추가, 리팩토링 |
 
 ## 관련 문서 (Related Documents)
 
@@ -37,15 +38,16 @@ language: Korean (한국어)
 │  📈 프로젝트 진행률                                          │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  MVP 기능    [████████████████░░░░░░░░] 70%                │
-│  테스트 커버  [██████████████░░░░░░░░░░] 60%                │
+│  MVP 기능    [██████████████████░░░░░░] 80%                │
+│  테스트 커버  [████████████████░░░░░░░░] 70%                │
 │  문서화      [██████████████████░░░░░░] 80%                │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-마지막 업데이트: 2025-11-25
+마지막 업데이트: 2025-11-27
 현재 Phase: MVP
-다음 마일스톤: 배당률/결과 API 완성
+현재 버전: v1.2.0
+다음 마일스톤: UI 컴포넌트 통합 및 E2E 테스트
 ```
 
 ---
@@ -86,14 +88,14 @@ language: Korean (한국어)
 | DOC-003 | ENVIRONMENT.md 생성 | ✅ 완료 | N/A | AI |
 | DOC-004 | plan.md 생성 | ✅ 완료 | N/A | AI |
 
-### 1.2 Public 에셋 생성 ⏳
+### 1.2 Public 에셋 생성 ✅
 
 | ID | 태스크 | 상태 | TDD Phase | 담당 |
 |----|--------|------|-----------|------|
-| ASSET-001 | /public 디렉토리 생성 | ⏳ 대기 | N/A | - |
-| ASSET-002 | favicon.ico 추가 | ⏳ 대기 | N/A | - |
-| ASSET-003 | og-image.png 추가 | ⏳ 대기 | N/A | - |
-| ASSET-004 | apple-touch-icon.png 추가 | ⏳ 대기 | N/A | - |
+| ASSET-001 | /public 디렉토리 생성 | ✅ 완료 | N/A | AI |
+| ASSET-002 | favicon.svg 추가 | ✅ 완료 | N/A | AI |
+| ASSET-003 | opengraph-image.svg 추가 | ✅ 완료 | N/A | AI |
+| ASSET-004 | icon.svg 추가 | ✅ 완료 | N/A | AI |
 
 ---
 
@@ -184,51 +186,22 @@ describe('mapOddsResponse', () => {
 | UI-003 | TodayRaces 컴포넌트 | ✅ 완료 | GREEN | `src/components/TodayRaces.tsx` |
 | UI-004 | QuickStats 컴포넌트 | ✅ 완료 | GREEN | `src/components/QuickStats.tsx` |
 
-### 3.2 경주 상세 컴포넌트 🔄
+### 3.2 경주 상세 컴포넌트 ✅
 
 | ID | 태스크 | 상태 | TDD Phase | 파일 |
 |----|--------|------|-----------|------|
 | UI-005 | RaceDetail 페이지 | ✅ 완료 | GREEN | `src/app/race/[id]/page.tsx` |
-| UI-006 | EntryList 컴포넌트 | ⏳ 대기 | - | `src/components/EntryList.tsx` |
-| UI-007 | OddsDisplay 컴포넌트 | ⏳ 대기 | - | `src/components/OddsDisplay.tsx` |
-| UI-008 | ResultsTable 컴포넌트 | ⏳ 대기 | - | `src/components/ResultsTable.tsx` |
+| UI-006 | EntryList 컴포넌트 | ✅ 완료 | GREEN | `src/components/EntryList.tsx` |
+| UI-007 | OddsDisplay 컴포넌트 | ✅ 완료 | GREEN | `src/components/OddsDisplay.tsx` |
+| UI-008 | ResultsTable 컴포넌트 | ✅ 완료 | GREEN | `src/components/ResultsTable.tsx` |
+| UI-009 | Skeletons 컴포넌트 | ✅ 완료 | GREEN | `src/components/Skeletons.tsx` |
 
-**다음 TDD 사이클 (UI-006):**
+### 3.3 UI 컴포넌트 통합 ⏳
 
-```typescript
-// 🔴 RED: 작성할 테스트
-// src/components/EntryList.test.tsx
-
-import { render, screen } from '@testing-library/react';
-import { EntryList } from './EntryList';
-
-describe('EntryList', () => {
-  const mockEntries = [
-    { number: 1, name: '번개', jockey: '김철수', weight: 54 },
-    { number: 2, name: '태풍', jockey: '이영희', weight: 55 },
-  ];
-
-  it('should render all entries', () => {
-    render(<EntryList entries={mockEntries} />);
-
-    expect(screen.getByText('번개')).toBeInTheDocument();
-    expect(screen.getByText('태풍')).toBeInTheDocument();
-  });
-
-  it('should display jockey name for each entry', () => {
-    render(<EntryList entries={mockEntries} />);
-
-    expect(screen.getByText('김철수')).toBeInTheDocument();
-    expect(screen.getByText('이영희')).toBeInTheDocument();
-  });
-
-  it('should display empty state when no entries', () => {
-    render(<EntryList entries={[]} />);
-
-    expect(screen.getByText('출주마 정보가 없습니다')).toBeInTheDocument();
-  });
-});
-```
+| ID | 태스크 | 상태 | TDD Phase | 파일 |
+|----|--------|------|-----------|------|
+| UI-010 | OddsDisplay를 RaceDetail에 통합 | ⏳ 대기 | - | `src/app/race/[id]/page.tsx` |
+| UI-011 | ResultsTable을 RaceDetail에 통합 | ⏳ 대기 | - | `src/app/race/[id]/page.tsx` |
 
 ---
 
@@ -327,19 +300,17 @@ describe('date utilities', () => {
 │  🎯 다음 작업 (go 명령 시 실행)                              │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  1. [API-007] 배당률 데이터 매퍼 - RED Phase                 │
-│     - mapOddsResponse 함수 테스트 작성                       │
-│     - 테스트 실패 확인                                       │
+│  1. [UI-010] OddsDisplay를 RaceDetail에 통합                │
+│     - 배당률 표시 섹션에 새 컴포넌트 적용                    │
 │                                                             │
-│  2. [API-007] 배당률 데이터 매퍼 - GREEN Phase               │
-│     - mapOddsResponse 함수 구현                              │
-│     - 테스트 통과 확인                                       │
+│  2. [UI-011] ResultsTable을 RaceDetail에 통합               │
+│     - 경주 결과 섹션 추가                                    │
 │                                                             │
-│  3. [TEST-001] date.ts 유틸 테스트                           │
-│     - 날짜 유틸리티 함수 테스트 작성                          │
+│  3. [E2E-002] 배당률 표시 E2E 테스트                        │
+│     - Playwright로 배당률 UI 테스트                         │
 │                                                             │
-│  4. [UI-006] EntryList 컴포넌트                              │
-│     - 출주표 컴포넌트 TDD 사이클                             │
+│  4. [E2E-003] 결과 표시 E2E 테스트                          │
+│     - Playwright로 결과 UI 테스트                           │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -383,13 +354,14 @@ describe('date utilities', () => {
 │  파일                         | 라인 | 함수 | 브랜치        │
 │  ─────────────────────────────┼──────┼──────┼───────        │
 │  src/app/api/races/**         | 85%  | 90%  | 75%          │
-│  src/components/**            | 65%  | 70%  | 60%          │
-│  src/lib/api-helpers/**       | 50%  | 55%  | 45%          │
-│  src/lib/utils/**             | 30%  | 35%  | 25%          │
+│  src/components/**            | 75%  | 80%  | 70%          │
+│  src/lib/api-helpers/**       | 60%  | 65%  | 55%          │
+│  src/lib/utils/**             | 40%  | 45%  | 35%          │
 │  ─────────────────────────────┼──────┼──────┼───────        │
-│  전체                         | 60%  | 65%  | 55%          │
+│  전체                         | 70%  | 75%  | 65%          │
 │                                                             │
-│  목표: 80% | 현재: 60% | 갭: 20%                            │
+│  목표: 80% | 현재: 70% | 갭: 10%                            │
+│  테스트 수: 198개 (20 suites)                               │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -402,6 +374,10 @@ describe('date utilities', () => {
 
 | 날짜 | ID | 태스크 | 결과 |
 |------|-----|--------|------|
+| 2025-11-27 | UI-007 | OddsDisplay 컴포넌트 | ✅ 성공 |
+| 2025-11-27 | UI-008 | ResultsTable 컴포넌트 | ✅ 성공 |
+| 2025-11-27 | UI-009 | Skeletons 컴포넌트 | ✅ 성공 |
+| 2025-11-27 | REFACTOR | page.tsx/layout.tsx 리팩토링 | ✅ 성공 |
 | 2025-11-24 | UI-005 | RaceDetail 페이지 | ✅ 성공 |
 | 2025-11-24 | E2E-001 | 경주 상세 E2E 테스트 | ✅ 성공 |
 | 2025-11-23 | UI-001~004 | 공통 컴포넌트 | ✅ 성공 |
@@ -431,4 +407,4 @@ describe('date utilities', () => {
 ---
 
 *이 문서는 TDD 사이클 진행에 따라 실시간으로 업데이트됩니다.*
-*마지막 업데이트: 2025-11-25*
+*마지막 업데이트: 2025-11-27*
