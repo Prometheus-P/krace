@@ -59,16 +59,31 @@ async function fetchApi<T>(
     url.searchParams.append(key, value);
   });
 
-  const response = await fetch(url.toString(), {
-    next: { revalidate: 60 }
-  });
+  try {
+    const response = await fetch(url.toString(), {
+      next: { revalidate: 60 }
+    });
 
-  if (!response.ok) {
-    throw new Error(`${apiName} API Error: ${response.status}`);
+    if (!response.ok) {
+      console.error(`${apiName} API Error: ${response.status}. Falling back to dummy data.`);
+      return getDummyData(rcDate);
+    }
+
+    const data = await response.json();
+    const items = data.response?.body?.items?.item || [];
+
+    // If API returns empty data, fallback to dummy data for better UX
+    if (items.length === 0) {
+      console.warn(`${apiName} API returned empty data. Returning dummy data.`);
+      return getDummyData(rcDate);
+    }
+
+    return items;
+  } catch (error) {
+    console.error(`${apiName} API fetch failed:`, error);
+    console.warn(`Falling back to dummy data for ${apiName}.`);
+    return getDummyData(rcDate);
   }
-
-  const data = await response.json();
-  return data.response?.body?.items?.item || [];
 }
 
 

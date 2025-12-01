@@ -33,11 +33,11 @@ describe('sitemap', () => {
     const urls = sitemapEntries.map(entry => entry.url);
 
     // Check for static routes
-    expect(urls).toContain('https://krace.co.kr/');
+    expect(urls).toContain('https://racelab.kr/');
 
     // Check for dynamic race routes
-    expect(urls).toContain('https://krace.co.kr/race/horse-1-1-20240115');
-    expect(urls).toContain('https://krace.co.kr/race/cycle-1-1-20240115');
+    expect(urls).toContain('https://racelab.kr/race/horse-1-1-20240115');
+    expect(urls).toContain('https://racelab.kr/race/cycle-1-1-20240115');
 
     // Check that there are no boat races in the sitemap for this test
     expect(urls.some(url => url.includes('/boat-'))).toBe(false);

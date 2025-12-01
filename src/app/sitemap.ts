@@ -3,18 +3,26 @@ import { MetadataRoute } from 'next';
 import { fetchHorseRaceSchedules, fetchCycleRaceSchedules, fetchBoatRaceSchedules } from '@/lib/api';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://krace.co.kr';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
 
     // Get today's date in YYYYMMDD format
     const today = new Date();
     const rcDate = today.toISOString().split('T')[0].replace(/-/g, '');
 
-    // Fetch all races for today
-    const [horseRaces, cycleRaces, boatRaces] = await Promise.all([
-        fetchHorseRaceSchedules(rcDate),
-        fetchCycleRaceSchedules(rcDate),
-        fetchBoatRaceSchedules(rcDate),
-    ]);
+    // Fetch all races for today (handle API failures gracefully during build)
+    let horseRaces: Awaited<ReturnType<typeof fetchHorseRaceSchedules>> = [];
+    let cycleRaces: Awaited<ReturnType<typeof fetchCycleRaceSchedules>> = [];
+    let boatRaces: Awaited<ReturnType<typeof fetchBoatRaceSchedules>> = [];
+
+    try {
+        [horseRaces, cycleRaces, boatRaces] = await Promise.all([
+            fetchHorseRaceSchedules(rcDate).catch(() => []),
+            fetchCycleRaceSchedules(rcDate).catch(() => []),
+            fetchBoatRaceSchedules(rcDate).catch(() => []),
+        ]);
+    } catch {
+        // API failures during build are expected - continue with static routes only
+    }
 
     const allRaces = [...horseRaces, ...cycleRaces, ...boatRaces];
 

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    url: 'https://krace.co.kr',
+    url: 'https://racelab.kr',
     siteName: 'KRace',
     title: 'KRace - 경마 경륜 경정 통합 정보',
     description: '한국 경마, 경륜, 경정 실시간 정보를 한눈에',
