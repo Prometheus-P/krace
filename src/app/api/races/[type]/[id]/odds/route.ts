@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { fetchRaceOdds } from '@/lib/api';
 import { getErrorMessage } from '@/lib/utils/errors';
 
+// ISR: Revalidate every 30 seconds for odds (more frequent updates)
+export const revalidate = 30;
+
 export async function GET(
     _request: NextRequest,
     { params }: { params: { type: string; id: string } }

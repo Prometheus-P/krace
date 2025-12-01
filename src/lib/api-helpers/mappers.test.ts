@@ -331,4 +331,130 @@ describe('API Response Mappers', () => {
       expect(mapKSPOBoatRaceToRace(item).id).toBe('boat-1-3-20240220');
     });
   });
+
+  describe('KSPO Edge Cases (TEST-004)', () => {
+    describe('Cycle Race Edge Cases', () => {
+      it('should_handle_missing_rcTime', () => {
+        const item = { meet: '1', rcNo: '1', rcDate: '20240115' };
+        const result = mapKSPOCycleRaceToRace(item);
+        expect(result.startTime).toBe('');
+      });
+
+      it('should_handle_missing_rcDist', () => {
+        const item = { meet: '1', rcNo: '1', rcDate: '20240115', rcTime: '10:00' };
+        const result = mapKSPOCycleRaceToRace(item);
+        expect(result.distance).toBeUndefined();
+      });
+
+      it('should_handle_missing_age_in_entry', () => {
+        const item = {
+          meet: '1',
+          rcNo: '1',
+          rcDate: '20240115',
+          rcTime: '10:00',
+          hrNo: '1',
+          hrName: '테스트선수',
+        };
+        const result = mapKSPOCycleRaceToRace(item);
+        expect(result.entries[0].age).toBeUndefined();
+      });
+
+      it('should_handle_missing_recentRecord_in_entry', () => {
+        const item = {
+          meet: '1',
+          rcNo: '1',
+          rcDate: '20240115',
+          rcTime: '10:00',
+          hrNo: '1',
+          hrName: '테스트선수',
+          age: '30',
+        };
+        const result = mapKSPOCycleRaceToRace(item);
+        expect(result.entries[0].recentRecord).toBeUndefined();
+      });
+
+      it('should_parse_entry_number_correctly', () => {
+        const item = {
+          meet: '1',
+          rcNo: '1',
+          rcDate: '20240115',
+          rcTime: '10:00',
+          hrNo: '12',
+          hrName: '테스트선수',
+        };
+        const result = mapKSPOCycleRaceToRace(item);
+        expect(result.entries[0].no).toBe(12);
+      });
+    });
+
+    describe('Boat Race Edge Cases', () => {
+      it('should_handle_missing_rcTime', () => {
+        const item = { meet: '1', rcNo: '1', rcDate: '20240115' };
+        const result = mapKSPOBoatRaceToRace(item);
+        expect(result.startTime).toBe('');
+      });
+
+      it('should_always_have_undefined_distance', () => {
+        const item = {
+          meet: '1',
+          rcNo: '1',
+          rcDate: '20240115',
+          rcTime: '10:00',
+          rcDist: '1000',
+        };
+        const result = mapKSPOBoatRaceToRace(item);
+        expect(result.distance).toBeUndefined();
+      });
+
+      it('should_handle_missing_age_in_entry', () => {
+        const item = {
+          meet: '1',
+          rcNo: '1',
+          rcDate: '20240115',
+          rcTime: '10:00',
+          hrNo: '1',
+          hrName: '테스트선수',
+        };
+        const result = mapKSPOBoatRaceToRace(item);
+        expect(result.entries[0].age).toBeUndefined();
+      });
+    });
+
+    describe('Fallback ID Generation', () => {
+      beforeEach(() => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('should_generate_fallback_id_when_meet_missing', () => {
+        const item = { rcNo: '1', rcDate: '20240115', rcTime: '10:00' };
+        const result = mapKSPOCycleRaceToRace(item);
+        expect(result.id).toMatch(/^cycle-unknown-\d+$/);
+      });
+
+      it('should_generate_fallback_id_when_rcNo_missing', () => {
+        const item = { meet: '1', rcDate: '20240115', rcTime: '10:00' };
+        const result = mapKSPOBoatRaceToRace(item);
+        expect(result.id).toMatch(/^boat-unknown-\d+$/);
+      });
+
+      it('should_generate_fallback_id_when_rcDate_missing', () => {
+        const item = { meet: '1', rcNo: '1', rcTime: '10:00' };
+        const result = mapKSPOCycleRaceToRace(item);
+        expect(result.id).toMatch(/^cycle-unknown-\d+$/);
+      });
+
+      it('should_log_warning_for_missing_required_fields', () => {
+        const consoleSpy = jest.spyOn(console, 'warn');
+        const item = { rcTime: '10:00' };
+        mapKSPOCycleRaceToRace(item);
+        expect(consoleSpy).toHaveBeenCalledWith(
+          expect.stringContaining('Missing required fields for race ID generation')
+        );
+      });
+    });
+  });
 });

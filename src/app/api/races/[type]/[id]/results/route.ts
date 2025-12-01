@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { fetchRaceResults } from '@/lib/api';
 import { getErrorMessage } from '@/lib/utils/errors';
 
+// ISR: Revalidate every 60 seconds for results
+export const revalidate = 60;
+
 export async function GET(
     _request: NextRequest,
     { params }: { params: { type: string; id: string } }

@@ -1,7 +1,7 @@
 // src/components/OddsDisplay.test.tsx
 import { render, screen } from '@testing-library/react';
 import OddsDisplay from './OddsDisplay';
-import { Entry, RaceType } from '@/types';
+import { Entry } from '@/types';
 
 describe('OddsDisplay', () => {
   const mockEntries: Entry[] = [
