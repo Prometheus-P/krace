@@ -97,7 +97,7 @@ jobs:
     needs: [build-production]
     environment:
       name: production
-      url: https://krace.kr
+      url: https://racelab.kr
     outputs:
       deployment-url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
