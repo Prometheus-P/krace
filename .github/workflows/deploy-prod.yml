@@ -98,14 +98,15 @@ jobs:
     steps:
       - name: Check deployment health
         run: |
-          DEPLOYMENT_URL="${{ needs.deploy-production.outputs.deployment-url }}"
+          # Use production URL instead of preview URL (which may be auth-protected)
+          PROD_URL="https://racelab.kr"
           MAX_RETRIES=10
           RETRY_INTERVAL=10
 
           for i in $(seq 1 $MAX_RETRIES); do
             echo "Health check attempt $i/$MAX_RETRIES..."
 
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$DEPLOYMENT_URL" || echo "000")
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PROD_URL" || echo "000")
 
             if [ "$STATUS" = "200" ]; then
               echo "Health check passed!"
@@ -121,6 +122,5 @@ jobs:
 
       - name: Verify main page
         run: |
-          DEPLOYMENT_URL="${{ needs.deploy-production.outputs.deployment-url }}"
-          curl -f -s "$DEPLOYMENT_URL" > /dev/null
+          curl -f -s "https://racelab.kr" > /dev/null
           echo "Main page: OK"
