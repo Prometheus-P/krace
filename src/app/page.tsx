@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import Script from 'next/script'
 import TodayRaces from '@/components/TodayRaces'
 import QuickStats from '@/components/QuickStats'
 import Link from 'next/link'
@@ -133,16 +134,73 @@ function RaceTabs({ currentTab }: RaceTabsProps) {
 export default function Home({ searchParams }: { searchParams: { tab?: string } }) {
   const currentTab = (searchParams.tab as RaceType) || 'horse';
 
+  // FAQ Schema for AEO optimization
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'KRace는 어떤 서비스인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'KRace는 한국 경마, 경륜, 경정 정보를 한 곳에서 확인할 수 있는 통합 정보 플랫폼입니다. 실시간 배당률, 출마표, 경주 결과를 무료로 제공합니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '경마, 경륜, 경정의 차이는 무엇인가요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '경마는 말을 이용한 경주, 경륜은 자전거를 이용한 경주, 경정은 모터보트를 이용한 경주입니다. 모두 한국에서 합법적으로 운영되는 공영 도박입니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '배당률은 어떻게 확인하나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '메인 페이지에서 원하는 경주를 선택하면 상세 페이지에서 실시간 배당률을 확인할 수 있습니다. 단승 배당률이 표시되며, 경주 시작 직전까지 업데이트됩니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '경주 결과는 언제 확인할 수 있나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '경주가 종료되면 즉시 결과가 업데이트됩니다. 경주 상세 페이지에서 순위, 배당금 등의 정보를 확인할 수 있습니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'KRace는 무료로 이용할 수 있나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '네, KRace의 모든 정보는 무료로 제공됩니다. 회원가입 없이도 모든 경주 정보, 배당률, 결과를 확인할 수 있습니다.',
+        },
+      },
+    ],
+  };
+
   return (
-    <div className="space-y-6">
-      <PageHeader />
-      <section aria-label="경주 요약 통계" data-testid="quick-stats">
-        <Suspense fallback={<QuickStatsSkeleton />}>
-          <QuickStats />
-        </Suspense>
-      </section>
-      <RaceTabs currentTab={currentTab} />
-      <AnnouncementBanner />
-    </div>
+    <>
+      {/* FAQ Schema for AEO */}
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
+      <div className="space-y-6">
+        <PageHeader />
+        <section aria-label="경주 요약 통계" data-testid="quick-stats">
+          <Suspense fallback={<QuickStatsSkeleton />}>
+            <QuickStats />
+          </Suspense>
+        </section>
+        <RaceTabs currentTab={currentTab} />
+        <AnnouncementBanner />
+      </div>
+    </>
   );
 }

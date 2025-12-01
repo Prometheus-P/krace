@@ -52,12 +52,54 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
+
+  // JSON-LD structured data for Organization and WebSite
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'KRace',
+    url: baseUrl,
+    logo: `${baseUrl}/icon.svg`,
+    description: '한국 경마, 경륜, 경정 실시간 정보를 한눈에 제공하는 통합 플랫폼',
+    sameAs: [],
+  };
+
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'KRace - 경마 경륜 경정 통합 정보',
+    url: baseUrl,
+    description: '한국 경마, 경륜, 경정 실시간 정보를 한눈에. 출마표, 배당률, 경주결과를 무료로 제공합니다.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${baseUrl}/?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
   return (
     <html lang="ko">
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/icon.svg" />
         <meta name="theme-color" content="#1a56db" />
+
+        {/* JSON-LD Structured Data */}
+        <Script
+          id="organization-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <Script
+          id="website-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+
         {/* Google Analytics Scripts */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
