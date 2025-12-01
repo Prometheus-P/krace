@@ -7,7 +7,7 @@
 | 항목 | 내용 |
 |------|------|
 | 프로젝트명 | KRace |
-| 도메인 | https://krace.co.kr |
+| 도메인 | https://racelab.kr |
 | 기술스택 | Next.js 14, TypeScript, Tailwind CSS |
 | 데이터소스 | 공공데이터포털 (한국마사회, 국민체육진흥공단) |
 | 수익모델 | Google AdSense, 제휴 마케팅 |

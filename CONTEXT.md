@@ -40,7 +40,7 @@ language: Korean (한국어)
 |------|------|
 | **프로젝트명** | KRace (케이레이스) |
 | **버전** | 1.1.0 |
-| **도메인** | krace.co.kr |
+| **도메인** | racelab.kr |
 | **저장소** | Prometheus-P/racelab |
 | **라이선스** | ISC |
 

@@ -114,7 +114,7 @@ KRA_API_KEY=your_kra_api_key_here      # 한국마사회
 KSPO_API_KEY=your_kspo_api_key_here    # 국민체육진흥공단
 
 # 선택 - 프로덕션 설정
-NEXT_PUBLIC_SITE_URL=https://krace.co.kr
+NEXT_PUBLIC_SITE_URL=https://racelab.kr
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 NEXT_PUBLIC_ADSENSE_ID=ca-pub-XXXXXXXXXX
 ```
@@ -271,7 +271,7 @@ npm start
 
 | 환경 | URL |
 |------|-----|
-| Production | https://krace.co.kr |
+| Production | https://racelab.kr |
 | Preview | https://racelab-*.vercel.app |
 | Local | http://localhost:3000 |
 

@@ -351,7 +351,7 @@ Vercel 대시보드에서 설정:
 ### 7.3 도메인 연결
 
 1. Vercel Dashboard → Domains
-2. `krace.co.kr` 추가
+2. `racelab.kr` 추가
 3. DNS 설정:
    - A Record: `76.76.21.21`
    - CNAME: `cname.vercel-dns.com`

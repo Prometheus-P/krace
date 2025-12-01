@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    url: 'https://krace.co.kr',
+    url: 'https://racelab.kr',
     siteName: 'KRace',
     images: [{
       url: '/og-image.png',
@@ -83,12 +83,12 @@ const structuredData = {
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://krace.co.kr/</loc>
+    <loc>https://racelab.kr/</loc>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://krace.co.kr/horse</loc>
+    <loc>https://racelab.kr/horse</loc>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -103,7 +103,7 @@ const structuredData = {
 User-agent: *
 Allow: /
 
-Sitemap: https://krace.co.kr/sitemap.xml
+Sitemap: https://racelab.kr/sitemap.xml
 
 # 관리자/API 차단
 Disallow: /api/

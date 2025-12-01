@@ -624,7 +624,7 @@ info:
     url: https://github.com/Prometheus-P/racelab
 
 servers:
-  - url: https://krace.co.kr/api
+  - url: https://racelab.kr/api
     description: Production
   - url: http://localhost:3000/api
     description: Development

@@ -21,7 +21,7 @@
 ## 매일 아침 (09:00)
 
 □ 서비스 상태 확인
-  - https://krace.kr 접속 확인
+  - https://racelab.kr 접속 확인
   - /api/health 엔드포인트 확인
 
 □ 모니터링 대시보드 확인
@@ -40,7 +40,7 @@
 
 ```bash
 # 서비스 상태 확인
-curl -s https://krace.kr/api/health | jq
+curl -s https://racelab.kr/api/health | jq
 
 # 예상 응답:
 # {
@@ -54,7 +54,7 @@ curl -s https://krace.kr/api/health | jq
 # }
 
 # 응답 시간 측정
-curl -w "@curl-format.txt" -o /dev/null -s https://krace.kr
+curl -w "@curl-format.txt" -o /dev/null -s https://racelab.kr
 
 # curl-format.txt 내용:
 #     time_namelookup:  %{time_namelookup}s\n
@@ -100,11 +100,11 @@ vercel logs [deployment-url] --follow
 
 ```bash
 # 1. DNS 확인
-nslookup krace.kr
-dig krace.kr
+nslookup racelab.kr
+dig racelab.kr
 
 # 2. SSL 인증서 확인
-openssl s_client -connect krace.kr:443 -servername krace.kr
+openssl s_client -connect racelab.kr:443 -servername racelab.kr
 
 # 3. Vercel 상태 페이지 확인
 # https://www.vercel-status.com/
@@ -152,7 +152,7 @@ curl -w "Total: %{time_total}s\n" -o /dev/null -s \
   "https://api.kspo.or.kr/races"
 
 # 우리 서비스의 외부 API 상태 확인
-curl -s https://krace.kr/api/health | jq '.checks[] | select(.name == "KSPO API")'
+curl -s https://racelab.kr/api/health | jq '.checks[] | select(.name == "KSPO API")'
 ```
 
 **대응:**
@@ -250,14 +250,14 @@ git log --oneline -10
 ```bash
 # 응답 시간 측정
 for i in {1..10}; do
-  curl -w "%{time_total}\n" -o /dev/null -s https://krace.kr/api/races/today
+  curl -w "%{time_total}\n" -o /dev/null -s https://racelab.kr/api/races/today
 done
 
 # Vercel Analytics에서 성능 확인
 # https://vercel.com/[team]/[project]/analytics
 
 # 외부 API 응답 시간 확인
-curl -s https://krace.kr/api/health | jq '.checks[].responseTime'
+curl -s https://racelab.kr/api/health | jq '.checks[].responseTime'
 ```
 
 **대응:**
@@ -363,7 +363,7 @@ git merge feature/my-feature
 
 # 5. 배포 확인
 vercel list --prod
-curl -s https://krace.kr/api/health
+curl -s https://racelab.kr/api/health
 ```
 
 ### 롤백 절차
@@ -379,7 +379,7 @@ vercel list --prod
 vercel promote https://krace-abc123.vercel.app --prod
 
 # 4. 롤백 확인
-curl -s https://krace.kr/api/health
+curl -s https://racelab.kr/api/health
 
 # 5. 팀에 공유
 # Slack #deployments 채널에 롤백 사실 공유
@@ -473,20 +473,20 @@ vercel logs [deployment-url] --output json | jq '.message'
 ```bash
 # ISR 캐시 무효화 (특정 페이지)
 # Next.js의 on-demand revalidation 사용
-curl -X POST "https://krace.kr/api/revalidate?path=/races&secret=$REVALIDATE_SECRET"
+curl -X POST "https://racelab.kr/api/revalidate?path=/races&secret=$REVALIDATE_SECRET"
 
 # 전체 캐시 무효화 (재배포)
 vercel --prod --force
 
 # CDN 캐시 확인
-curl -I https://krace.kr | grep -i cache
+curl -I https://racelab.kr | grep -i cache
 ```
 
 ### 데이터 정합성 확인
 
 ```bash
 # API 응답 데이터 검증
-curl -s https://krace.kr/api/races/today | jq '.data | length'
+curl -s https://racelab.kr/api/races/today | jq '.data | length'
 
 # 외부 API와 비교
 curl -s "https://api.kspo.or.kr/races" -H "X-API-Key: $KSPO_API_KEY" | jq '. | length'
@@ -582,7 +582,7 @@ vercel env rm KSPO_API_KEY_OLD
 - Vercel Dashboard: https://vercel.com/[team]/[project]
 - Sentry: https://sentry.io/organizations/[org]/
 - GitHub Repo: https://github.com/[org]/racelab
-- 상태 페이지: https://status.krace.kr (설정된 경우)
+- 상태 페이지: https://status.racelab.kr (설정된 경우)
 ```
 
 ---

@@ -101,7 +101,7 @@ KSPO_API_KEY=your_kspo_api_key_here
 # └─────────────────────────────────────────────────────────────┘
 
 # 사이트 URL (SEO, OG 태그용)
-NEXT_PUBLIC_SITE_URL=https://krace.co.kr
+NEXT_PUBLIC_SITE_URL=https://racelab.kr
 
 # Google Analytics 4 측정 ID
 # 발급: https://analytics.google.com/
@@ -475,7 +475,7 @@ Error: 429 Too Many Requests
 #### 프로덕션 환경
 
 - [ ] Vercel 환경 변수 설정
-- [ ] 도메인 연결 (krace.co.kr)
+- [ ] 도메인 연결 (racelab.kr)
 - [ ] SSL 인증서 활성화
 - [ ] Google Analytics 연동
 - [ ] Google AdSense 승인

@@ -345,7 +345,7 @@ vercel list --prod
 vercel promote [previous-deployment-url] --prod
 
 # 3. 롤백 확인
-curl -I https://krace.kr
+curl -I https://racelab.kr
 
 # 4. 모니터링
 # - 에러율 확인

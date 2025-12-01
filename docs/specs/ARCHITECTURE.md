@@ -475,7 +475,7 @@ graph LR
 |------|-----|------|----------|
 | Local | localhost:3000 | 개발 | 없음 |
 | Preview | *.vercel.app | PR 리뷰 | 30초 |
-| Production | krace.co.kr | 운영 | 5분 |
+| Production | racelab.kr | 운영 | 5분 |
 
 ### 7.3 배포 파이프라인
 

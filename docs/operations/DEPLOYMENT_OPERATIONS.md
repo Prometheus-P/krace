@@ -8,7 +8,7 @@
 |------|-----|------|
 | Development | `localhost:3000` | 로컬 개발 |
 | Preview | `*.vercel.app` | PR 미리보기 |
-| Production | `krace.co.kr` | 실서비스 |
+| Production | `racelab.kr` | 실서비스 |
 
 ### 1.2 인프라 구성
 
@@ -85,7 +85,7 @@ GitHub 연동 시 자동 배포:
 |------|-------------|---------|------------|
 | `KRA_API_KEY` | 테스트 키 | 테스트 키 | 프로덕션 키 |
 | `KSPO_API_KEY` | 테스트 키 | 테스트 키 | 프로덕션 키 |
-| `NEXT_PUBLIC_SITE_URL` | localhost | preview URL | krace.co.kr |
+| `NEXT_PUBLIC_SITE_URL` | localhost | preview URL | racelab.kr |
 | `NEXT_PUBLIC_GA_ID` | - | - | G-XXXXXXXX |
 | `NEXT_PUBLIC_ADSENSE_ID` | - | - | ca-pub-XXX |
 
@@ -111,7 +111,7 @@ vercel env rm [변수명]
 ### 4.1 Vercel 도메인 연결
 
 1. Vercel Dashboard → Project → Settings → Domains
-2. `krace.co.kr` 입력
+2. `racelab.kr` 입력
 3. DNS 설정 안내 확인
 
 ### 4.2 DNS 레코드
@@ -226,14 +226,14 @@ vercel rollback
 vercel rollback [deployment-url]
 
 # 3. 확인
-curl -I https://krace.co.kr
+curl -I https://racelab.kr
 ```
 
 ### 6.3 장애 체크리스트
 
 **서비스 불가 시:**
 1. [ ] Vercel Status 확인 (status.vercel.com)
-2. [ ] DNS 확인 (`dig krace.co.kr`)
+2. [ ] DNS 확인 (`dig racelab.kr`)
 3. [ ] 최근 배포 확인 → 롤백 검토
 4. [ ] 에러 로그 확인 (Vercel Dashboard → Logs)
 

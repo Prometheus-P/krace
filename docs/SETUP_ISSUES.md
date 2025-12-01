@@ -209,7 +209,7 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 
 1. [Google Search Console](https://search.google.com/search-console) 접속
 2. 속성 추가 → URL 접두어 선택
-3. `https://krace.co.kr` (또는 실제 도메인) 입력
+3. `https://racelab.kr` (또는 실제 도메인) 입력
 4. HTML 태그 방식으로 확인
 5. 메타 태그의 `content` 값 복사
 
@@ -228,7 +228,7 @@ verification: {
 사이트 인증 후:
 
 1. Search Console → Sitemaps
-2. `https://krace.co.kr/sitemap.xml` 제출
+2. `https://racelab.kr/sitemap.xml` 제출
 
 ## 체크리스트
 
@@ -266,7 +266,7 @@ verification: {
 ## 현재 설정된 도메인
 
 코드에서 참조하는 도메인:
-- `https://krace.co.kr` (layout.tsx OpenGraph)
+- `https://racelab.kr` (layout.tsx OpenGraph)
 - `https://racelab.co.kr` (robots.ts, sitemap.ts)
 
 > ⚠️ 도메인이 일치하지 않습니다. 통일이 필요합니다.
@@ -281,7 +281,7 @@ verification: {
 ### 2. Vercel 도메인 연결
 
 1. Vercel Dashboard → Project → Settings → Domains
-2. 도메인 추가 (예: `krace.co.kr`)
+2. 도메인 추가 (예: `racelab.kr`)
 3. DNS 레코드 설정:
    - A Record: `76.76.21.21`
    - 또는 CNAME: `cname.vercel-dns.com`
@@ -292,19 +292,19 @@ verification: {
 
 **`src/app/robots.ts`**
 ```typescript
-sitemap: 'https://krace.co.kr/sitemap.xml',
+sitemap: 'https://racelab.kr/sitemap.xml',
 ```
 
 **`src/app/sitemap.ts`**
 ```typescript
-const baseUrl = 'https://krace.co.kr';
+const baseUrl = 'https://racelab.kr';
 ```
 
 ### 4. 환경별 도메인 설정
 
 | 환경 | 도메인 |
 |------|--------|
-| Production | `krace.co.kr` |
+| Production | `racelab.kr` |
 | Preview | `*.vercel.app` (자동) |
 | Development | `localhost:3000` |
 
