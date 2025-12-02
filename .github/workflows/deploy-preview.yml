@@ -50,8 +50,8 @@ jobs:
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          KSPO_API_URL: ${{ vars.KSPO_API_URL_PREVIEW }}
-          KSPO_API_KEY: ${{ secrets.KSPO_API_KEY_PREVIEW }}
+          KRA_API_KEY: ${{ secrets.KRA_API_KEY }}
+          KSPO_API_KEY: ${{ secrets.KSPO_API_KEY }}
 
       - name: Deploy to Vercel Preview
         id: deploy
@@ -124,13 +124,15 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps
 
       - name: Run E2E tests against preview
         run: npm run test:e2e
         env:
           BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
           CI: true
+          KRA_API_KEY: ${{ secrets.KRA_API_KEY }}
+          KSPO_API_KEY: ${{ secrets.KSPO_API_KEY }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
