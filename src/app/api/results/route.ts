@@ -4,15 +4,13 @@ import { fetchHistoricalResults } from '@/lib/api';
 import { RaceType, PaginatedResults, HistoricalRace } from '@/types';
 import { ApiResponse } from '@/lib/utils/apiResponse';
 import { getTodayYYYYMMDD } from '@/lib/utils/date';
-import { SUCCESS_CACHE_CONTROL, ERROR_CACHE_CONTROL } from '@/lib/constants/cacheControl';
 
-// Route handlers that read request.url must opt out of static rendering
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
+// ISR: Revalidate every 5 minutes for historical results
+export const revalidate = 300;
 
 export async function GET(request: NextRequest): Promise<NextResponse<ApiResponse<PaginatedResults<HistoricalRace>>>> {
   try {
-    const { searchParams } = request.nextUrl;
+    const { searchParams } = new URL(request.url);
 
     // Parse query parameters
     const dateFrom = searchParams.get('dateFrom') || getTodayYYYYMMDD();
@@ -22,24 +20,6 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
     const jockey = searchParams.get('jockey') || undefined;
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '20', 10);
-
-    if (!Number.isFinite(page) || page < 1 || !Number.isFinite(limit) || limit < 1 || limit > 100) {
-      const errorResponse: ApiResponse<PaginatedResults<HistoricalRace>> = {
-        success: false,
-        error: {
-          code: 'INVALID_PAGINATION',
-          message: 'page must be >= 1 and limit must be between 1 and 100',
-        },
-        timestamp: new Date().toISOString(),
-      };
-
-      return NextResponse.json(errorResponse, {
-        status: 400,
-        headers: {
-          'Cache-Control': ERROR_CACHE_CONTROL,
-        },
-      });
-    }
 
     // Parse types array from comma-separated string
     const types: RaceType[] | undefined = typesParam
@@ -56,12 +36,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
         },
         timestamp: new Date().toISOString(),
       };
-      return NextResponse.json(errorResponse, {
-        status: 400,
-        headers: {
-          'Cache-Control': ERROR_CACHE_CONTROL,
-        },
-      });
+      return NextResponse.json(errorResponse, { status: 400 });
     }
 
     // Fetch historical results with filters
@@ -81,12 +56,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
       timestamp: new Date().toISOString(),
     };
 
-    return NextResponse.json(response, {
-      status: 200,
-      headers: {
-        'Cache-Control': SUCCESS_CACHE_CONTROL,
-      },
-    });
+    return NextResponse.json(response, { status: 200 });
   } catch (error: unknown) {
     console.error('Error fetching historical results:', error);
 
@@ -100,11 +70,6 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
       timestamp: new Date().toISOString(),
     };
 
-    return NextResponse.json(errorResponse, {
-      status: 500,
-      headers: {
-        'Cache-Control': ERROR_CACHE_CONTROL,
-      },
-    });
+    return NextResponse.json(errorResponse, { status: 500 });
   }
 }
