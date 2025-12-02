@@ -2,11 +2,9 @@
 import { test, expect, APIRequestContext } from '@playwright/test';
 
 test.describe('API Endpoints', () => {
-    const baseURL = 'http://localhost:3000';
-
     test.describe('Race Schedule APIs', () => {
         test('GET /api/races/horse should return 200', async ({ request }) => {
-            const response = await request.get(`${baseURL}/api/races/horse`);
+            const response = await request.get(`/api/races/horse`);
             expect(response.status()).toBe(200);
 
             const data = await response.json();
@@ -15,7 +13,7 @@ test.describe('API Endpoints', () => {
         });
 
         test('GET /api/races/cycle should return 200', async ({ request }) => {
-            const response = await request.get(`${baseURL}/api/races/cycle`);
+            const response = await request.get(`/api/races/cycle`);
             expect(response.status()).toBe(200);
 
             const data = await response.json();
@@ -24,7 +22,7 @@ test.describe('API Endpoints', () => {
         });
 
         test('GET /api/races/boat should return 200', async ({ request }) => {
-            const response = await request.get(`${baseURL}/api/races/boat`);
+            const response = await request.get(`/api/races/boat`);
             expect(response.status()).toBe(200);
 
             const data = await response.json();
@@ -36,7 +34,7 @@ test.describe('API Endpoints', () => {
     test.describe('Race Detail APIs', () => {
         // Helper function to get a valid race ID from the race list
         async function getValidRaceId(request: APIRequestContext): Promise<string> {
-            const response = await request.get(`${baseURL}/api/races/horse`);
+            const response = await request.get(`/api/races/horse`);
             const data = await response.json();
             if (data.data && data.data.length > 0) {
                 return data.data[0].id;
@@ -46,7 +44,7 @@ test.describe('API Endpoints', () => {
 
         test('GET /api/races/[type]/[id]/entries should return 200', async ({ request }) => {
             const raceId = await getValidRaceId(request);
-            const response = await request.get(`${baseURL}/api/races/horse/${raceId}/entries`);
+            const response = await request.get(`/api/races/horse/${raceId}/entries`);
             expect(response.status()).toBe(200);
 
             const data = await response.json();
@@ -56,7 +54,7 @@ test.describe('API Endpoints', () => {
 
         test('GET /api/races/[type]/[id]/odds should return 200', async ({ request }) => {
             const raceId = await getValidRaceId(request);
-            const response = await request.get(`${baseURL}/api/races/horse/${raceId}/odds`);
+            const response = await request.get(`/api/races/horse/${raceId}/odds`);
             expect(response.status()).toBe(200);
 
             const data = await response.json();
@@ -66,7 +64,7 @@ test.describe('API Endpoints', () => {
 
         test('GET /api/races/[type]/[id]/results should return 200', async ({ request }) => {
             const raceId = await getValidRaceId(request);
-            const response = await request.get(`${baseURL}/api/races/horse/${raceId}/results`);
+            const response = await request.get(`/api/races/horse/${raceId}/results`);
             expect(response.status()).toBe(200);
 
             const data = await response.json();
@@ -75,7 +73,7 @@ test.describe('API Endpoints', () => {
         });
 
         test('GET /api/races/[type]/[id]/entries with invalid ID should return 404', async ({ request }) => {
-            const response = await request.get(`${baseURL}/api/races/horse/invalid-id/entries`);
+            const response = await request.get(`/api/races/horse/invalid-id/entries`);
             expect(response.status()).toBe(404);
 
             const data = await response.json();
@@ -86,7 +84,7 @@ test.describe('API Endpoints', () => {
 
     test.describe('SEO APIs', () => {
         test('GET /sitemap.xml should return 200', async ({ request }) => {
-            const response = await request.get(`${baseURL}/sitemap.xml`);
+            const response = await request.get(`/sitemap.xml`);
             expect(response.status()).toBe(200);
 
             const contentType = response.headers()['content-type'];
@@ -94,7 +92,7 @@ test.describe('API Endpoints', () => {
         });
 
         test('GET /robots.txt should return 200', async ({ request }) => {
-            const response = await request.get(`${baseURL}/robots.txt`);
+            const response = await request.get(`/robots.txt`);
             expect(response.status()).toBe(200);
 
             const text = await response.text();
@@ -106,7 +104,7 @@ test.describe('API Endpoints', () => {
 
     test.describe('API Response Structure', () => {
         test('Race schedule API should have correct data structure', async ({ request }) => {
-            const response = await request.get(`${baseURL}/api/races/horse`);
+            const response = await request.get(`/api/races/horse`);
             const data = await response.json();
 
             if (data.data.length > 0) {
@@ -121,7 +119,7 @@ test.describe('API Endpoints', () => {
 
         test('Entries API should have correct data structure', async ({ request }) => {
             // First get a valid race ID
-            const racesResponse = await request.get(`${baseURL}/api/races/horse`);
+            const racesResponse = await request.get(`/api/races/horse`);
             const racesData = await racesResponse.json();
             if (!racesData.data || racesData.data.length === 0) {
                 test.skip();
@@ -129,7 +127,7 @@ test.describe('API Endpoints', () => {
             }
             const raceId = racesData.data[0].id;
 
-            const response = await request.get(`${baseURL}/api/races/horse/${raceId}/entries`);
+            const response = await request.get(`/api/races/horse/${raceId}/entries`);
             const data = await response.json();
 
             if (data.data && data.data.length > 0) {
@@ -141,7 +139,7 @@ test.describe('API Endpoints', () => {
 
         test('Odds API should have correct data structure', async ({ request }) => {
             // First get a valid race ID
-            const racesResponse = await request.get(`${baseURL}/api/races/horse`);
+            const racesResponse = await request.get(`/api/races/horse`);
             const racesData = await racesResponse.json();
             if (!racesData.data || racesData.data.length === 0) {
                 test.skip();
@@ -149,7 +147,7 @@ test.describe('API Endpoints', () => {
             }
             const raceId = racesData.data[0].id;
 
-            const response = await request.get(`${baseURL}/api/races/horse/${raceId}/odds`);
+            const response = await request.get(`/api/races/horse/${raceId}/odds`);
             const data = await response.json();
 
             if (data.data && data.data.length > 0) {
@@ -164,7 +162,7 @@ test.describe('API Endpoints', () => {
     test.describe('Security Tests', () => {
         test('should handle SQL injection attempt in race ID', async ({ request }) => {
             const maliciousId = encodeURIComponent("'; DROP TABLE races; --");
-            const response = await request.get(`${baseURL}/api/races/horse/${maliciousId}/entries`);
+            const response = await request.get(`/api/races/horse/${maliciousId}/entries`);
 
             // Should return 404 (not found) or 400 (bad request), not 500
             expect([400, 404]).toContain(response.status());
@@ -173,7 +171,7 @@ test.describe('API Endpoints', () => {
 
         test('should handle XSS attempt in race ID', async ({ request }) => {
             const xssId = encodeURIComponent("<script>alert('xss')</script>");
-            const response = await request.get(`${baseURL}/api/races/horse/${xssId}/entries`);
+            const response = await request.get(`/api/races/horse/${xssId}/entries`);
 
             expect([400, 404]).toContain(response.status());
 
@@ -184,13 +182,13 @@ test.describe('API Endpoints', () => {
 
         test('should handle path traversal attempt', async ({ request }) => {
             const traversalId = encodeURIComponent('../../../etc/passwd');
-            const response = await request.get(`${baseURL}/api/races/horse/${traversalId}/entries`);
+            const response = await request.get(`/api/races/horse/${traversalId}/entries`);
 
             expect([400, 404]).toContain(response.status());
         });
 
         test('should not expose sensitive error details', async ({ request }) => {
-            const response = await request.get(`${baseURL}/api/races/invalid-type/invalid-id/entries`);
+            const response = await request.get(`/api/races/invalid-type/invalid-id/entries`);
 
             const data = await response.json();
             // Error message should not expose internal paths or stack traces
@@ -203,7 +201,7 @@ test.describe('API Endpoints', () => {
 
         test('should handle oversized race ID gracefully', async ({ request }) => {
             const longId = 'a'.repeat(10000);
-            const response = await request.get(`${baseURL}/api/races/horse/${longId}/entries`);
+            const response = await request.get(`/api/races/horse/${longId}/entries`);
 
             // Should handle gracefully, not crash or timeout
             expect(response.status()).toBeLessThan(500);
@@ -212,7 +210,7 @@ test.describe('API Endpoints', () => {
 
     test.describe('API Timestamp and Caching', () => {
         test('API response should include ISO timestamp', async ({ request }) => {
-            const response = await request.get(`${baseURL}/api/races/horse`);
+            const response = await request.get(`/api/races/horse`);
             const data = await response.json();
 
             expect(data.timestamp).toBeDefined();
@@ -223,7 +221,7 @@ test.describe('API Endpoints', () => {
             const types = ['horse', 'cycle', 'boat'];
 
             for (const type of types) {
-                const response = await request.get(`${baseURL}/api/races/${type}`);
+                const response = await request.get(`/api/races/${type}`);
                 const data = await response.json();
 
                 expect(data).toHaveProperty('success');
