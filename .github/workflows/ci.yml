@@ -124,6 +124,8 @@ jobs:
         run: npm run test:e2e
         env:
           CI: true
+          KRA_API_KEY: ${{ secrets.KRA_API_KEY }}
+          KSPO_API_KEY: ${{ secrets.KSPO_API_KEY }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
