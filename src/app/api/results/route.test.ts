@@ -4,6 +4,7 @@
 
 import { GET, dynamic, fetchCache } from './route';
 import { NextRequest } from 'next/server';
+import { SUCCESS_CACHE_CONTROL, ERROR_CACHE_CONTROL } from '@/lib/constants/cacheControl';
 
 describe('GET /api/results', () => {
   it('should return paginated historical results', async () => {
@@ -115,7 +116,7 @@ describe('GET /api/results', () => {
 
     expect(dynamic).toBe('force-dynamic');
     expect(fetchCache).toBe('force-no-store');
-    expect(response.headers.get('cache-control')).toBe('public, s-maxage=300, stale-while-revalidate=60');
+    expect(response.headers.get('cache-control')).toBe(SUCCESS_CACHE_CONTROL);
   });
 
   it('should reject invalid pagination parameters', async () => {
@@ -128,6 +129,6 @@ describe('GET /api/results', () => {
     expect(response.status).toBe(400);
     expect(json.success).toBe(false);
     expect(json.error.code).toBe('INVALID_PAGINATION');
-    expect(response.headers.get('cache-control')).toBe('no-store');
+    expect(response.headers.get('cache-control')).toBe(ERROR_CACHE_CONTROL);
   });
 });

@@ -4,7 +4,7 @@ import { test, expect, APIRequestContext } from '@playwright/test';
 test.describe('API Endpoints', () => {
     test.describe('Race Schedule APIs', () => {
         test('GET /api/races/horse should return 200', async ({ request }) => {
-            const response = await request.get(`/api/races/horse`);
+            const response = await request.get('/api/races/horse');
             expect(response.status()).toBe(200);
 
             const data = await response.json();
@@ -13,7 +13,7 @@ test.describe('API Endpoints', () => {
         });
 
         test('GET /api/races/cycle should return 200', async ({ request }) => {
-            const response = await request.get(`/api/races/cycle`);
+            const response = await request.get('/api/races/cycle');
             expect(response.status()).toBe(200);
 
             const data = await response.json();
@@ -22,7 +22,7 @@ test.describe('API Endpoints', () => {
         });
 
         test('GET /api/races/boat should return 200', async ({ request }) => {
-            const response = await request.get(`/api/races/boat`);
+            const response = await request.get('/api/races/boat');
             expect(response.status()).toBe(200);
 
             const data = await response.json();
@@ -34,7 +34,7 @@ test.describe('API Endpoints', () => {
     test.describe('Race Detail APIs', () => {
         // Helper function to get a valid race ID from the race list
         async function getValidRaceId(request: APIRequestContext): Promise<string> {
-            const response = await request.get(`/api/races/horse`);
+            const response = await request.get('/api/races/horse');
             const data = await response.json();
             if (data.data && data.data.length > 0) {
                 return data.data[0].id;
@@ -73,7 +73,7 @@ test.describe('API Endpoints', () => {
         });
 
         test('GET /api/races/[type]/[id]/entries with invalid ID should return 404', async ({ request }) => {
-            const response = await request.get(`/api/races/horse/invalid-id/entries`);
+            const response = await request.get('/api/races/horse/invalid-id/entries');
             expect(response.status()).toBe(404);
 
             const data = await response.json();
@@ -84,7 +84,7 @@ test.describe('API Endpoints', () => {
 
     test.describe('SEO APIs', () => {
         test('GET /sitemap.xml should return 200', async ({ request }) => {
-            const response = await request.get(`/sitemap.xml`);
+            const response = await request.get('/sitemap.xml');
             expect(response.status()).toBe(200);
 
             const contentType = response.headers()['content-type'];
@@ -92,7 +92,7 @@ test.describe('API Endpoints', () => {
         });
 
         test('GET /robots.txt should return 200', async ({ request }) => {
-            const response = await request.get(`/robots.txt`);
+            const response = await request.get('/robots.txt');
             expect(response.status()).toBe(200);
 
             const text = await response.text();
@@ -104,7 +104,7 @@ test.describe('API Endpoints', () => {
 
     test.describe('API Response Structure', () => {
         test('Race schedule API should have correct data structure', async ({ request }) => {
-            const response = await request.get(`/api/races/horse`);
+            const response = await request.get('/api/races/horse');
             const data = await response.json();
 
             if (data.data.length > 0) {
@@ -119,7 +119,7 @@ test.describe('API Endpoints', () => {
 
         test('Entries API should have correct data structure', async ({ request }) => {
             // First get a valid race ID
-            const racesResponse = await request.get(`/api/races/horse`);
+            const racesResponse = await request.get('/api/races/horse');
             const racesData = await racesResponse.json();
             if (!racesData.data || racesData.data.length === 0) {
                 test.skip();
@@ -139,7 +139,7 @@ test.describe('API Endpoints', () => {
 
         test('Odds API should have correct data structure', async ({ request }) => {
             // First get a valid race ID
-            const racesResponse = await request.get(`/api/races/horse`);
+            const racesResponse = await request.get('/api/races/horse');
             const racesData = await racesResponse.json();
             if (!racesData.data || racesData.data.length === 0) {
                 test.skip();
@@ -188,7 +188,7 @@ test.describe('API Endpoints', () => {
         });
 
         test('should not expose sensitive error details', async ({ request }) => {
-            const response = await request.get(`/api/races/invalid-type/invalid-id/entries`);
+            const response = await request.get('/api/races/invalid-type/invalid-id/entries');
 
             const data = await response.json();
             // Error message should not expose internal paths or stack traces
@@ -210,7 +210,7 @@ test.describe('API Endpoints', () => {
 
     test.describe('API Timestamp and Caching', () => {
         test('API response should include ISO timestamp', async ({ request }) => {
-            const response = await request.get(`/api/races/horse`);
+            const response = await request.get('/api/races/horse');
             const data = await response.json();
 
             expect(data.timestamp).toBeDefined();

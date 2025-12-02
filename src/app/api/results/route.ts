@@ -4,13 +4,11 @@ import { fetchHistoricalResults } from '@/lib/api';
 import { RaceType, PaginatedResults, HistoricalRace } from '@/types';
 import { ApiResponse } from '@/lib/utils/apiResponse';
 import { getTodayYYYYMMDD } from '@/lib/utils/date';
+import { SUCCESS_CACHE_CONTROL, ERROR_CACHE_CONTROL } from '@/lib/constants/cacheControl';
 
 // Route handlers that read request.url must opt out of static rendering
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
-
-const SUCCESS_CACHE_CONTROL = 'public, s-maxage=300, stale-while-revalidate=60';
-const ERROR_CACHE_CONTROL = 'no-store';
 
 export async function GET(request: NextRequest): Promise<NextResponse<ApiResponse<PaginatedResults<HistoricalRace>>>> {
   try {
