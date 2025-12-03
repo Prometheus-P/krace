@@ -34,6 +34,41 @@
 
 ---
 
+## Phase 1.5: Material Design 3 (M3) Design System Setup
+
+**Purpose**: Establish M3 design tokens, typography, and component foundations for consistent UI
+
+**Design Decisions** (from spec.md Clarifications 2025-12-02):
+- Color: M3 neutral brand + semantic race colors (horse=green, cycle=red, boat=blue)
+- Components: M3 Elevated Cards for results, Filter Chips, Search Bar
+- Typography: Pretendard font with M3 Type Scale
+- Interaction: In-place card expansion (accordion style)
+- Theme: Light mode only (initial release)
+
+### Infrastructure
+
+- [ ] T004a [P] Install Pretendard font and configure in src/app/layout.tsx
+- [ ] T004b [P] Create M3 design tokens file in src/styles/tokens.ts (colors, spacing, elevation)
+- [ ] T004c [P] Update tailwind.config.ts with M3 color palette and typography scale
+- [ ] T004d [P] Create M3 type scale CSS classes in src/styles/typography.css
+
+### Tests (TDD - write first, ensure FAIL)
+
+- [ ] T004e [P] Write failing test for M3Card component in src/components/ui/M3Card.test.tsx
+- [ ] T004f [P] Write failing test for M3Chip component in src/components/ui/M3Chip.test.tsx
+- [ ] T004g [P] Write failing test for useCardExpansion hook in src/hooks/useCardExpansion.test.ts
+
+### Base Components
+
+- [ ] T004h [P] Create M3Card base component with elevation variants in src/components/ui/M3Card.tsx
+- [ ] T004i [P] Create M3Chip component for filters in src/components/ui/M3Chip.tsx
+- [ ] T004j [P] Create M3SearchBar component in src/components/ui/M3SearchBar.tsx
+- [ ] T004k Create useCardExpansion hook for accordion behavior in src/hooks/useCardExpansion.ts
+
+**Checkpoint**: M3 design system ready - all UI components will use M3 tokens and patterns
+
+---
+
 ## Phase 2: Foundational (Blocking Prerequisites)
 
 **Purpose**: Core API and data fetching infrastructure that ALL user stories depend on
@@ -74,12 +109,12 @@
 
 ### Implementation
 
-- [ ] T018 [P] [US1] Create ResultCard component displaying race summary in src/components/ResultCard.tsx
+- [ ] T018 [P] [US1] Create ResultCard component (extends M3Card) displaying race summary in src/components/ResultCard.tsx
 - [ ] T019 [P] [US1] Create DividendDisplay component for payout info in src/components/DividendDisplay.tsx
 - [ ] T020 [US1] Create ResultsList component with pagination in src/components/ResultsList.tsx
 - [ ] T021 [US1] Create Pagination component in src/components/Pagination.tsx
 - [ ] T022 [US1] Implement results page with data fetching in src/app/results/page.tsx
-- [ ] T023 [US1] Add loading skeleton for results page in src/components/Skeletons.tsx
+- [ ] T023 [US1] Add loading skeleton for results page (M3 skeleton pattern) in src/components/Skeletons.tsx
 - [ ] T024 [US1] Create results page object for E2E tests in e2e/pages/results.page.ts
 
 **Checkpoint**: User Story 1 complete - users can browse recent results with pagination
@@ -102,7 +137,7 @@
 ### Implementation
 
 - [ ] T029 [P] [US2] Create DateRangeFilter component with date picker in src/components/DateRangeFilter.tsx
-- [ ] T030 [P] [US2] Create RaceTypeFilter component with multi-select in src/components/RaceTypeFilter.tsx
+- [ ] T030 [P] [US2] Create RaceTypeFilter component (uses M3Chip) with multi-select in src/components/RaceTypeFilter.tsx
 - [ ] T031 [US2] Create ResultFilters container component in src/components/ResultFilters.tsx
 - [ ] T032 [US2] Integrate filters with URL state (searchParams) in src/app/results/page.tsx
 - [ ] T033 [US2] Add filter clear functionality in src/components/ResultFilters.tsx
@@ -146,7 +181,7 @@
 
 ### Implementation
 
-- [ ] T042 [US4] Create ResultSearch component with debounced input in src/components/ResultSearch.tsx
+- [ ] T042 [US4] Create ResultSearch component (uses M3SearchBar) with debounced input in src/components/ResultSearch.tsx
 - [ ] T043 [US4] Add search highlighting to ResultCard component in src/components/ResultCard.tsx
 - [ ] T044 [US4] Integrate search with URL state in src/app/results/page.tsx
 - [ ] T045 [US4] Create NoResults component with suggestions in src/components/NoResults.tsx
@@ -169,7 +204,7 @@
 ### Implementation
 
 - [ ] T048 [US5] Create ResultDetail component with full finisher list in src/components/ResultDetail.tsx
-- [ ] T049 [US5] Add expand/collapse functionality to ResultCard in src/components/ResultCard.tsx
+- [ ] T049 [US5] Add expand/collapse functionality (uses useCardExpansion hook) to ResultCard in src/components/ResultCard.tsx
 - [ ] T050 [US5] Display complete dividend breakdown in ResultDetail in src/components/ResultDetail.tsx
 
 **Checkpoint**: User Story 5 complete - users can view complete race details
@@ -196,10 +231,12 @@
 ### Phase Dependencies
 
 - **Setup (Phase 1)**: No dependencies - can start immediately
-- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
-- **User Stories (Phase 3-7)**: All depend on Foundational phase completion
+- **M3 Design System (Phase 1.5)**: Depends on Setup - BLOCKS all UI components
+- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories (API side)
+- **User Stories (Phase 3-7)**: Depend on BOTH Phase 1.5 (M3) and Phase 2 (API) completion
   - US1 (Browse) → US2 (Date/Type Filter) → US3 (Track Filter) → US4 (Search) → US5 (Detail)
   - Each story builds on previous but remains independently testable
+  - All UI components MUST use M3 base components (M3Card, M3Chip, M3SearchBar)
 - **Polish (Phase 8)**: Depends on all user stories being complete
 
 ### User Story Dependencies
