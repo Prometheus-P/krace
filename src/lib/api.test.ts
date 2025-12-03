@@ -325,7 +325,7 @@ describe('Historical Results API - real endpoints (mocked)', () => {
               }
             }
           })
-        }) as Response;
+        }) as unknown as Response;
       }
 
       if (href.includes('SRVC_TODZ_CRA_RACE_RESULT')) {
@@ -351,7 +351,7 @@ describe('Historical Results API - real endpoints (mocked)', () => {
               }
             }
           })
-        }) as Response;
+        }) as unknown as Response;
       }
 
       if (href.includes('SRVC_OD_API_MBR_RACE_RESULT')) {
@@ -377,13 +377,13 @@ describe('Historical Results API - real endpoints (mocked)', () => {
               }
             }
           })
-        }) as Response;
+        }) as unknown as Response;
       }
 
       return Promise.resolve({
         ok: false,
         json: () => Promise.resolve({})
-      }) as Response;
+      }) as unknown as Response;
     });
   });
 
@@ -450,7 +450,7 @@ describe('Auxiliary external APIs', () => {
             },
           },
         }),
-      }) as Response;
+      }) as unknown as Response;
 
       if (href.includes('API187')) return makeResponse([{ rcNo: 1, hrName: '말1' }]);
       if (href.includes('API156')) return makeResponse([{ meet: '서울', rcNo: 2 }]);
@@ -509,7 +509,7 @@ describe('Auxiliary external APIs', () => {
       }]);
       if (href.includes('SRVC_OD_API_CRA_INOUT')) return makeResponse([{ stnd_yr: '2024', week_tcnt: 1, day_tcnt: 1, cycle_keep_cnt: 10, cycle_out_cnt: 2, row_num: '1' }]);
 
-      return Promise.resolve({ ok: false, json: () => Promise.resolve({}) }) as Response;
+      return Promise.resolve({ ok: false, json: () => Promise.resolve({}) }) as unknown as Response;
     });
   });
 

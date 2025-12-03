@@ -10,12 +10,9 @@ describe('HorseEntryTable', () => {
     type: 'horse',
     raceNo: 3,
     track: '서울',
-    date: '20240101',
     startTime: '14:00',
     status: 'upcoming',
     entries,
-    results: [],
-    dividends: [],
   });
 
   it('renders a table when entries exist', () => {
