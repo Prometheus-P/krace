@@ -9,6 +9,9 @@ interface HorseEntryTableProps {
 
 export default function HorseEntryTable({ race, entries }: HorseEntryTableProps) {
   const renderedEntries = entries?.length ? entries : race.entries || [];
+  // Extract date from race ID (format: type-meet-raceNo-date)
+  const idParts = race.id.split('-');
+  const raceDate = idParts[idParts.length - 1] || '';
 
   return (
     <section
@@ -23,7 +26,7 @@ export default function HorseEntryTable({ race, entries }: HorseEntryTableProps)
           </p>
         </div>
         <div className="text-right text-sm text-gray-600">
-          <p>{race.date}</p>
+          <p>{raceDate}</p>
           <p className="text-xs">상태: {race.status}</p>
         </div>
       </header>

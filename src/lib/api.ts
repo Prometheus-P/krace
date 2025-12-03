@@ -1,5 +1,5 @@
 // src/lib/api.ts
-import { Race, Entry, HistoricalRace, ResultsSearchParams, PaginatedResults, RaceType } from '@/types';
+import { Race, Entry, HistoricalRace, ResultsSearchParams, PaginatedResults, RaceType, Dividend } from '@/types';
 import {
   mapKRA299ToRaces,
   mapKRAHorseEntryRegistration,
@@ -30,6 +30,7 @@ import {
   KSPOCyclePartItem,
   KSPOCycleInspectItem,
   KSPOCycleInOutItem,
+  KSPOBoatRaceRankItem,
 } from './api-helpers/mappers';
 import { getDummyHorseRaces, getDummyCycleRaces, getDummyBoatRaces, getDummyHistoricalResults, getDummyHistoricalRaceById } from './api-helpers/dummy';
 
@@ -376,10 +377,10 @@ function mapPayoffs(items: unknown[]): Dividend[] {
     const obj = item as Record<string, unknown>;
     const amount = parseNumber(obj.payoff ?? obj.amount ?? obj.dividend) || 0;
     const type = (obj.betType || obj.bettyp || obj.type || 'win') as Dividend['type'];
-    const entriesRaw = (obj.entries || obj.combination || obj.no || obj.noList || '') as string;
+    const entriesRaw = obj.entries || obj.combination || obj.no || obj.noList || '';
     const entries = typeof entriesRaw === 'string'
       ? entriesRaw.split(/[^0-9]/).filter(Boolean).map(n => parseInt(n, 10))
-      : Array.isArray(entriesRaw) ? entriesRaw.map(e => parseNumber(e) || 0) : [];
+      : Array.isArray(entriesRaw) ? (entriesRaw as unknown[]).map(e => parseNumber(e) || 0) : [];
 
     return {
       type: type === 'place' || type === 'quinella' ? type : 'win',
@@ -568,7 +569,7 @@ export const fetchBoatRaceRankings = async (rcDate: string) => {
     'KSPO Boat Race Rank',
     'KSPO_API_KEY'
   );
-  return mapKSPOBoatRaceRankings(items as any);
+  return mapKSPOBoatRaceRankings(items as KSPOBoatRaceRankItem[]);
 };
 
 export const fetchCycleRaceRankings = (rcDate: string) =>

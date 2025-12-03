@@ -1,4 +1,5 @@
 // src/lib/api-helpers/mappers.test.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   mapOddsResponse,
   mapKRAHorseRaceToRace,

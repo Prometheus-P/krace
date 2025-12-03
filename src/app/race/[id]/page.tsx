@@ -84,8 +84,12 @@ export default async function RaceDetailPage({ params }: Props) {
     return <RaceNotFound />;
   }
 
+  // Extract date from race ID (format: type-meet-raceNo-date)
+  const idParts = race.id.split('-');
+  const raceDate = idParts[idParts.length - 1] || '';
+
   const horseEntryDetails = race.type === 'horse'
-    ? await fetchHorseEntryDetail(race.date)
+    ? await fetchHorseEntryDetail(raceDate)
     : [];
   const detailedEntries: Entry[] = horseEntryDetails.map(detail => ({
     no: detail.entryNo,

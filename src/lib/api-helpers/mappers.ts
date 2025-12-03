@@ -1128,7 +1128,7 @@ export function mapKRAHorseEntryRegistration(items: KRAHorseEntryItem[]): Race[]
         type: 'horse',
         raceNo,
         track: item.meet || '서울',
-        startTime: item.cndStrtPargTim || '',
+        startTime: '',
         distance: item.rcDist ? parseInt(item.rcDist, 10) : undefined,
         grade: item.rank,
         status: 'upcoming',
