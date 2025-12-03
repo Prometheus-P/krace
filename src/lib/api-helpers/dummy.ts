@@ -40,6 +40,20 @@ export function getDummyBoatRaces(rcDate: string = '20240115'): KSPORaceItem[] {
 
 import { HistoricalRace, Dividend, HistoricalRaceResult, RaceType } from '@/types';
 
+function createSeededRandom(seed: string): () => number {
+  let h = 1779033703 ^ seed.length;
+  for (let i = 0; i < seed.length; i++) {
+    h = Math.imul(h ^ seed.charCodeAt(i), 3432918353);
+    h = (h << 13) | (h >>> 19);
+  }
+  return () => {
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    h ^= h >>> 16;
+    return (h >>> 0) / 4294967296;
+  };
+}
+
 /**
  * Generate dummy historical race results for development/testing
  */
@@ -73,8 +87,9 @@ export function getDummyHistoricalResults(
       const filteredTracks = track ? tracks.filter(t => t === track) : tracks;
 
       for (const trackName of filteredTracks) {
+        const trackRand = createSeededRandom(`${type}-${trackName}-${dateStr}`);
         // Generate 2-3 races per track per day
-        const raceCount = 2 + Math.floor(Math.random() * 2);
+        const raceCount = 2 + Math.floor(trackRand() * 2);
         for (let raceNo = 1; raceNo <= raceCount; raceNo++) {
           results.push(generateDummyHistoricalRace(type, trackName, dateStr, raceNo));
         }
@@ -114,9 +129,10 @@ function generateDummyHistoricalRace(
 ): HistoricalRace {
   const trackCode = getTrackCode(type, track);
   const id = `${type}-${trackCode}-${raceNo}-${date}`;
+  const rand = createSeededRandom(id);
 
   // Generate results (4-8 finishers)
-  const finisherCount = 4 + Math.floor(Math.random() * 5);
+  const finisherCount = 4 + Math.floor(rand() * 5);
   const results: HistoricalRaceResult[] = [];
 
   const horseNames = ['번개', '태풍', '질풍', '천둥', '우박', '폭풍', '돌풍', '회오리'];
@@ -125,8 +141,8 @@ function generateDummyHistoricalRace(
   const cycleNames = ['이선수', '박선수', '김선수', '최선수', '정선수', '한선수', '유선수', '조선수'];
 
   for (let rank = 1; rank <= finisherCount; rank++) {
-    const baseTime = 80 + Math.random() * 20; // 80-100 seconds base time
-    const timeDiff = rank === 1 ? undefined : (Math.random() * 3).toFixed(1);
+    const baseTime = 80 + rand() * 20; // 80-100 seconds base time
+    const timeDiff = rank === 1 ? undefined : (rand() * 3).toFixed(1);
 
     if (type === 'horse') {
       results.push({
@@ -151,19 +167,21 @@ function generateDummyHistoricalRace(
 
   // Generate dividends
   const dividends: Dividend[] = [
-    { type: 'win', entries: [results[0].entryNo], amount: 2000 + Math.floor(Math.random() * 8000) },
-    { type: 'place', entries: [results[0].entryNo], amount: 1000 + Math.floor(Math.random() * 3000) },
-    { type: 'place', entries: [results[1].entryNo], amount: 1000 + Math.floor(Math.random() * 4000) },
-    { type: 'quinella', entries: [results[0].entryNo, results[1].entryNo], amount: 5000 + Math.floor(Math.random() * 15000) },
+    { type: 'win', entries: [results[0].entryNo], amount: 2000 + Math.floor(rand() * 8000) },
+    { type: 'place', entries: [results[0].entryNo], amount: 1000 + Math.floor(rand() * 3000) },
+    { type: 'place', entries: [results[1].entryNo], amount: 1000 + Math.floor(rand() * 4000) },
+    { type: 'quinella', entries: [results[0].entryNo, results[1].entryNo], amount: 5000 + Math.floor(rand() * 15000) },
   ];
 
   // Add third place for larger fields
   if (finisherCount > 5) {
-    dividends.push({ type: 'place', entries: [results[2].entryNo], amount: 1500 + Math.floor(Math.random() * 5000) });
+    dividends.push({ type: 'place', entries: [results[2].entryNo], amount: 1500 + Math.floor(rand() * 5000) });
   }
 
-  const hours = 10 + Math.floor(Math.random() * 8); // 10:00 - 17:00
-  const minutes = Math.floor(Math.random() * 4) * 15; // 0, 15, 30, 45
+  const hours = 10 + Math.floor(rand() * 8); // 10:00 - 17:00
+  const minutes = Math.floor(rand() * 4) * 15; // 0, 15, 30, 45
+  const horseDistanceBase = 1200 + Math.floor(rand() * 4) * 200;
+  const cycleDistanceBase = 1000 + Math.floor(rand() * 3) * 200;
 
   return {
     id,
@@ -172,8 +190,8 @@ function generateDummyHistoricalRace(
     track,
     date,
     startTime: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`,
-    distance: type === 'horse' ? 1200 + Math.floor(Math.random() * 4) * 200 : type === 'cycle' ? 1000 + Math.floor(Math.random() * 3) * 200 : undefined,
-    grade: type === 'horse' ? `국산${3 + Math.floor(Math.random() * 3)}등급` : undefined,
+    distance: type === 'horse' ? horseDistanceBase : type === 'cycle' ? cycleDistanceBase : undefined,
+    grade: type === 'horse' ? `국산${3 + Math.floor(rand() * 3)}등급` : undefined,
     status: 'finished',
     results,
     dividends,
