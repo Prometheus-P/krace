@@ -47,23 +47,23 @@
 
 ### Infrastructure
 
-- [ ] T004a [P] Install Pretendard font and configure in src/app/layout.tsx
-- [ ] T004b [P] Create M3 design tokens file in src/styles/tokens.ts (colors, spacing, elevation)
-- [ ] T004c [P] Update tailwind.config.ts with M3 color palette and typography scale
-- [ ] T004d [P] Create M3 type scale CSS classes in src/styles/typography.css
+- [x] T004a [P] Install Pretendard font and configure in src/app/layout.tsx
+- [x] T004b [P] Create M3 design tokens file in src/styles/tokens.ts (colors, spacing, elevation)
+- [x] T004c [P] Update tailwind.config.ts with M3 color palette and typography scale
+- [x] T004d [P] Create M3 type scale CSS classes in src/styles/typography.css
 
 ### Tests (TDD - write first, ensure FAIL)
 
-- [ ] T004e [P] Write failing test for M3Card component in src/components/ui/M3Card.test.tsx
-- [ ] T004f [P] Write failing test for M3Chip component in src/components/ui/M3Chip.test.tsx
-- [ ] T004g [P] Write failing test for useCardExpansion hook in src/hooks/useCardExpansion.test.ts
+- [x] T004e [P] Write failing test for M3Card component in src/components/ui/M3Card.test.tsx
+- [x] T004f [P] Write failing test for M3Chip component in src/components/ui/M3Chip.test.tsx
+- [x] T004g [P] Write failing test for useCardExpansion hook in src/hooks/useCardExpansion.test.ts
 
 ### Base Components
 
-- [ ] T004h [P] Create M3Card base component with elevation variants in src/components/ui/M3Card.tsx
-- [ ] T004i [P] Create M3Chip component for filters in src/components/ui/M3Chip.tsx
-- [ ] T004j [P] Create M3SearchBar component in src/components/ui/M3SearchBar.tsx
-- [ ] T004k Create useCardExpansion hook for accordion behavior in src/hooks/useCardExpansion.ts
+- [x] T004h [P] Create M3Card base component with elevation variants in src/components/ui/M3Card.tsx
+- [x] T004i [P] Create M3Chip component for filters in src/components/ui/M3Chip.tsx
+- [x] T004j [P] Create M3SearchBar component in src/components/ui/M3SearchBar.tsx
+- [x] T004k Create useCardExpansion hook for accordion behavior in src/hooks/useCardExpansion.ts
 
 **Checkpoint**: M3 design system ready - all UI components will use M3 tokens and patterns
 

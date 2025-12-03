@@ -8,6 +8,28 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // M3 Font Family
+      fontFamily: {
+        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+      },
+      // M3 Typography Scale
+      fontSize: {
+        'display-large': ['57px', { lineHeight: '64px', letterSpacing: '-0.25px' }],
+        'display-medium': ['45px', { lineHeight: '52px', letterSpacing: '0px' }],
+        'display-small': ['36px', { lineHeight: '44px', letterSpacing: '0px' }],
+        'headline-large': ['32px', { lineHeight: '40px', letterSpacing: '0px' }],
+        'headline-medium': ['28px', { lineHeight: '36px', letterSpacing: '0px' }],
+        'headline-small': ['24px', { lineHeight: '32px', letterSpacing: '0px' }],
+        'title-large': ['22px', { lineHeight: '28px', letterSpacing: '0px' }],
+        'title-medium': ['16px', { lineHeight: '24px', letterSpacing: '0.15px' }],
+        'title-small': ['14px', { lineHeight: '20px', letterSpacing: '0.1px' }],
+        'body-large': ['16px', { lineHeight: '24px', letterSpacing: '0.5px' }],
+        'body-medium': ['14px', { lineHeight: '20px', letterSpacing: '0.25px' }],
+        'body-small': ['12px', { lineHeight: '16px', letterSpacing: '0.4px' }],
+        'label-large': ['14px', { lineHeight: '20px', letterSpacing: '0.1px' }],
+        'label-medium': ['12px', { lineHeight: '16px', letterSpacing: '0.5px' }],
+        'label-small': ['11px', { lineHeight: '16px', letterSpacing: '0.5px' }],
+      },
       colors: {
         // 브랜드 컬러 - 신뢰감 있는 네이비 계열
         primary: {
@@ -26,21 +48,46 @@ const config: Config = {
         secondary: '#7c3aed',
         accent: '#f59e0b',
 
-        // 경주 타입별 컬러
+        // M3 Surface Colors
+        surface: {
+          DEFAULT: '#ffffff',
+          dim: '#f8fafc',
+          bright: '#ffffff',
+          container: '#f1f5f9',
+          'container-low': '#f8fafc',
+          'container-high': '#e2e8f0',
+          'container-highest': '#cbd5e1',
+        },
+        'on-surface': {
+          DEFAULT: '#1e293b',
+          variant: '#475569',
+        },
+        outline: {
+          DEFAULT: '#94a3b8',
+          variant: '#cbd5e1',
+        },
+
+        // 경주 타입별 컬러 (M3 Semantic Accent)
         horse: {
           DEFAULT: '#2d5a27',
           light: '#dcfce7',
           dark: '#166534',
+          container: '#dcfce7',
+          'on-container': '#166534',
         },
         cycle: {
           DEFAULT: '#dc2626',
           light: '#fee2e2',
           dark: '#b91c1c',
+          container: '#fee2e2',
+          'on-container': '#b91c1c',
         },
         boat: {
           DEFAULT: '#0369a1',
           light: '#e0f2fe',
           dark: '#075985',
+          container: '#e0f2fe',
+          'on-container': '#075985',
         },
 
         // 상태 컬러
@@ -66,6 +113,41 @@ const config: Config = {
             border: '#ef4444',
           },
         },
+
+        // M3 Error Colors
+        error: {
+          DEFAULT: '#dc2626',
+          container: '#fee2e2',
+          'on-container': '#991b1b',
+        },
+      },
+      // M3 Elevation (Box Shadow)
+      boxShadow: {
+        'm3-1': '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        'm3-2': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        'm3-3': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+        'm3-4': '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+        'm3-5': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+      },
+      // M3 Border Radius
+      borderRadius: {
+        'm3-xs': '4px',
+        'm3-sm': '8px',
+        'm3-md': '12px',
+        'm3-lg': '16px',
+        'm3-xl': '28px',
+      },
+      // M3 Transition
+      transitionTimingFunction: {
+        'm3-standard': 'cubic-bezier(0.2, 0, 0, 1)',
+        'm3-emphasized': 'cubic-bezier(0.2, 0, 0, 1)',
+        'm3-emphasized-decelerate': 'cubic-bezier(0.05, 0.7, 0.1, 1)',
+        'm3-emphasized-accelerate': 'cubic-bezier(0.3, 0, 0.8, 0.15)',
+      },
+      transitionDuration: {
+        'm3-short': '150ms',
+        'm3-medium': '300ms',
+        'm3-long': '500ms',
       },
     },
   },
