@@ -110,3 +110,55 @@ export interface Track {
   name: string;
   raceType: RaceType;
 }
+
+// Racer information (경정/경륜 선수)
+export interface Racer {
+  id: string;            // 선수 번호
+  name: string;          // 선수명
+  grade?: string;        // 등급 코드
+  totalStarts?: number;  // 출주 수
+  avgRank?: number | null;
+  winRate?: number | null;
+  topRate?: number | null;   // 입상률
+  top3Rate?: number | null;  // 3위 내 입상률
+  avgStartTime?: number | null;
+  accidentScore?: number | null;
+}
+
+// Boat operation/support info
+export interface BoatPartMaster {
+  codeName: string;      // parts_item_cd_nm
+  spec: string;          // supp_spec_nm
+}
+
+export interface BoatSupplierInfo {
+  name: string;          // supp_nm
+  spec: string;          // supp_spec_nm
+}
+
+export interface BoatEquipmentReport {
+  year: string;          // stnd_yr
+  reprDate: string;      // repr_ymd
+  equipmentType: string; // equip_tpe_nm
+  description: string;   // repr_desc_cn
+  mainParts: string;     // mjr_parts_nm
+}
+
+export interface BoatRacerTilt {
+  raceNo: number;
+  tilt: string;
+  jacketWeight: string;
+  boatWeight: string;
+  bodyWeight: number;
+  week: number;
+  day: number;
+  racerNo: string;
+}
+
+export interface BoatRacerCondition {
+  year: string;
+  week: number;
+  racerNo: string;
+  health: string;
+  training: string;
+}
