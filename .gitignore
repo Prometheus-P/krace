@@ -62,14 +62,36 @@ coverage/
 /screenshots/
 
 # Misc
-*.pem
 .cache/
 .turbo/
-*.local
 
-# AI Assistant Config (local only)
+# Security - Certificates & Keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Security - Credentials
+*.local
+*credentials*.json
+*secrets*.json
+*service-account*.json
+.secrets/
+secrets/
+
+# Security - SSH
+id_rsa*
+id_ed25519*
+*.ppk
+
+# AI Assistant - Local Settings (user-specific, contains permissions)
+.claude/settings.local.json
 claude_desktop_config.json
-plan.md
+
+# Note: .claude/commands/ is TRACKED (shared speckit commands)
+# Note: .specify/ is TRACKED (shared templates and scripts)
 
 # Storybook (if added later)
 storybook-static/
