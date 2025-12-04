@@ -1,0 +1,63 @@
+/**
+ * M3 Animation Keyframes
+ * Feature: 002-design-system
+ *
+ * Contains all animation keyframes for the design system.
+ * Animations respect prefers-reduced-motion.
+ */
+
+/* =============================================================================
+   RIPPLE EFFECT
+   ============================================================================= */
+
+@keyframes ripple {
+  from {
+    transform: scale(0);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* =============================================================================
+   SKELETON SHIMMER
+   ============================================================================= */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* =============================================================================
+   LOGO HOVER
+   ============================================================================= */
+
+@keyframes logo-hover {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.02);
+  }
+}
+
+/* =============================================================================
+   REDUCED MOTION
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

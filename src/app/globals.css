@@ -110,3 +110,46 @@ body {
   @apply animate-spin h-5 w-5 border-2 border-gray-300 rounded-full;
   border-top-color: #1a56db;
 }
+
+/* =============================================================================
+   REDUCED MOTION SUPPORT
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =============================================================================
+   M3 STATE LAYERS
+   ============================================================================= */
+
+/* Hover state layer (8% opacity) */
+.state-layer-hover:hover {
+  background-color: rgb(0 0 0 / 0.08);
+}
+
+/* Focus state layer (12% opacity) */
+.state-layer-focus:focus {
+  background-color: rgb(0 0 0 / 0.12);
+}
+
+/* Pressed state layer (12% opacity) */
+.state-layer-pressed:active {
+  background-color: rgb(0 0 0 / 0.12);
+}
+
+/* =============================================================================
+   FOCUS RING
+   ============================================================================= */
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--theme-color, #1d4ed8);
+  outline-offset: 2px;
+}

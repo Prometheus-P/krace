@@ -3,11 +3,35 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Header from './Header';
 
+// Mock window.matchMedia
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
+
 // Mock next/navigation
 const mockSearchParams = new URLSearchParams();
+const mockPush = jest.fn();
 jest.mock('next/navigation', () => ({
   useSearchParams: () => mockSearchParams,
   usePathname: () => '/',
+  useRouter: () => ({
+    push: mockPush,
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+    refresh: jest.fn(),
+  }),
 }));
 
 // Helper to set active tab
@@ -28,10 +52,10 @@ describe('Header Component', () => {
       render(<Header />);
     });
 
-    it('should_render_project_title_with_link_to_home', () => {
-      const titleLink = screen.getByRole('link', { name: /KRace 홈으로 이동/i });
-      expect(titleLink).toBeInTheDocument();
-      expect(titleLink).toHaveAttribute('href', '/');
+    it('should_render_project_logo_with_navigation_to_home', () => {
+      const logo = screen.getByTestId('racelab-logo');
+      expect(logo).toBeInTheDocument();
+      expect(logo).toHaveAttribute('aria-label', 'RaceLab 홈으로 이동');
     });
 
     it('should_render_navigation_links_with_correct_hrefs', () => {
@@ -74,8 +98,8 @@ describe('Header Component', () => {
     });
 
     it('should_have_aria_label_on_logo', () => {
-      const logo = screen.getByRole('link', { name: /KRace 홈으로 이동/i });
-      expect(logo).toHaveAttribute('aria-label', 'KRace 홈으로 이동');
+      const logo = screen.getByTestId('racelab-logo');
+      expect(logo).toHaveAttribute('aria-label', 'RaceLab 홈으로 이동');
     });
   });
 

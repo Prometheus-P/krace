@@ -127,6 +127,34 @@ describe('ResultCard', () => {
     expect(card).toHaveClass('min-h-[48px]');
   });
 
+  // T043: Visual hierarchy tests
+  describe('visual hierarchy', () => {
+    it('uses M3 typography for track name (title-medium)', () => {
+      render(<ResultCard race={mockRace} />);
+      const trackElement = screen.getByText(/서울.*1경주/);
+      expect(trackElement).toHaveClass('text-title-medium');
+    });
+
+    it('uses M3 typography for date (body-small)', () => {
+      render(<ResultCard race={mockRace} />);
+      const dateElement = screen.getByText(/2023-12-01/);
+      expect(dateElement).toHaveClass('text-body-small');
+    });
+
+    it('uses M3 typography for finisher names (body-medium)', () => {
+      render(<ResultCard race={mockRace} />);
+      const firstPlace = screen.getByTestId('rank-1');
+      const nameSpan = firstPlace.querySelector('.text-body-medium');
+      expect(nameSpan).toBeInTheDocument();
+    });
+
+    it('applies prominent styling to first place', () => {
+      render(<ResultCard race={mockRace} />);
+      const firstRankBadge = screen.getByText('1').closest('span');
+      expect(firstRankBadge).toHaveClass('bg-amber-100');
+    });
+  });
+
   // T054c: Missing data scenarios
   describe('missing data handling', () => {
     it('displays fallback text when finisher name is null', () => {

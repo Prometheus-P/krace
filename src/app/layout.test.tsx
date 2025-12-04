@@ -3,10 +3,33 @@ import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import RootLayout from './layout';
 
-// Mock next/navigation for Header component (useSearchParams)
+// Mock window.matchMedia for useReducedMotion hook
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
+
+// Mock next/navigation for Header component (useSearchParams, usePathname, useRouter)
 jest.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
   usePathname: () => '/',
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+    refresh: jest.fn(),
+  }),
 }));
 
 // Mock the Vercel Analytics component
@@ -55,9 +78,9 @@ describe('RootLayout', () => {
       </RootLayout>
     );
 
-    // Check for Header content
+    // Check for Header content - RaceLabLogo component is rendered
     const header = screen.getByRole('banner');
-    expect(within(header).getByText(/KRace/i)).toBeInTheDocument();
+    expect(within(header).getByTestId('racelab-logo')).toBeInTheDocument();
 
     // Check for Footer content
     expect(screen.getByText(/본 서비스는 정보 제공 목적입니다/i)).toBeInTheDocument();
