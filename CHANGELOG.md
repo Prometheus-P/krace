@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-12-04
+
+### Added
+- Boat race results API endpoint (`fetchBoatRaceResults`) for complete race type coverage
+- User-Friendly Design System (002-design-system) with M3 components
+  - RaceLabLogo component with variants (full, symbol, text) and hover animation
+  - M3Button (5 variants: filled, outlined, text, elevated, tonal)
+  - M3Dialog and M3Snackbar components
+  - Skeleton component with shimmer animation
+  - useReducedMotion and useRipple hooks
+- API Integration Patterns documented (loading, error, empty states)
+- Comprehensive quality checklists (UX Visual: 61 items, UX API: 53 items)
+
+### Changed
+- Updated branding from KRace to RaceLab with new logo
+- Enhanced M3Card with 3 variants (elevated, filled, outlined)
+- Improved touch accessibility (48x48dp minimum targets)
+- Added reduced motion support via `prefers-reduced-motion`
+
+### Documentation
+- Complete design system quickstart guide with usage examples
+- API_README_v2.md with consolidated API documentation
+- 15+ documented M3 components per SC-007
+
+### Tests
+- 605 tests passing across 45 test suites
+- Full E2E coverage for responsive layouts
+
 ## [1.2.1] - 2025-12-02
 
 ### Fixed
@@ -52,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Playwright for E2E tests
 - Vercel deployment with preview environments
 
+[1.3.0]: https://github.com/Prometheus-P/racelab/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/Prometheus-P/racelab/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/Prometheus-P/racelab/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Prometheus-P/racelab/releases/tag/v1.1.0
