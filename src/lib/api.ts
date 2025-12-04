@@ -34,7 +34,6 @@ import {
   KSPOCycleInOutItem,
   KSPOBoatRaceRankItem,
 } from './api-helpers/mappers';
-import { getDummyHorseRaces, getDummyCycleRaces, getDummyBoatRaces, getDummyHistoricalResults, getDummyHistoricalRaceById } from './api-helpers/dummy';
 
 
 const KRA_BASE_URL = 'https://apis.data.go.kr/B551015';
@@ -43,20 +42,19 @@ type HistoricalResultItem = Record<string, unknown>;
 
 
 // Generic API fetch function with flexible date parameter
-async function fetchApi<T>(
+async function fetchApi(
   baseUrl: string,
   endpoint: string,
   apiKey: string | undefined,
   params: Record<string, string>,
-  getDummyData: (rcDate: string) => T[],
   rcDate: string,
   apiName: string,
   envVarName: string,
   dateParamName: string = 'rc_date',
 ): Promise<unknown[]> {
   if (!apiKey) {
-    console.warn(`[${apiName}] ${envVarName} is not set. Returning dummy data.`);
-    return getDummyData(rcDate);
+    console.warn(`[${apiName}] ${envVarName} is not set. Returning empty array.`);
+    return [];
   }
 
   const url = new URL(`${baseUrl}${endpoint}`);
@@ -81,24 +79,17 @@ async function fetchApi<T>(
     });
 
     if (!response.ok) {
-      console.error(`${apiName} API Error: ${response.status}. Falling back to dummy data.`);
-      return getDummyData(rcDate);
+      console.error(`${apiName} API Error: ${response.status}`);
+      return [];
     }
 
     const data = await response.json();
     const items = data.response?.body?.items?.item || [];
 
-    // If API returns empty data, fallback to dummy data for better UX
-    if (items.length === 0) {
-      console.warn(`${apiName} API returned empty data. Returning dummy data.`);
-      return getDummyData(rcDate);
-    }
-
     return items;
   } catch (error) {
     console.error(`${apiName} API fetch failed:`, error);
-    console.warn(`Falling back to dummy data for ${apiName}.`);
-    return getDummyData(rcDate);
+    return [];
   }
 }
 
@@ -112,7 +103,6 @@ export async function fetchHorseRaceSchedules(rcDate: string): Promise<Race[]> {
     '/API299/Race_Result_total',
     KRA_API_KEY,
     {},
-    getDummyHorseRaces,
     rcDate,
     'KRA API299',
     'KRA_API_KEY'
@@ -132,7 +122,6 @@ export async function fetchCycleRaceSchedules(rcDate: string): Promise<Race[]> {
     '/SRVC_OD_API_CRA_RACE_ORGAN/TODZ_API_CRA_RACE_ORGAN_I',
     KSPO_API_KEY,
     { resultType: 'json' },
-    getDummyCycleRaces,
     rcDate,
     'KSPO Cycle',
     'KSPO_API_KEY'
@@ -152,7 +141,6 @@ export async function fetchBoatRaceSchedules(rcDate: string): Promise<Race[]> {
     '/SRVC_OD_API_VWEB_MBR_RACE_INFO/TODZ_API_VWEB_MBR_RACE_I',
     KSPO_API_KEY,
     { resultType: 'json' },
-    getDummyBoatRaces,
     rcDate,
     'KSPO Boat',
     'KSPO_API_KEY'
@@ -411,7 +399,7 @@ export async function fetchHistoricalResults(
   // Default to today if no dates provided
   const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const fromDate = dateFrom || today;
-  const toDate = dateTo || today;
+  const _toDate = dateTo || today; // Reserved for future date range API support
   const requestedTypes: RaceType[] = types && types.length > 0 ? types : ['horse', 'cycle', 'boat'];
 
   const resultBuckets: HistoricalRace[][] = [];
@@ -451,11 +439,6 @@ export async function fetchHistoricalResults(
   }
 
   let results = resultBuckets.flat();
-
-  // Fallback to dummy data when nothing returned
-  if (results.length === 0) {
-    results = getDummyHistoricalResults(fromDate, toDate, requestedTypes, track);
-  }
 
   if (track) {
     results = results.filter(race => race.track === track);
@@ -501,7 +484,7 @@ export async function fetchHistoricalResultById(id: string): Promise<HistoricalR
     limit: 50,
   });
 
-  return results.items.find(item => item.id === id) || getDummyHistoricalRaceById(id);
+  return results.items.find(item => item.id === id) || null;
 }
 
 // ============================================

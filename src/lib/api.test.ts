@@ -158,18 +158,14 @@ describe('API Client', () => {
     expect(entry).toHaveProperty('age');
   });
 
-  it('should return dummy horse race data when KRA_API_KEY is not set', async () => {
+  it('should return empty array when KRA_API_KEY is not set', async () => {
     delete process.env.KRA_API_KEY; // Ensure API key is not set
 
     const schedules = await fetchHorseRaceSchedules('20240115');
 
     expect(global.fetch).not.toHaveBeenCalled(); // fetch should not be called
     expect(schedules).toBeInstanceOf(Array);
-    expect(schedules.length).toBeGreaterThan(0);
-    expect(schedules[0]).toHaveProperty('id');
-    expect(schedules[0]).toHaveProperty('type', 'horse');
-    expect(schedules[0]).toHaveProperty('track');
-    expect(schedules[0]).toHaveProperty('startTime');
+    expect(schedules.length).toBe(0);
   });
 
   it('should fetch cycle race schedules from KSPO API when API key is set and include entry details', async () => {
@@ -200,18 +196,14 @@ describe('API Client', () => {
     expect(entry).toHaveProperty('recentRecord');
   });
 
-  it('should return dummy cycle race data when KSPO_API_KEY is not set', async () => {
+  it('should return empty array when KSPO_API_KEY is not set for cycle', async () => {
     delete process.env.KSPO_API_KEY; // Ensure API key is not set
 
     const schedules = await fetchCycleRaceSchedules('20240115');
 
     expect(global.fetch).not.toHaveBeenCalled(); // fetch should not be called
     expect(schedules).toBeInstanceOf(Array);
-    expect(schedules.length).toBeGreaterThan(0);
-    expect(schedules[0]).toHaveProperty('id');
-    expect(schedules[0]).toHaveProperty('type', 'cycle');
-    expect(schedules[0]).toHaveProperty('track');
-    expect(schedules[0]).toHaveProperty('startTime');
+    expect(schedules.length).toBe(0);
   });
 
   it('should fetch boat race schedules from KSPO API when API key is set and include entry details', async () => {
@@ -242,18 +234,14 @@ describe('API Client', () => {
     expect(entry).toHaveProperty('recentRecord');
   });
 
-  it('should return dummy boat race data when KSPO_API_KEY is not set', async () => {
+  it('should return empty array when KSPO_API_KEY is not set for boat', async () => {
     delete process.env.KSPO_API_KEY; // Ensure API key is not set
 
     const schedules = await fetchBoatRaceSchedules('20240115');
 
     expect(global.fetch).not.toHaveBeenCalled(); // fetch should not be called
     expect(schedules).toBeInstanceOf(Array);
-    expect(schedules.length).toBeGreaterThan(0);
-    expect(schedules[0]).toHaveProperty('id');
-    expect(schedules[0]).toHaveProperty('type', 'boat');
-    expect(schedules[0]).toHaveProperty('track');
-    expect(schedules[0]).toHaveProperty('startTime');
+    expect(schedules.length).toBe(0);
   });
 
   it('should fetch a specific race by its ID', async () => {
@@ -559,13 +547,10 @@ describe('Auxiliary external APIs', () => {
 
 // Historical Results API Tests
 describe('Historical Results API', () => {
-  beforeEach(() => {
-    // No API keys set - should use dummy data
+  it('should return empty results when API keys are not set', async () => {
     delete process.env.KRA_API_KEY;
     delete process.env.KSPO_API_KEY;
-  });
 
-  it('should fetch historical results with pagination', async () => {
     const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
     const result = await fetchHistoricalResults({
       dateFrom: today,
@@ -575,93 +560,23 @@ describe('Historical Results API', () => {
     });
 
     expect(result).toHaveProperty('items');
-    expect(result).toHaveProperty('total');
+    expect(result).toHaveProperty('total', 0);
     expect(result).toHaveProperty('page', 1);
     expect(result).toHaveProperty('limit', 20);
-    expect(result).toHaveProperty('totalPages');
-    expect(result.items).toBeInstanceOf(Array);
+    expect(result).toHaveProperty('totalPages', 0);
+    expect(result.items).toEqual([]);
   });
 
-  it('should filter historical results by race type', async () => {
-    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const result = await fetchHistoricalResults({
-      dateFrom: today,
-      dateTo: today,
-      types: ['horse'],
-    });
-
-    expect(result.items).toBeInstanceOf(Array);
-    result.items.forEach(race => {
-      expect(race.type).toBe('horse');
-    });
-  });
-
-  it('should filter historical results by track', async () => {
-    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const result = await fetchHistoricalResults({
-      dateFrom: today,
-      dateTo: today,
-      types: ['horse'],
-      track: '서울',
-    });
-
-    expect(result.items).toBeInstanceOf(Array);
-    result.items.forEach(race => {
-      expect(race.track).toBe('서울');
-    });
-  });
-
-  it('should filter historical results by jockey name', async () => {
-    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const result = await fetchHistoricalResults({
-      dateFrom: today,
-      dateTo: today,
-      types: ['horse'],
-      jockey: '김',
-    });
-
-    expect(result.items).toBeInstanceOf(Array);
-    // Each result should have at least one entry with jockey containing '김'
-    result.items.forEach(race => {
-      const hasMatchingJockey = race.results.some(r => r.jockey?.includes('김'));
-      expect(hasMatchingJockey).toBe(true);
-    });
-  });
-
-  it('should fetch a single historical result by ID', async () => {
-    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const id = `horse-1-1-${today}`;
-    const result = await fetchHistoricalResultById(id);
-
-    expect(result).not.toBeNull();
-    expect(result?.id).toBe(id);
-    expect(result?.type).toBe('horse');
-    expect(result?.results).toBeInstanceOf(Array);
-    expect(result?.dividends).toBeInstanceOf(Array);
-  });
-
-  it('should return null for invalid historical result ID', async () => {
+  it('should return null for invalid historical result ID format', async () => {
     const result = await fetchHistoricalResultById('invalid-id');
     expect(result).toBeNull();
   });
 
-  it('should include dividend information in historical results', async () => {
-    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const result = await fetchHistoricalResults({
-      dateFrom: today,
-      dateTo: today,
-      page: 1,
-      limit: 5,
-    });
+  it('should return null when no matching race found by ID', async () => {
+    delete process.env.KRA_API_KEY;
+    delete process.env.KSPO_API_KEY;
 
-    expect(result.items.length).toBeGreaterThan(0);
-    const race = result.items[0];
-    expect(race.dividends).toBeInstanceOf(Array);
-    expect(race.dividends.length).toBeGreaterThan(0);
-
-    const dividend = race.dividends[0];
-    expect(dividend).toHaveProperty('type');
-    expect(dividend).toHaveProperty('entries');
-    expect(dividend).toHaveProperty('amount');
+    const result = await fetchHistoricalResultById('horse-1-1-20240101');
+    expect(result).toBeNull();
   });
 });

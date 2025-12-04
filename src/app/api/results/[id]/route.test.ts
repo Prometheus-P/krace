@@ -5,6 +5,39 @@
 import { GET } from './route';
 import { NextRequest } from 'next/server';
 
+// Mock the API functions to return test data
+jest.mock('@/lib/api', () => ({
+  fetchHistoricalResultById: jest.fn().mockImplementation((id: string) => {
+    // Validate ID format
+    const parts = id.split('-');
+    if (parts.length < 4) return Promise.resolve(null);
+
+    const [type, , , date] = parts;
+    if (!['horse', 'cycle', 'boat'].includes(type)) return Promise.resolve(null);
+
+    // Return mock data for valid IDs
+    return Promise.resolve({
+      id,
+      type,
+      raceNo: 1,
+      track: '서울',
+      date,
+      startTime: '11:30',
+      distance: 1200,
+      grade: '국산5등급',
+      status: 'finished',
+      results: [
+        { rank: 1, entryNo: 1, name: '말1', jockey: '기수1', time: '72.5' },
+        { rank: 2, entryNo: 2, name: '말2', jockey: '기수2', time: '73.1' },
+      ],
+      dividends: [
+        { type: 'win', entries: [1], amount: 3500 },
+        { type: 'place', entries: [1, 2], amount: 1200 },
+      ],
+    });
+  }),
+}));
+
 describe('GET /api/results/[id]', () => {
   it('should return a single historical race result', async () => {
     const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
