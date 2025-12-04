@@ -177,6 +177,7 @@ import { M3SearchBar } from '@/components/ui';
 ```tsx
 import { M3Dialog, M3Button } from '@/components/ui';
 
+// Basic dialog
 <M3Dialog
   open={isOpen}
   onClose={() => setIsOpen(false)}
@@ -190,18 +191,87 @@ import { M3Dialog, M3Button } from '@/components/ui';
 >
   Are you sure you want to proceed?
 </M3Dialog>
+
+// Dialog with size options
+<M3Dialog
+  open={isOpen}
+  onClose={handleClose}
+  title="Race Details"
+  maxWidth="md"        // 'xs' | 'sm' | 'md' | 'lg'
+  fullWidth            // Fills width up to maxWidth
+>
+  <p>Detailed race information here...</p>
+</M3Dialog>
+
+// Persistent dialog (no backdrop/escape close)
+<M3Dialog
+  open={isOpen}
+  onClose={handleClose}
+  title="Important Notice"
+  disableBackdropClose
+  disableEscapeClose
+  actions={<M3Button onClick={handleAcknowledge}>I Understand</M3Button>}
+>
+  You must acknowledge this before continuing.
+</M3Dialog>
 ```
 
 ### Snackbar
 
 ```tsx
-import { M3Snackbar } from '@/components/ui';
+import { M3Snackbar, M3Button } from '@/components/ui';
 
+// Basic success snackbar
 <M3Snackbar
   open={showNotification}
   message="Results saved successfully"
   severity="success"
   onClose={() => setShowNotification(false)}
+/>
+
+// Severity variants: 'info' | 'success' | 'warning' | 'error'
+<M3Snackbar
+  open={isOpen}
+  message="Connection lost"
+  severity="error"
+  onClose={handleClose}
+/>
+
+// With action button
+<M3Snackbar
+  open={showUndo}
+  message="Item deleted"
+  severity="info"
+  onClose={handleClose}
+  action={
+    <M3Button variant="text" onClick={handleUndo}>
+      Undo
+    </M3Button>
+  }
+/>
+
+// Custom auto-hide duration (default: 4000ms)
+<M3Snackbar
+  open={isOpen}
+  message="Quick notification"
+  autoHideDuration={2000}  // 2 seconds
+  onClose={handleClose}
+/>
+
+// Persistent snackbar (no auto-hide)
+<M3Snackbar
+  open={isOpen}
+  message="Manual dismiss required"
+  autoHideDuration={0}
+  onClose={handleClose}
+/>
+
+// Position: 'bottom' (default) | 'top'
+<M3Snackbar
+  open={isOpen}
+  message="Top notification"
+  position="top"
+  onClose={handleClose}
 />
 ```
 

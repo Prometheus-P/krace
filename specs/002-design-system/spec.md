@@ -2,8 +2,9 @@
 
 **Feature Branch**: `002-design-system`
 **Created**: 2025-12-04
-**Status**: Draft
+**Status**: Draft (Clarified: API Integration Patterns)
 **Input**: User description: "유저 친화적 디자인 시스템 확립 - Material Design 3 (material.io) 적극 활용, 로고 업데이트, 애니메이션 디자인"
+**Clarified**: 2025-12-04 - API 활용 정의 (loading states, error handling, empty states, data mapping)
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -113,6 +114,10 @@ A user accesses the application from different devices (mobile phone, tablet, de
 - How does the system behave with reduced motion preferences? Animations are reduced or disabled respecting `prefers-reduced-motion`.
 - What happens when a component is used in an unexpected context? Components should fail gracefully with sensible defaults.
 - How does the system handle right-to-left text (if ever needed)? Base components should be RTL-aware for future localization.
+- What happens when API returns partial data? Components display available fields, show "-" for missing optional fields.
+- What happens during network timeout? Show error state after 10 seconds with "네트워크 연결을 확인해주세요" message.
+- How does the system handle rapid retry clicks? Debounce retry button (disable for 1 second after click).
+- What happens when skeleton is shown for extended period (>5s)? Add subtle "로딩 중..." text below skeleton.
 
 ## Requirements *(mandatory)*
 
@@ -150,6 +155,13 @@ A user accesses the application from different devices (mobile phone, tablet, de
 
 #### Responsive
 - **FR-021**: System MUST support responsive breakpoints: mobile (default), tablet (md: 768px), desktop (lg: 1024px)
+
+#### API Data States
+- **FR-022**: System MUST display component-level skeleton UI with shimmer effect when data is loading (after 100ms delay)
+- **FR-023**: System MUST display inline error messages in Korean with retry action when API calls fail
+- **FR-024**: System MUST display contextual empty states with suggested actions when no data is available
+- **FR-025**: System MUST apply race-type accent colors (horse/cycle/boat) automatically based on data `raceType` property
+- **FR-026**: System MUST maintain component dimensions during loading/error states to prevent layout shift
 
 ### Key Entities
 
@@ -226,3 +238,91 @@ A user accesses the application from different devices (mobile phone, tablet, de
 2. **Quick**: Most interactions complete under 300ms
 3. **Subtle**: Animations enhance, not distract
 4. **Respectful**: Honor user preferences for reduced motion
+
+---
+
+## API Integration Patterns *(clarified)*
+
+This section defines how design system components integrate with API data from the KRace backend (see `API_README_v2.md` for full API documentation).
+
+### Loading State Strategy
+
+**Approach**: Component-level skeleton UI (recommended for 40-60대 user clarity)
+
+| Component Type | Skeleton Behavior |
+| -------------- | ----------------- |
+| RaceCard | Card shape with shimmer, race type color bar visible |
+| ResultTable | Table header static, rows show skeleton cells |
+| DividendDisplay | Amount placeholders with shimmer |
+| EntryList | List items with avatar/name placeholders |
+| SearchResults | Card grid with skeleton cards |
+
+**Timing**:
+- 0-100ms: Component shows previous state or empty
+- 100ms+: Skeleton appears with shimmer animation
+- On data: Skeleton fades out (150ms), content fades in
+
+### Error State Handling
+
+**Approach**: Inline error with retry action
+
+```
+┌─────────────────────────────────────┐
+│  ⚠️  데이터를 불러올 수 없습니다      │
+│                                     │
+│  [다시 시도]                         │
+└─────────────────────────────────────┘
+```
+
+**Requirements**:
+- Error message in Korean, clear and non-technical
+- Retry button uses primary action styling
+- Error state maintains component dimensions to prevent layout shift
+- Log detailed error to console for debugging
+
+### Empty State Design
+
+**Approach**: Contextual messaging with suggested actions
+
+| Context | Message | Action |
+| ------- | ------- | ------ |
+| No search results | "검색 결과가 없습니다" | 필터 조정 제안 |
+| No races today | "오늘 경주 일정이 없습니다" | 다른 날짜 선택 링크 |
+| No dividends | "배당 정보 없음" | - |
+
+**Requirements**:
+- Empty state uses M3 surface-variant background
+- Icon or illustration appropriate to context
+- Suggested action uses secondary button style
+
+### Data Display Components
+
+Components receive **mapped internal types** (not raw API responses):
+
+| API Source | Mapped Type | Display Component |
+| ---------- | ----------- | ----------------- |
+| Horse/Cycle/Boat schedules | `Race` | `RaceCard`, `RaceList` |
+| Entry APIs | `Entry` | `EntryTable`, `EntryCard` |
+| Result APIs | `HistoricalRace` | `ResultCard`, `ResultTable` |
+| Payoff APIs | `Dividend` | `DividendDisplay` |
+
+**Data Flow**:
+```
+API Route → lib/api.ts → mappers.ts → Component Props
+```
+
+### Race Type Visual Mapping
+
+Components automatically apply race-type styling based on the `raceType` prop:
+
+| Race Type | Accent Color | Badge | Skeleton Tint |
+| --------- | ------------ | ----- | ------------- |
+| horse | #2d5a27 (green) | 경마 | green-50 |
+| cycle | #dc2626 (red) | 경륜 | red-50 |
+| boat | #0369a1 (blue) | 경정 | blue-50 |
+
+### Refresh & Polling
+
+- **Manual refresh**: Pull-to-refresh on mobile, refresh button on desktop
+- **Auto-refresh**: Not implemented in design system scope (page-level concern)
+- **Stale indicator**: Subtle timestamp showing "업데이트: 2분 전" for cached data
