@@ -10,14 +10,14 @@ import { HeaderSkeleton } from '@/components/Skeletons'
 
 export const metadata: Metadata = {
   title: {
-    default: 'KRace - 경마 경륜 경정 통합 정보',
-    template: '%s | KRace'
+    default: 'RaceLab - 경마 경륜 경정 통합 정보',
+    template: '%s | RaceLab'
   },
   description: '한국 경마, 경륜, 경정 실시간 정보를 한눈에. 출마표, 배당률, 경주결과를 무료로 제공합니다.',
-  keywords: ['경마', '경륜', '경정', '배당률', '출마표', '경주결과', '한국마사회', '스피드온'],
-  authors: [{ name: 'KRace' }],
-  creator: 'KRace',
-  publisher: 'KRace',
+  keywords: ['경마', '경륜', '경정', '배당률', '출마표', '경주결과', '한국마사회', '스피드온', 'RaceLab'],
+  authors: [{ name: 'RaceLab' }],
+  creator: 'RaceLab',
+  publisher: 'RaceLab',
   robots: {
     index: true,
     follow: true,
@@ -26,21 +26,21 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
     url: 'https://racelab.kr',
-    siteName: 'KRace',
-    title: 'KRace - 경마 경륜 경정 통합 정보',
+    siteName: 'RaceLab',
+    title: 'RaceLab - 경마 경륜 경정 통합 정보',
     description: '한국 경마, 경륜, 경정 실시간 정보를 한눈에',
     images: [
       {
         url: '/opengraph-image.svg',
         width: 1200,
         height: 630,
-        alt: 'KRace - 경마 경륜 경정 통합 정보',
+        alt: 'RaceLab - 경마 경륜 경정 통합 정보',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KRace - 경마 경륜 경정 통합 정보',
+    title: 'RaceLab - 경마 경륜 경정 통합 정보',
     description: '한국 경마, 경륜, 경정 실시간 정보를 한눈에',
   },
   verification: {
@@ -59,9 +59,9 @@ export default function RootLayout({
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'KRace',
+    name: 'RaceLab',
     url: baseUrl,
-    logo: `${baseUrl}/icon.svg`,
+    logo: `${baseUrl}/favicon.svg`,
     description: '한국 경마, 경륜, 경정 실시간 정보를 한눈에 제공하는 통합 플랫폼',
     sameAs: [],
   };
@@ -69,7 +69,7 @@ export default function RootLayout({
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'KRace - 경마 경륜 경정 통합 정보',
+    name: 'RaceLab - 경마 경륜 경정 통합 정보',
     url: baseUrl,
     description: '한국 경마, 경륜, 경정 실시간 정보를 한눈에. 출마표, 배당률, 경주결과를 무료로 제공합니다.',
     potentialAction: {

@@ -27,9 +27,9 @@
 
 **Purpose**: Project structure and shared dependencies
 
-- [ ] T001 Create brand components directory at src/components/brand/
-- [ ] T002 [P] Create animations CSS file at src/styles/animations.css
-- [ ] T003 [P] Create barrel export for ui components at src/components/ui/index.ts
+- [x] T001 Create brand components directory at src/components/brand/
+- [x] T002 [P] Create animations CSS file at src/styles/animations.css
+- [x] T003 [P] Create barrel export for ui components at src/components/ui/index.ts
 
 ---
 
@@ -39,11 +39,11 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Extend motion tokens in src/styles/tokens.ts (duration, easing)
-- [ ] T005 [P] Update M3 elevation shadows in tailwind.config.ts per research.md specs
-- [ ] T006 [P] Add reduced-motion media query styles to src/styles/globals.css
-- [ ] T007 [P] Create useReducedMotion hook at src/hooks/useReducedMotion.ts
-- [ ] T008 Create useRipple hook at src/hooks/useRipple.ts (ripple effect utility)
+- [x] T004 Extend motion tokens in src/styles/tokens.ts (duration, easing)
+- [x] T005 [P] Update M3 elevation shadows in tailwind.config.ts per research.md specs
+- [x] T006 [P] Add reduced-motion media query styles to src/styles/globals.css
+- [x] T007 [P] Create useReducedMotion hook at src/hooks/useReducedMotion.ts
+- [x] T008 Create useRipple hook at src/hooks/useRipple.ts (ripple effect utility)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -57,21 +57,21 @@
 
 ### Tests for User Story 1
 
-- [ ] T009 [P] [US1] Write failing tests for RaceLabLogo component at src/components/brand/RaceLabLogo.test.tsx
+- [x] T009 [P] [US1] Write failing tests for RaceLabLogo component at src/components/brand/RaceLabLogo.test.tsx
 
 ### Implementation for User Story 1
 
-- [ ] T010 [P] [US1] Extract clean SVG from public/racelab_logo_clean.html to public/racelab-logo.svg
-- [ ] T011 [P] [US1] Create symbol-only variant at public/racelab-symbol.svg
-- [ ] T012 [P] [US1] Create favicon from logo at public/favicon.svg
-- [ ] T013 [US1] Implement RaceLabLogo component at src/components/brand/RaceLabLogo.tsx (variants: full, symbol, text)
-- [ ] T014 [US1] Add hover animation (scale 1.02x, 500ms) to RaceLabLogo with reduced-motion support
-- [ ] T015 [US1] Create barrel export at src/components/brand/index.ts
-- [ ] T016 [US1] Integrate RaceLabLogo into Header component at src/components/Header.tsx
-- [ ] T017 [US1] Add text fallback "RACELAB" when logo fails to load in RaceLabLogo.tsx
-- [ ] T018 [US1] Update favicon reference in src/app/layout.tsx
+- [x] T010 [P] [US1] Extract clean SVG from public/racelab_logo_clean.html to public/racelab-logo.svg
+- [x] T011 [P] [US1] Create symbol-only variant at public/racelab-symbol.svg
+- [x] T012 [P] [US1] Create favicon from logo at public/favicon.svg
+- [x] T013 [US1] Implement RaceLabLogo component at src/components/brand/RaceLabLogo.tsx (variants: full, symbol, text)
+- [x] T014 [US1] Add hover animation (scale 1.02x, 500ms) to RaceLabLogo with reduced-motion support
+- [x] T015 [US1] Create barrel export at src/components/brand/index.ts
+- [x] T016 [US1] Integrate RaceLabLogo into Header component at src/components/Header.tsx
+- [x] T017 [US1] Add text fallback "RACELAB" when logo fails to load in RaceLabLogo.tsx
+- [x] T018 [US1] Update favicon reference in src/app/layout.tsx (and updated branding to RaceLab)
 
-**Checkpoint**: Logo displays correctly in header, hover animation works, fallback shows if image fails
+**Checkpoint**: ✅ Logo displays correctly in header, hover animation works, fallback shows if image fails
 
 ---
 

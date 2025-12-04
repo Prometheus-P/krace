@@ -3,7 +3,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useSearchParams, usePathname } from 'next/navigation';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { RaceLabLogo } from './brand';
 
 interface NavItem {
   href: string;
@@ -48,6 +49,7 @@ const navItems: NavItem[] = [
 const Header: React.FC = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const router = useRouter();
   const currentTab = searchParams.get('tab');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -67,13 +69,13 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link
-            href="/"
-            className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md px-2 py-1 -ml-2"
-            aria-label="KRace 홈으로 이동"
-          >
-            🏁 KRace
-          </Link>
+          <RaceLabLogo
+            variant="full"
+            size="md"
+            onClick={() => router.push('/')}
+            aria-label="RaceLab 홈으로 이동"
+            className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md"
+          />
 
           {/* Desktop Navigation */}
           <nav aria-label="주요 네비게이션" className="hidden md:flex space-x-2">

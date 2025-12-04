@@ -1,0 +1,20 @@
+<svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- RaceLab Balanced Gate Logo -->
+  <!-- Roof (Horse - Green) -->
+  <path d="M60 130 C 60 130, 140 150, 200 150 C 260 150, 340 130, 340 130"
+        stroke="#81C784" stroke-width="20" stroke-linecap="round" fill="none" />
+
+  <!-- Core (Cycle - Red) -->
+  <rect x="120" y="190" width="160" height="20" rx="10" fill="#E57373" />
+
+  <!-- Base (Boat - Blue) -->
+  <path d="M100 240 L 100 320 M 300 240 L 300 320"
+        stroke="#64B5F6" stroke-width="20" stroke-linecap="round" />
+  <path d="M100 240 C 100 240, 140 270, 200 270 C 260 270, 300 240, 300 240"
+        stroke="#64B5F6" stroke-width="20" stroke-linecap="round" fill="none" />
+
+  <!-- Data Nodes -->
+  <circle cx="200" cy="150" r="6" fill="#81C784" />
+  <circle cx="200" cy="200" r="6" fill="#E57373" />
+  <circle cx="200" cy="270" r="6" fill="#64B5F6" />
+</svg>
