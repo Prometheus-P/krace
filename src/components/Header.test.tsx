@@ -45,6 +45,7 @@ const setActiveTab = (tab: string | null) => {
 describe('Header Component', () => {
   beforeEach(() => {
     setActiveTab(null);
+    mockPush.mockClear();
   });
 
   describe('Basic Rendering', () => {
@@ -56,6 +57,12 @@ describe('Header Component', () => {
       const logo = screen.getByTestId('racelab-logo');
       expect(logo).toBeInTheDocument();
       expect(logo).toHaveAttribute('aria-label', 'RaceLab 홈으로 이동');
+    });
+
+    it('should_navigate_to_home_when_logo_is_clicked', () => {
+      const logo = screen.getByTestId('racelab-logo');
+      fireEvent.click(logo);
+      expect(mockPush).toHaveBeenCalledWith('/');
     });
 
     it('should_render_navigation_links_with_correct_hrefs', () => {
