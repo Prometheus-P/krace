@@ -122,14 +122,16 @@ describe('ResultFilters', () => {
 
   it('has collapsible filter section on mobile', () => {
     render(<ResultFilters {...defaultProps} />);
-    expect(screen.getByRole('button', { name: /필터/ })).toBeInTheDocument();
+    // Use exact match to avoid matching "필터 초기화" button
+    expect(screen.getByRole('button', { name: '필터' })).toBeInTheDocument();
   });
 
   it('toggles filter visibility on mobile', async () => {
     const user = userEvent.setup();
     render(<ResultFilters {...defaultProps} />);
 
-    const toggleButton = screen.getByRole('button', { name: /필터/ });
+    // Use exact match to get the toggle button, not "필터 초기화"
+    const toggleButton = screen.getByRole('button', { name: '필터' });
 
     // Initially filters should be visible or hidden based on default
     await user.click(toggleButton);

@@ -10,7 +10,7 @@ describe('Footer Component', () => {
 
   describe('Sections', () => {
     it('should_render_about_section_with_description', () => {
-      expect(screen.getByText('KRace')).toBeInTheDocument();
+      expect(screen.getByText('RaceLab')).toBeInTheDocument();
       expect(screen.getByText(/경마, 경륜, 경정 정보를 한 곳에서 확인하세요/i)).toBeInTheDocument();
     });
 
@@ -41,7 +41,8 @@ describe('Footer Component', () => {
     });
 
     it('should_display_copyright_and_data_source', () => {
-      expect(screen.getByText(/© 2025 KRace. 공공데이터포털 API 활용./i)).toBeInTheDocument();
+      const currentYear = new Date().getFullYear();
+      expect(screen.getByText(new RegExp(`© ${currentYear} KRace. 공공데이터포털 API 활용.`, 'i'))).toBeInTheDocument();
     });
   });
 
@@ -52,6 +53,7 @@ describe('Footer Component', () => {
 
   it('should_render_all_navigation_links', () => {
     const links = screen.getAllByRole('link');
-    expect(links).toHaveLength(4); // 3 nav links + 1 helpline link
+    // 4 nav links (horse, cycle, boat, results) + 1 data.go.kr link + 1 helpline link = 6
+    expect(links).toHaveLength(6);
   });
 });
