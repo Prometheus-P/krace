@@ -108,7 +108,8 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/icon.svg" />
-        <meta name="theme-color" content="#1a56db" />
+        {/* RaceLab Design System V1.0 - Soft Coral (#E57373) as primary */}
+        <meta name="theme-color" content="#E57373" />
 
         {/* JSON-LD Structured Data */}
         <Script
@@ -140,18 +141,19 @@ export default function RootLayout({
           </>
         )}
       </head>
-      <body className="min-h-screen bg-gray-50 flex flex-col">
+      {/* RaceLab Design System V1.0 - 순백 배경 (#FFFFFF) */}
+      <body className="min-h-screen bg-white flex flex-col text-on-surface">
         <Suspense fallback={<HeaderSkeleton />}>
           <Header />
         </Suspense>
-        
+
         <main
           id="main-content"
-          className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full"
+          className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full"
         >
           {children}
         </main>
-        
+
         <Footer />
         <Analytics />
       </body>

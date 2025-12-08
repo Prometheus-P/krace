@@ -14,6 +14,8 @@ interface NavItem {
   color: string;
   hoverColor: string;
   activeColor: string;
+  activeBackground: string;
+  focusRing: string;
 }
 
 const navItems: NavItem[] = [
@@ -22,27 +24,33 @@ const navItems: NavItem[] = [
     tab: 'horse',
     label: '경마',
     icon: '🐎',
-    color: 'text-gray-700',
+    color: 'text-on-surface',
     hoverColor: 'hover:text-horse',
-    activeColor: 'text-horse',
+    activeColor: 'text-horse-on-container',
+    activeBackground: 'bg-horse-container',
+    focusRing: 'focus:ring-horse',
   },
   {
     href: '/?tab=cycle',
     tab: 'cycle',
     label: '경륜',
     icon: '🚴',
-    color: 'text-gray-700',
+    color: 'text-on-surface',
     hoverColor: 'hover:text-cycle',
-    activeColor: 'text-cycle',
+    activeColor: 'text-cycle-on-container',
+    activeBackground: 'bg-cycle-container',
+    focusRing: 'focus:ring-cycle',
   },
   {
     href: '/?tab=boat',
     tab: 'boat',
     label: '경정',
     icon: '🚤',
-    color: 'text-gray-700',
+    color: 'text-on-surface',
     hoverColor: 'hover:text-boat',
-    activeColor: 'text-boat',
+    activeColor: 'text-boat-on-container',
+    activeBackground: 'bg-boat-container',
+    focusRing: 'focus:ring-boat',
   },
 ];
 
@@ -57,11 +65,11 @@ const Header: React.FC = () => {
   const isResultsPage = pathname === '/results';
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
+    <header className="bg-white shadow-rl-1 border-b border-neutral-divider">
       {/* Skip to main content link - Accessibility */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-md focus:outline-none"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-cycle focus:text-white focus:rounded-rl-md focus:outline-none"
       >
         본문으로 건너뛰기
       </a>
@@ -74,7 +82,7 @@ const Header: React.FC = () => {
             size="md"
             onClick={() => router.push('/')}
             aria-label="RaceLab 홈으로 이동"
-            className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md"
+            className="focus:outline-none focus:ring-2 focus:ring-cycle focus:ring-offset-2 rounded-rl-sm"
           />
 
           {/* Desktop Navigation */}
@@ -86,13 +94,13 @@ const Header: React.FC = () => {
                 aria-current={isActive(item.tab) ? 'page' : undefined}
                 title={`${item.label} 경기 보기`}
                 className={`
-                  relative min-h-[44px] min-w-[44px] px-4 py-2
-                  font-medium rounded-lg
-                  transition-all duration-150 ease-out
+                  relative min-h-touch min-w-touch px-5 py-3
+                  font-semibold text-body-medium rounded-rl-md
+                  transition-all duration-rl-fast ease-rl-standard
                   focus:outline-none focus:ring-2 focus:ring-offset-2
                   ${isActive(item.tab)
-                    ? `${item.activeColor} bg-gray-100 focus:ring-current`
-                    : `${item.color} ${item.hoverColor} hover:bg-gray-50 focus:ring-gray-400`
+                    ? `${item.activeColor} ${item.activeBackground} ${item.focusRing}`
+                    : `${item.color} ${item.hoverColor} hover:bg-surface-dim focus:ring-outline`
                   }
                 `}
               >
@@ -110,13 +118,13 @@ const Header: React.FC = () => {
               aria-current={isResultsPage ? 'page' : undefined}
               title="경기 결과 보기"
               className={`
-                relative min-h-[44px] min-w-[44px] px-4 py-2
-                font-medium rounded-lg
-                transition-all duration-150 ease-out
+                relative min-h-touch min-w-touch px-5 py-3
+                font-semibold text-body-medium rounded-rl-md
+                transition-all duration-rl-fast ease-rl-standard
                 focus:outline-none focus:ring-2 focus:ring-offset-2
                 ${isResultsPage
-                  ? 'text-primary bg-gray-100 focus:ring-current'
-                  : 'text-gray-700 hover:text-primary hover:bg-gray-50 focus:ring-gray-400'
+                  ? 'text-boat-on-container bg-boat-container focus:ring-boat'
+                  : 'text-on-surface hover:text-boat hover:bg-surface-dim focus:ring-outline'
                 }
               `}
             >
@@ -135,7 +143,7 @@ const Header: React.FC = () => {
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden min-h-[44px] min-w-[44px] p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors"
+            className="md:hidden min-h-touch min-w-touch p-3 rounded-rl-md text-on-surface hover:bg-surface-dim focus:outline-none focus:ring-2 focus:ring-cycle focus:ring-offset-2 transition-colors duration-rl-fast"
           >
             {isMobileMenuOpen ? (
               <svg
@@ -176,7 +184,7 @@ const Header: React.FC = () => {
           <nav
             id="mobile-menu"
             aria-label="모바일 네비게이션"
-            className="md:hidden mt-4 pt-4 border-t border-gray-200"
+            className="md:hidden mt-4 pt-4 border-t border-neutral-divider"
           >
             <ul className="space-y-2">
               {navItems.map((item) => (
@@ -186,20 +194,20 @@ const Header: React.FC = () => {
                     aria-current={isActive(item.tab) ? 'page' : undefined}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`
-                      flex items-center min-h-[44px] px-4 py-3
-                      font-medium rounded-lg
-                      transition-all duration-150 ease-out
+                      flex items-center min-h-touch px-5 py-4
+                      font-semibold text-body-medium rounded-rl-md
+                      transition-all duration-rl-fast ease-rl-standard
                       focus:outline-none focus:ring-2 focus:ring-offset-2
                       ${isActive(item.tab)
-                        ? `${item.activeColor} bg-gray-100 focus:ring-current`
-                        : `${item.color} ${item.hoverColor} hover:bg-gray-50 focus:ring-gray-400`
+                        ? `${item.activeColor} ${item.activeBackground} ${item.focusRing}`
+                        : `${item.color} ${item.hoverColor} hover:bg-surface-dim focus:ring-outline`
                       }
                     `}
                   >
                     <span aria-hidden="true" className="mr-3 text-xl">{item.icon}</span>
                     <span>{item.label}</span>
                     {isActive(item.tab) && (
-                      <span className="ml-auto text-sm">현재 페이지</span>
+                      <span className="ml-auto text-label-small">현재 페이지</span>
                     )}
                   </Link>
                 </li>
@@ -211,20 +219,20 @@ const Header: React.FC = () => {
                   aria-current={isResultsPage ? 'page' : undefined}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`
-                    flex items-center min-h-[44px] px-4 py-3
-                    font-medium rounded-lg
-                    transition-all duration-150 ease-out
+                    flex items-center min-h-touch px-5 py-4
+                    font-semibold text-body-medium rounded-rl-md
+                    transition-all duration-rl-fast ease-rl-standard
                     focus:outline-none focus:ring-2 focus:ring-offset-2
                     ${isResultsPage
-                      ? 'text-primary bg-gray-100 focus:ring-current'
-                      : 'text-gray-700 hover:text-primary hover:bg-gray-50 focus:ring-gray-400'
+                      ? 'text-boat-on-container bg-boat-container focus:ring-boat'
+                      : 'text-on-surface hover:text-boat hover:bg-surface-dim focus:ring-outline'
                     }
                   `}
                 >
                   <span aria-hidden="true" className="mr-3 text-xl">📊</span>
                   <span>결과</span>
                   {isResultsPage && (
-                    <span className="ml-auto text-sm">현재 페이지</span>
+                    <span className="ml-auto text-label-small">현재 페이지</span>
                   )}
                 </Link>
               </li>
