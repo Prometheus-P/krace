@@ -1,9 +1,9 @@
-import { HistoricalRace } from '@/types';
+import { HistoricalRace, Dividend, DividendType } from '@/types';
 
-const baseDividends = (entries: number[], amount: number) => ([
-  { type: 'win', entries: [entries[0]], amount },
-  { type: 'place', entries: [entries[0]], amount: Math.round(amount * 0.45) },
-  { type: 'place', entries: [entries[1]], amount: Math.round(amount * 0.55) },
+const baseDividends = (entries: number[], amount: number): Dividend[] => ([
+  { type: 'win' as DividendType, entries: [entries[0]], amount },
+  { type: 'place' as DividendType, entries: [entries[0]], amount: Math.round(amount * 0.45) },
+  { type: 'place' as DividendType, entries: [entries[1]], amount: Math.round(amount * 0.55) },
 ]);
 
 export const MOCK_HISTORICAL_RACES: HistoricalRace[] = [
