@@ -34,11 +34,81 @@ import {
   KSPOCycleInOutItem,
   KSPOBoatRaceRankItem,
 } from './api-helpers/mappers';
+import { MOCK_RACES } from './mockData';
+import { MOCK_HISTORICAL_RACES } from './mockHistoricalResults';
 
 
 const KRA_BASE_URL = 'https://apis.data.go.kr/B551015';
 const KSPO_BASE_URL = 'https://apis.data.go.kr/B551014';
 type HistoricalResultItem = Record<string, unknown>;
+
+interface MockPaginationOptions {
+  ignoreDateRange?: boolean;
+}
+
+function paginateMockHistoricalResults(
+  params: ResultsSearchParams,
+  options: MockPaginationOptions = {}
+): PaginatedResults<HistoricalRace> {
+  const {
+    dateFrom,
+    dateTo,
+    types,
+    track,
+    jockey,
+    page = 1,
+    limit = 20,
+  } = params;
+
+  const normalizedPage = Number.isFinite(page) && page > 0 ? page : 1;
+  const normalizedLimit = Number.isFinite(limit) && limit > 0 ? Math.min(limit, 100) : 20;
+  const normalizedDateFrom = dateFrom ? dateFrom.replace(/-/g, '') : undefined;
+  const normalizedDateTo = dateTo ? dateTo.replace(/-/g, '') : undefined;
+
+  let results = [...MOCK_HISTORICAL_RACES];
+
+  if (types && types.length > 0) {
+    results = results.filter(race => types.includes(race.type));
+  }
+
+  if (!options.ignoreDateRange) {
+    if (normalizedDateFrom) {
+      results = results.filter(race => race.date >= normalizedDateFrom);
+    }
+    if (normalizedDateTo) {
+      results = results.filter(race => race.date <= normalizedDateTo);
+    }
+  }
+
+  if (track) {
+    results = results.filter(race => race.track === track);
+  }
+
+  if (jockey) {
+    results = results.filter(race =>
+      race.results.some(result => result.jockey?.includes(jockey))
+    );
+  }
+
+  results = results.sort((a, b) => {
+    if (a.date !== b.date) return b.date.localeCompare(a.date);
+    if (a.track !== b.track) return a.track.localeCompare(b.track);
+    return a.raceNo - b.raceNo;
+  });
+
+  const total = results.length;
+  const totalPages = Math.ceil(total / normalizedLimit) || 0;
+  const startIndex = (normalizedPage - 1) * normalizedLimit;
+  const items = results.slice(startIndex, startIndex + normalizedLimit);
+
+  return {
+    items,
+    total,
+    page: normalizedPage,
+    limit: normalizedLimit,
+    totalPages,
+  };
+}
 
 
 // Generic API fetch function with flexible date parameter
@@ -95,6 +165,10 @@ async function fetchApi(
 
 
 export async function fetchHorseRaceSchedules(rcDate: string): Promise<Race[]> {
+  if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
+    return MOCK_RACES.filter(race => race.type === 'horse');
+  }
+
   const KRA_API_KEY = process.env.KRA_API_KEY;
 
   // Try API299 (경주결과종합) first - works with our API key
@@ -114,6 +188,10 @@ export async function fetchHorseRaceSchedules(rcDate: string): Promise<Race[]> {
 }
 
 export async function fetchCycleRaceSchedules(rcDate: string): Promise<Race[]> {
+  if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
+    return MOCK_RACES.filter(race => race.type === 'cycle');
+  }
+
   const KSPO_API_KEY = process.env.KSPO_API_KEY;
 
   // Use approved API: SRVC_OD_API_CRA_RACE_ORGAN (경륜 출주표)
@@ -133,6 +211,10 @@ export async function fetchCycleRaceSchedules(rcDate: string): Promise<Race[]> {
 }
 
 export async function fetchBoatRaceSchedules(rcDate: string): Promise<Race[]> {
+  if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
+    return MOCK_RACES.filter(race => race.type === 'boat');
+  }
+
   const KSPO_API_KEY = process.env.KSPO_API_KEY;
 
   // Use approved API: SRVC_OD_API_VWEB_MBR_RACE_INFO (경정 출주표)
@@ -394,12 +476,38 @@ export async function fetchHistoricalResults(
     jockey,
     page = 1,
     limit = 20,
+    useDefaultDateRange = false,
   } = params;
 
-  // Default to today if no dates provided
+  const normalizedPage = Number.isFinite(page) && page > 0 ? page : 1;
+  const normalizedLimit = Number.isFinite(limit) && limit > 0 ? Math.min(limit, 100) : 20;
+
+  const normalizedParams: ResultsSearchParams = {
+    dateFrom,
+    dateTo,
+    types,
+    track,
+    jockey,
+    page: normalizedPage,
+    limit: normalizedLimit,
+  };
+
+  const shouldUseMockData =
+    process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true' ||
+    !process.env.KRA_API_KEY ||
+    !process.env.KSPO_API_KEY;
+
+  if (shouldUseMockData) {
+    return paginateMockHistoricalResults(normalizedParams, {
+      ignoreDateRange: useDefaultDateRange,
+    });
+  }
+
+  // Default to today if no dates provided when hitting upstream APIs
   const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-  const fromDate = dateFrom || today;
-  const _toDate = dateTo || today; // Reserved for future date range API support
+  const normalizedDateFrom = dateFrom ? dateFrom.replace(/-/g, '') : undefined;
+  const normalizedDateTo = dateTo ? dateTo.replace(/-/g, '') : undefined;
+  const fromDate = normalizedDateFrom || today;
   const requestedTypes: RaceType[] = types && types.length > 0 ? types : ['horse', 'cycle', 'boat'];
 
   const resultBuckets: HistoricalRace[][] = [];
@@ -440,6 +548,21 @@ export async function fetchHistoricalResults(
 
   let results = resultBuckets.flat();
 
+  if (results.length === 0) {
+    console.warn('Falling back to mock historical results (upstream API returned no data).');
+    return paginateMockHistoricalResults(normalizedParams, {
+      ignoreDateRange: useDefaultDateRange,
+    });
+  }
+
+  if (normalizedDateFrom) {
+    results = results.filter(race => race.date >= normalizedDateFrom);
+  }
+
+  if (normalizedDateTo) {
+    results = results.filter(race => race.date <= normalizedDateTo);
+  }
+
   if (track) {
     results = results.filter(race => race.track === track);
   }
@@ -451,18 +574,24 @@ export async function fetchHistoricalResults(
     );
   }
 
+  results = results.sort((a, b) => {
+    if (a.date !== b.date) return b.date.localeCompare(a.date);
+    if (a.track !== b.track) return a.track.localeCompare(b.track);
+    return a.raceNo - b.raceNo;
+  });
+
   // Calculate pagination
   const total = results.length;
-  const totalPages = Math.ceil(total / limit);
-  const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
+  const totalPages = Math.ceil(total / normalizedLimit);
+  const startIndex = (normalizedPage - 1) * normalizedLimit;
+  const endIndex = startIndex + normalizedLimit;
   const items = results.slice(startIndex, endIndex);
 
   return {
     items,
     total,
-    page,
-    limit,
+    page: normalizedPage,
+    limit: normalizedLimit,
     totalPages,
   };
 }
@@ -486,6 +615,8 @@ export async function fetchHistoricalResultById(id: string): Promise<HistoricalR
 
   return results.items.find(item => item.id === id) || null;
 }
+
+
 
 // ============================================
 // Auxiliary APIs (KRA / KSPO)
