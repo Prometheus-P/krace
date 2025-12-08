@@ -26,7 +26,7 @@ npm install
 npm run dev
 
 # 4. Open browser
-open http://localhost:3000/results
+open https://racelab.kr/results
 ```
 
 ## Feature Pages
@@ -50,16 +50,16 @@ open http://localhost:3000/results
 
 ```bash
 # Get today's results
-curl http://localhost:3000/api/results
+curl https://racelab.kr/api/results
 
 # Get results for date range
-curl "http://localhost:3000/api/results?dateFrom=20241201&dateTo=20241202"
+curl "https://racelab.kr/api/results?dateFrom=20241201&dateTo=20241202"
 
 # Get horse racing results with pagination
-curl "http://localhost:3000/api/results?types=horse&page=1&limit=20"
+curl "https://racelab.kr/api/results?types=horse&page=1&limit=20"
 
 # Get single race result
-curl http://localhost:3000/api/results/horse-1-5-20241202
+curl https://racelab.kr/api/results/horse-1-5-20241202
 ```
 
 ## Testing

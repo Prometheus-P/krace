@@ -980,7 +980,7 @@ describe('GET /api/races/horse', () => {
     const { getRaces } = require('@/lib/api-helpers/kspoClient');
     getRaces.mockResolvedValue(mockRaces);
 
-    const request = new NextRequest('http://localhost/api/races/horse');
+    const request = new NextRequest('https://racelab.kr/api/races/horse');
 
     // When
     const response = await GET(request);
@@ -995,7 +995,7 @@ describe('GET /api/races/horse', () => {
   it('should return 400 for invalid date format', async () => {
     // Given
     const request = new NextRequest(
-      'http://localhost/api/races/horse?date=25-11-2025'
+      'https://racelab.kr/api/races/horse?date=25-11-2025'
     );
 
     // When
@@ -1013,7 +1013,7 @@ describe('GET /api/races/horse', () => {
     const { getRaces } = require('@/lib/api-helpers/kspoClient');
     getRaces.mockRejectedValue(new ExternalAPIError('API 오류', 500));
 
-    const request = new NextRequest('http://localhost/api/races/horse');
+    const request = new NextRequest('https://racelab.kr/api/races/horse');
 
     // When
     const response = await GET(request);

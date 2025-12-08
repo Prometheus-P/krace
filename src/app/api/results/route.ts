@@ -14,9 +14,13 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
   try {
     const { searchParams } = request.nextUrl;
 
+    // Determine if caller explicitly provided date filters
+    const requestedDateFrom = searchParams.get('dateFrom');
+    const requestedDateTo = searchParams.get('dateTo');
+
     // Parse query parameters
-    const dateFrom = searchParams.get('dateFrom') || getTodayYYYYMMDD();
-    const dateTo = searchParams.get('dateTo') || getTodayYYYYMMDD();
+    const dateFrom = requestedDateFrom || getTodayYYYYMMDD();
+    const dateTo = requestedDateTo || getTodayYYYYMMDD();
     const typesParam = searchParams.get('types');
     const track = searchParams.get('track') || undefined;
     const jockey = searchParams.get('jockey') || undefined;
@@ -73,6 +77,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
       jockey,
       page,
       limit,
+      useDefaultDateRange: !requestedDateFrom && !requestedDateTo,
     });
 
     const response: ApiResponse<PaginatedResults<HistoricalRace>> = {

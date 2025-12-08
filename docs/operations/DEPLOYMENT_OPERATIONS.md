@@ -6,7 +6,7 @@
 
 | 환경 | URL | 용도 |
 |------|-----|------|
-| Development | `localhost:3000` | 로컬 개발 |
+| Production | `https://racelab.kr` | 서비스 운영 |
 | Preview | `*.vercel.app` | PR 미리보기 |
 | Production | `racelab.kr` | 실서비스 |
 
@@ -85,7 +85,7 @@ GitHub 연동 시 자동 배포:
 |------|-------------|---------|------------|
 | `KRA_API_KEY` | 테스트 키 | 테스트 키 | 프로덕션 키 |
 | `KSPO_API_KEY` | 테스트 키 | 테스트 키 | 프로덕션 키 |
-| `NEXT_PUBLIC_SITE_URL` | localhost | preview URL | racelab.kr |
+| `NEXT_PUBLIC_SITE_URL` | racelab.kr | preview URL | racelab.kr |
 | `NEXT_PUBLIC_GA_ID` | - | - | G-XXXXXXXX |
 | `NEXT_PUBLIC_ADSENSE_ID` | - | - | ca-pub-XXX |
 

@@ -626,7 +626,7 @@ info:
 servers:
   - url: https://racelab.kr/api
     description: Production
-  - url: http://localhost:3000/api
+  - url: https://racelab.kr/api
     description: Development
 
 paths:

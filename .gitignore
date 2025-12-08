@@ -99,3 +99,11 @@ storybook-static/
 # PWA (if added later)
 public/sw.js
 public/workbox-*.js
+
+# Temporary report files
+*.html
+report.zip*
+report_data/
+report_unpacked/
+all_errors.md
+unzip_report.py

@@ -94,6 +94,11 @@ export interface ResultsSearchParams {
   jockey?: string;
   page?: number;
   limit?: number;
+  /**
+   * Indicates that the API supplied a default date range (today) rather than a user-provided filter.
+   * Used to determine whether mock data should ignore strict date filtering when upstream APIs fail.
+   */
+  useDefaultDateRange?: boolean;
 }
 
 export interface PaginatedResults<T> {

@@ -14,6 +14,7 @@ export interface M3ChipProps {
   disabled?: boolean;
   className?: string;
   'data-testid'?: string;
+  'aria-label'?: string;
 }
 
 const colorVariantClasses: Record<M3ChipColorVariant, { selected: string; unselected: string }> = {
@@ -44,6 +45,7 @@ export function M3Chip({
   disabled = false,
   className = '',
   'data-testid': testId,
+  'aria-label': ariaLabel,
 }: M3ChipProps) {
   const colorClasses = colorVariantClasses[colorVariant];
   const stateClasses = selected ? colorClasses.selected : colorClasses.unselected;
@@ -79,6 +81,7 @@ export function M3Chip({
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
       aria-pressed={selected}
+      aria-label={ariaLabel}
       className={baseClasses}
       data-testid={testId}
     >

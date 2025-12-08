@@ -510,7 +510,7 @@ describe('GET /api/races/horse', () => {
   it('should return horse races list for valid date', async () => {
     // Arrange
     const request = new NextRequest(
-      'http://localhost/api/races/horse?date=2025-11-25'
+      'https://racelab.kr/api/races/horse?date=2025-11-25'
     );
 
     // Act
@@ -546,7 +546,7 @@ export async function GET(request: NextRequest) {
 // 테스트 추가
 it('should return 400 for invalid date format', async () => {
   const request = new NextRequest(
-    'http://localhost/api/races/horse?date=invalid'
+    'https://racelab.kr/api/races/horse?date=invalid'
   );
 
   const response = await GET(request);

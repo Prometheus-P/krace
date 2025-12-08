@@ -339,7 +339,7 @@ export default defineConfig({
     ['json', { outputFile: 'test-results/results.json' }],
   ],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'https://racelab.kr',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -355,7 +355,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:3000',
+    url: 'https://racelab.kr',
     reuseExistingServer: !process.env.CI,
   },
 });
