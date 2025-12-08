@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.1] - 2025-12-02
 
 ### Fixed
-- E2E tests now use relative URLs instead of hardcoded `localhost:3000`, enabling proper testing against preview deployments with `BASE_URL` environment variable
+- E2E tests now use relative URLs instead of hardcoded `racelab.kr`, enabling proper testing against preview deployments with `BASE_URL` environment variable
 - Results API pagination validation now returns proper 400 errors for invalid parameters (page < 1 or limit outside 1-100 range)
 
 ### Changed

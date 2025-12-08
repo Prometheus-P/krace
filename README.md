@@ -102,7 +102,7 @@ cp .env.local.example .env.local
 npm run dev
 ```
 
-브라우저에서 [http://localhost:3000](http://localhost:3000) 접속
+브라우저에서 [https://racelab.kr](https://racelab.kr) 접속
 
 ### 환경 변수 설정
 
@@ -162,7 +162,7 @@ NEXT_PUBLIC_ADSENSE_ID=ca-pub-XXXXXXXXXX
 
 | 명령어 | 설명 |
 |--------|------|
-| `npm run dev` | 개발 서버 실행 (localhost:3000) |
+| `npm run dev` | 개발 서버 실행 (https://racelab.kr) |
 | `npm run build` | 프로덕션 빌드 |
 | `npm start` | 프로덕션 서버 실행 |
 | `npm run lint` | ESLint 검사 |
@@ -273,7 +273,7 @@ npm start
 |------|-----|
 | Production | https://racelab.kr |
 | Preview | https://racelab-*.vercel.app |
-| Local | http://localhost:3000 |
+| Production | https://racelab.kr |
 
 ---
 

@@ -306,7 +306,7 @@ const baseUrl = 'https://racelab.kr';
 |------|--------|
 | Production | `racelab.kr` |
 | Preview | `*.vercel.app` (자동) |
-| Development | `localhost:3000` |
+| Production | `https://racelab.kr` |
 
 ## 체크리스트
 

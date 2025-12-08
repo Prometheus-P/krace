@@ -473,7 +473,7 @@ graph LR
 
 | 환경 | URL | 용도 | 캐시 TTL |
 |------|-----|------|----------|
-| Local | localhost:3000 | 개발 | 없음 |
+| Production | racelab.kr | 운영 | 없음 |
 | Preview | *.vercel.app | PR 리뷰 | 30초 |
 | Production | racelab.kr | 운영 | 5분 |
 

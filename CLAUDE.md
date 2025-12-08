@@ -10,7 +10,7 @@ KRace (경마/경륜/경정 통합 정보 플랫폼) - A unified web service pro
 
 ```bash
 # Development
-npm run dev                    # Start dev server (localhost:3000)
+npm run dev                    # Start dev server (racelab.kr)
 
 # Testing
 npm run test                   # Run all Jest tests (UI + API)

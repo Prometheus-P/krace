@@ -234,7 +234,7 @@ npm run dev
 
 # 출력 예시:
 # ▲ Next.js 14.2.33
-# - Local:        http://localhost:3000
+# - Local:        https://racelab.kr
 # - Environments: .env.local
 ```
 
@@ -486,7 +486,7 @@ Error: 429 Too Many Requests
 |--------|------|--------|------|
 | `KRA_API_KEY` | ✅ | - | 한국마사회 API 키 |
 | `KSPO_API_KEY` | ✅ | - | 국민체육진흥공단 API 키 |
-| `NEXT_PUBLIC_SITE_URL` | - | localhost:3000 | 사이트 URL |
+| `NEXT_PUBLIC_SITE_URL` | - | https://racelab.kr | 사이트 URL |
 | `NEXT_PUBLIC_GA_ID` | - | - | Google Analytics ID |
 | `NEXT_PUBLIC_ADSENSE_ID` | - | - | Google AdSense ID |
 | `NEXT_PUBLIC_USE_MOCK_DATA` | - | false | Mock 데이터 사용 |

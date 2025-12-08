@@ -253,7 +253,7 @@ describe('GET /api/races/{type}', () => {
       { id: 'horse-1', type: 'horse', track: '서울' }
     ]);
 
-    const request = new NextRequest('http://localhost/api/races/horse');
+    const request = new NextRequest('https://racelab.kr/api/races/horse');
     const response = await GET(request);
     const data = await response.json();
 
@@ -265,7 +265,7 @@ describe('GET /api/races/{type}', () => {
   it('should_return_500_when_api_fails', async () => {
     (fetchHorseRaceSchedules as jest.Mock).mockRejectedValue(new Error('API Error'));
 
-    const request = new NextRequest('http://localhost/api/races/horse');
+    const request = new NextRequest('https://racelab.kr/api/races/horse');
     const response = await GET(request);
     const data = await response.json();
 
