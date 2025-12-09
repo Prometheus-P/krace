@@ -131,7 +131,7 @@ Administrators and power users want to view system health, API status, and servi
 - **FR-017**: Dashboard MUST display overall system health status
 - **FR-018**: Dashboard MUST show individual service status for each external API (KRA, KSPO)
 - **FR-019**: Dashboard MUST display last-checked timestamp for status information
-- **FR-020**: Dashboard MUST auto-refresh status at reasonable intervals without requiring page reload
+- **FR-020**: Dashboard MUST auto-refresh status at 30-second intervals without requiring page reload
 
 ### Key Entities
 
