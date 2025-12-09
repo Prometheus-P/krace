@@ -60,7 +60,9 @@ export function M3TextField({
     hasError ? 'border-error' : '',
     disabled ? 'opacity-38' : '',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const inputWrapperClasses = [
     'relative',
@@ -72,7 +74,9 @@ export function M3TextField({
     'pb-2',
     variant === 'filled' ? 'border-b-2 border-on-surface-variant focus-within:border-primary' : '',
     hasError ? 'border-error focus-within:border-error' : '',
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const inputClasses = [
     'flex-1',
@@ -94,7 +98,9 @@ export function M3TextField({
     'duration-m3-short',
     hasError ? 'text-error' : 'text-on-surface-variant',
     leadingIcon ? 'left-12' : '',
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const helperClasses = [
     'px-4',
@@ -113,7 +119,7 @@ export function M3TextField({
         <div className="relative flex-1">
           <label htmlFor={inputId} className={labelClasses}>
             {label}
-            {required && <span className="text-error ml-0.5">*</span>}
+            {required && <span className="ml-0.5 text-error">*</span>}
           </label>
 
           <input

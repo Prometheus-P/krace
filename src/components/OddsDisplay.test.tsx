@@ -50,25 +50,19 @@ describe('OddsDisplay', () => {
 
   describe('race type styling', () => {
     it('should apply horse type colors', () => {
-      const { container } = render(
-        <OddsDisplay entries={mockEntries} raceType="horse" />
-      );
+      const { container } = render(<OddsDisplay entries={mockEntries} raceType="horse" />);
 
       expect(container.querySelector('.border-horse')).toBeInTheDocument();
     });
 
     it('should apply cycle type colors', () => {
-      const { container } = render(
-        <OddsDisplay entries={mockEntries} raceType="cycle" />
-      );
+      const { container } = render(<OddsDisplay entries={mockEntries} raceType="cycle" />);
 
       expect(container.querySelector('.border-cycle')).toBeInTheDocument();
     });
 
     it('should apply boat type colors', () => {
-      const { container } = render(
-        <OddsDisplay entries={mockEntries} raceType="boat" />
-      );
+      const { container } = render(<OddsDisplay entries={mockEntries} raceType="boat" />);
 
       expect(container.querySelector('.border-boat')).toBeInTheDocument();
     });
@@ -92,13 +86,7 @@ describe('OddsDisplay', () => {
 
   describe('last updated time', () => {
     it('should display last updated time when provided', () => {
-      render(
-        <OddsDisplay
-          entries={mockEntries}
-          raceType="horse"
-          lastUpdated="14:30:00"
-        />
-      );
+      render(<OddsDisplay entries={mockEntries} raceType="horse" lastUpdated="14:30:00" />);
 
       expect(screen.getByText(/14:30:00/)).toBeInTheDocument();
     });

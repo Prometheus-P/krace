@@ -2,7 +2,7 @@
 title: KRace API 명세서
 version: 1.0.0
 status: Approved
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -18,8 +18,8 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
+| 버전  | 날짜       | 작성자        | 변경 내용 |
+| ----- | ---------- | ------------- | --------- |
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
 
 ## 관련 문서 (Related Documents)
@@ -45,24 +45,24 @@ language: Korean (한국어)
 
 ### 1.1 기본 정보
 
-| 항목 | 값 |
-|------|-----|
-| **Base URL** | `/api` |
-| **버전** | v1 (URL에 미포함) |
-| **프로토콜** | HTTPS |
-| **인증** | 없음 (공개 API) |
-| **형식** | JSON |
+| 항목         | 값                |
+| ------------ | ----------------- |
+| **Base URL** | `/api`            |
+| **버전**     | v1 (URL에 미포함) |
+| **프로토콜** | HTTPS             |
+| **인증**     | 없음 (공개 API)   |
+| **형식**     | JSON              |
 
 ### 1.2 API 목록
 
-| 엔드포인트 | 메서드 | 설명 |
-|-----------|--------|------|
-| `/api/races/horse` | GET | 경마 경주 목록 |
-| `/api/races/cycle` | GET | 경륜 경주 목록 |
-| `/api/races/boat` | GET | 경정 경주 목록 |
-| `/api/races/{type}/{id}/entries` | GET | 출주표 |
-| `/api/races/{type}/{id}/odds` | GET | 배당률 |
-| `/api/races/{type}/{id}/results` | GET | 경주 결과 |
+| 엔드포인트                       | 메서드 | 설명           |
+| -------------------------------- | ------ | -------------- |
+| `/api/races/horse`               | GET    | 경마 경주 목록 |
+| `/api/races/cycle`               | GET    | 경륜 경주 목록 |
+| `/api/races/boat`                | GET    | 경정 경주 목록 |
+| `/api/races/{type}/{id}/entries` | GET    | 출주표         |
+| `/api/races/{type}/{id}/odds`    | GET    | 배당률         |
+| `/api/races/{type}/{id}/results` | GET    | 경주 결과      |
 
 ---
 
@@ -84,8 +84,8 @@ interface SuccessResponse<T> {
   success: true;
   data: T;
   meta?: {
-    timestamp: string;    // ISO 8601
-    cached: boolean;      // 캐시 여부
+    timestamp: string; // ISO 8601
+    cached: boolean; // 캐시 여부
     revalidateAt?: string; // 다음 갱신 시간
   };
 }
@@ -97,30 +97,30 @@ interface SuccessResponse<T> {
 interface ErrorResponse {
   success: false;
   error: {
-    code: string;         // 에러 코드
-    message: string;      // 사용자 친화적 메시지
-    details?: unknown;    // 상세 정보 (개발용)
+    code: string; // 에러 코드
+    message: string; // 사용자 친화적 메시지
+    details?: unknown; // 상세 정보 (개발용)
   };
 }
 ```
 
 ### 2.3 공통 파라미터
 
-| 파라미터 | 타입 | 필수 | 설명 |
-|----------|------|------|------|
-| `date` | string | No | 조회 날짜 (YYYY-MM-DD), 기본값: 오늘 |
+| 파라미터 | 타입   | 필수 | 설명                                 |
+| -------- | ------ | ---- | ------------------------------------ |
+| `date`   | string | No   | 조회 날짜 (YYYY-MM-DD), 기본값: 오늘 |
 
 ### 2.4 HTTP 상태 코드
 
-| 코드 | 설명 | 사용 상황 |
-|------|------|----------|
-| 200 | OK | 성공 |
-| 400 | Bad Request | 잘못된 파라미터 |
-| 404 | Not Found | 리소스 없음 |
-| 429 | Too Many Requests | Rate Limit 초과 |
-| 500 | Internal Server Error | 서버 오류 |
-| 502 | Bad Gateway | 외부 API 오류 |
-| 503 | Service Unavailable | 서비스 일시 중단 |
+| 코드 | 설명                  | 사용 상황        |
+| ---- | --------------------- | ---------------- |
+| 200  | OK                    | 성공             |
+| 400  | Bad Request           | 잘못된 파라미터  |
+| 404  | Not Found             | 리소스 없음      |
+| 429  | Too Many Requests     | Rate Limit 초과  |
+| 500  | Internal Server Error | 서버 오류        |
+| 502  | Bad Gateway           | 외부 API 오류    |
+| 503  | Service Unavailable   | 서비스 일시 중단 |
 
 ### 2.5 Rate Limiting
 
@@ -163,9 +163,9 @@ interface ErrorResponse {
 GET /api/races/horse?date=2025-11-25
 ```
 
-| 파라미터 | 타입 | 필수 | 설명 |
-|----------|------|------|------|
-| `date` | string | No | 조회 날짜 (YYYY-MM-DD) |
+| 파라미터 | 타입   | 필수 | 설명                   |
+| -------- | ------ | ---- | ---------------------- |
+| `date`   | string | No   | 조회 날짜 (YYYY-MM-DD) |
 
 **응답 (200 OK)**
 
@@ -209,16 +209,16 @@ GET /api/races/horse?date=2025-11-25
 
 ```typescript
 interface Race {
-  id: string;              // 고유 ID
+  id: string; // 고유 ID
   type: 'horse' | 'cycle' | 'boat';
-  raceNumber: number;      // 경주 번호
-  venue: string;           // 경주장
-  startTime: string;       // 출발 시간 (ISO 8601)
-  status: RaceStatus;      // 경주 상태
-  distance: number;        // 거리 (m)
-  class?: string;          // 등급
-  entries: number;         // 출주 수
-  prize?: string;          // 상금
+  raceNumber: number; // 경주 번호
+  venue: string; // 경주장
+  startTime: string; // 출발 시간 (ISO 8601)
+  status: RaceStatus; // 경주 상태
+  distance: number; // 거리 (m)
+  class?: string; // 등급
+  entries: number; // 출주 수
+  prize?: string; // 상금
 }
 
 type RaceStatus = 'scheduled' | 'in_progress' | 'finished' | 'cancelled';
@@ -246,10 +246,10 @@ type RaceStatus = 'scheduled' | 'in_progress' | 'finished' | 'cancelled';
 GET /api/races/horse/horse-20251125-seoul-1/entries
 ```
 
-| 파라미터 | 타입 | 필수 | 설명 |
-|----------|------|------|------|
-| `type` | string | Yes | 경주 유형 (horse, cycle, boat) |
-| `id` | string | Yes | 경주 ID |
+| 파라미터 | 타입   | 필수 | 설명                           |
+| -------- | ------ | ---- | ------------------------------ |
+| `type`   | string | Yes  | 경주 유형 (horse, cycle, boat) |
+| `id`     | string | Yes  | 경주 ID                        |
 
 **응답 (200 OK)**
 
@@ -305,18 +305,19 @@ interface EntriesResponse {
 }
 
 interface Entry {
-  number: number;           // 출주 번호
-  name: string;             // 마명/선수명
-  age?: number;             // 나이
-  weight: number;           // 마체중/선수 체중
-  jockey?: {                // 기수 정보 (경마)
+  number: number; // 출주 번호
+  name: string; // 마명/선수명
+  age?: number; // 나이
+  weight: number; // 마체중/선수 체중
+  jockey?: {
+    // 기수 정보 (경마)
     name: string;
     weight: number;
   };
-  trainer?: string;         // 조교사
-  owner?: string;           // 마주
+  trainer?: string; // 조교사
+  owner?: string; // 마주
   recentResults?: string[]; // 최근 5경주 결과
-  winRate?: number;         // 승률 (%)
+  winRate?: number; // 승률 (%)
 }
 ```
 
@@ -379,23 +380,23 @@ GET /api/races/horse/horse-20251125-seoul-1/odds
 ```typescript
 interface OddsResponse {
   raceId: string;
-  updatedAt: string;        // 마지막 갱신 시간
-  odds: EntryOdds[];        // 출주마별 배당률
+  updatedAt: string; // 마지막 갱신 시간
+  odds: EntryOdds[]; // 출주마별 배당률
   quinella?: QuinellaOdds[]; // 쌍승 배당률
 }
 
 interface EntryOdds {
-  number: number;           // 출주 번호
-  name: string;             // 마명/선수명
-  win: number | null;       // 단승 배당
-  place: number | null;     // 복승 배당
-  winChange?: 'up' | 'down' | 'same';   // 변화
+  number: number; // 출주 번호
+  name: string; // 마명/선수명
+  win: number | null; // 단승 배당
+  place: number | null; // 복승 배당
+  winChange?: 'up' | 'down' | 'same'; // 변화
   placeChange?: 'up' | 'down' | 'same';
 }
 
 interface QuinellaOdds {
-  combination: [number, number];  // 조합
-  odds: number;                   // 배당률
+  combination: [number, number]; // 조합
+  odds: number; // 배당률
 }
 ```
 
@@ -482,32 +483,32 @@ GET /api/races/horse/horse-20251125-seoul-1/results
 interface ResultsResponse {
   raceId: string;
   status: 'scheduled' | 'in_progress' | 'finished' | 'cancelled';
-  finishedAt?: string;      // 종료 시간
-  message?: string;         // 상태 메시지
-  results?: RaceResult[];   // 착순 결과
-  payouts?: Payouts;        // 배당금
+  finishedAt?: string; // 종료 시간
+  message?: string; // 상태 메시지
+  results?: RaceResult[]; // 착순 결과
+  payouts?: Payouts; // 배당금
 }
 
 interface RaceResult {
-  rank: number;             // 순위
-  number: number;           // 출주 번호
-  name: string;             // 마명/선수명
-  time?: string;            // 기록
-  margin?: string;          // 착차
+  rank: number; // 순위
+  number: number; // 출주 번호
+  name: string; // 마명/선수명
+  time?: string; // 기록
+  margin?: string; // 착차
 }
 
 interface Payouts {
   win?: {
     number: number;
-    payout: number;         // 단승 배당금 (100원 기준)
+    payout: number; // 단승 배당금 (100원 기준)
   };
   place?: Array<{
     number: number;
-    payout: number;         // 복승 배당금
+    payout: number; // 복승 배당금
   }>;
   quinella?: {
     combination: [number, number];
-    payout: number;         // 쌍승 배당금
+    payout: number; // 쌍승 배당금
   };
 }
 ```
@@ -518,16 +519,16 @@ interface Payouts {
 
 ### 5.1 에러 코드 목록
 
-| 코드 | HTTP | 설명 |
-|------|------|------|
-| `INVALID_PARAMETER` | 400 | 잘못된 파라미터 |
-| `INVALID_DATE_FORMAT` | 400 | 잘못된 날짜 형식 |
-| `INVALID_RACE_TYPE` | 400 | 잘못된 경주 유형 |
-| `RACE_NOT_FOUND` | 404 | 경주를 찾을 수 없음 |
-| `RATE_LIMIT_EXCEEDED` | 429 | 요청 한도 초과 |
-| `INTERNAL_ERROR` | 500 | 서버 내부 오류 |
-| `EXTERNAL_API_ERROR` | 502 | 외부 API 오류 |
-| `SERVICE_UNAVAILABLE` | 503 | 서비스 일시 중단 |
+| 코드                  | HTTP | 설명                |
+| --------------------- | ---- | ------------------- |
+| `INVALID_PARAMETER`   | 400  | 잘못된 파라미터     |
+| `INVALID_DATE_FORMAT` | 400  | 잘못된 날짜 형식    |
+| `INVALID_RACE_TYPE`   | 400  | 잘못된 경주 유형    |
+| `RACE_NOT_FOUND`      | 404  | 경주를 찾을 수 없음 |
+| `RATE_LIMIT_EXCEEDED` | 429  | 요청 한도 초과      |
+| `INTERNAL_ERROR`      | 500  | 서버 내부 오류      |
+| `EXTERNAL_API_ERROR`  | 502  | 외부 API 오류       |
+| `SERVICE_UNAVAILABLE` | 503  | 서비스 일시 중단    |
 
 ### 5.2 에러 응답 예시
 
@@ -889,22 +890,22 @@ components:
 
 ### A. 캐싱 정책
 
-| 엔드포인트 | Cache-Control | ISR revalidate |
-|-----------|---------------|----------------|
-| `/races/{type}` | public, max-age=30 | 30초 |
-| `/{id}/entries` | public, max-age=60 | 60초 |
-| `/{id}/odds` | no-cache | - |
-| `/{id}/results` | public, max-age=300 | 5분 |
+| 엔드포인트      | Cache-Control       | ISR revalidate |
+| --------------- | ------------------- | -------------- |
+| `/races/{type}` | public, max-age=30  | 30초           |
+| `/{id}/entries` | public, max-age=60  | 60초           |
+| `/{id}/odds`    | no-cache            | -              |
+| `/{id}/results` | public, max-age=300 | 5분            |
 
 ### B. 외부 API 매핑
 
-| KRace 필드 | KSPO 필드 | 변환 |
-|-----------|-----------|------|
-| `id` | `rcNo` + `rcDate` | 조합 |
-| `venue` | `trkNm` | 직접 |
-| `startTime` | `rcTime` | ISO 8601 변환 |
-| `status` | `rcStat` | 코드 매핑 |
+| KRace 필드  | KSPO 필드         | 변환          |
+| ----------- | ----------------- | ------------- |
+| `id`        | `rcNo` + `rcDate` | 조합          |
+| `venue`     | `trkNm`           | 직접          |
+| `startTime` | `rcTime`          | ISO 8601 변환 |
+| `status`    | `rcStat`          | 코드 매핑     |
 
 ---
 
-*이 문서는 API 변경 시 업데이트됩니다.*
+_이 문서는 API 변경 시 업데이트됩니다._

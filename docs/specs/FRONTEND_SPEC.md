@@ -2,7 +2,7 @@
 title: KRace 프론트엔드 상세 스펙
 version: 1.0.0
 status: Approved
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -18,8 +18,8 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
+| 버전  | 날짜       | 작성자        | 변경 내용 |
+| ----- | ---------- | ------------- | --------- |
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
 
 ## 관련 문서 (Related Documents)
@@ -117,12 +117,12 @@ src/
 
 ### 1.3 렌더링 전략
 
-| 페이지 | 렌더링 | 이유 |
-|--------|--------|------|
-| 홈페이지 | ISR (30초) | SEO + 적절한 신선도 |
-| 경주 상세 | ISR (60초) | SEO + 데이터 갱신 |
-| 배당률 섹션 | CSR | 실시간 갱신 필요 |
-| 결과 페이지 | ISR (5분) | 확정 데이터, SEO |
+| 페이지      | 렌더링     | 이유                |
+| ----------- | ---------- | ------------------- |
+| 홈페이지    | ISR (30초) | SEO + 적절한 신선도 |
+| 경주 상세   | ISR (60초) | SEO + 데이터 갱신   |
+| 배당률 섹션 | CSR        | 실시간 갱신 필요    |
+| 결과 페이지 | ISR (5분)  | 확정 데이터, SEO    |
 
 ---
 
@@ -130,10 +130,10 @@ src/
 
 ### 2.1 페이지 목록
 
-| 경로 | 페이지 | 설명 |
-|------|--------|------|
-| `/` | HomePage | 오늘의 경주 목록 |
-| `/race/[id]` | RaceDetailPage | 경주 상세 정보 |
+| 경로         | 페이지         | 설명             |
+| ------------ | -------------- | ---------------- |
+| `/`          | HomePage       | 오늘의 경주 목록 |
+| `/race/[id]` | RaceDetailPage | 경주 상세 정보   |
 
 ### 2.2 홈페이지 (/)
 
@@ -164,7 +164,7 @@ export default function HomePage() {
 
         {/* 오늘의 경주 */}
         <section>
-          <h1 className="text-2xl font-bold mb-4">오늘의 경주</h1>
+          <h1 className="mb-4 text-2xl font-bold">오늘의 경주</h1>
           <Suspense fallback={<LoadingSkeleton type="races" />}>
             <TodayRaces />
           </Suspense>
@@ -253,20 +253,20 @@ export default async function RaceDetailPage({ params }: Props) {
 
         {/* 출주표 */}
         <section className="mb-6">
-          <h2 className="text-xl font-semibold mb-3">출주표</h2>
+          <h2 className="mb-3 text-xl font-semibold">출주표</h2>
           <EntryList raceId={params.id} />
         </section>
 
         {/* 배당률 (Client Component) */}
         <section className="mb-6">
-          <h2 className="text-xl font-semibold mb-3">배당률</h2>
+          <h2 className="mb-3 text-xl font-semibold">배당률</h2>
           <OddsDisplay raceId={params.id} />
         </section>
 
         {/* 결과 */}
         {race.status === 'finished' && (
           <section className="mb-6">
-            <h2 className="text-xl font-semibold mb-3">경주 결과</h2>
+            <h2 className="mb-3 text-xl font-semibold">경주 결과</h2>
             <ResultsTable raceId={params.id} />
           </section>
         )}
@@ -284,11 +284,11 @@ export default async function RaceDetailPage({ params }: Props) {
 
 ### 3.1 컴포넌트 분류
 
-| 유형 | 렌더링 | 용도 | 예시 |
-|------|--------|------|------|
-| **Server** | 서버 | 데이터 페칭, SEO | TodayRaces, EntryList |
-| **Client** | 클라이언트 | 인터랙션, 실시간 | OddsDisplay, RaceTabs |
-| **Shared** | 양쪽 | 순수 UI | RaceCard, LoadingSkeleton |
+| 유형       | 렌더링     | 용도             | 예시                      |
+| ---------- | ---------- | ---------------- | ------------------------- |
+| **Server** | 서버       | 데이터 페칭, SEO | TodayRaces, EntryList     |
+| **Client** | 클라이언트 | 인터랙션, 실시간 | OddsDisplay, RaceTabs     |
+| **Shared** | 양쪽       | 순수 UI          | RaceCard, LoadingSkeleton |
 
 ### 3.2 주요 컴포넌트 스펙
 
@@ -307,11 +307,8 @@ interface HeaderProps {
  */
 export function Header({ className }: HeaderProps) {
   return (
-    <header className={cn(
-      "sticky top-0 z-50 bg-white border-b border-gray-200",
-      className
-    )}>
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+    <header className={cn('sticky top-0 z-50 border-b border-gray-200 bg-white', className)}>
+      <div className="container mx-auto flex items-center justify-between px-4 py-3">
         {/* 로고 */}
         <Link href="/" className="flex items-center gap-2">
           <span className="text-xl font-bold text-blue-600">KRace</span>
@@ -319,9 +316,7 @@ export function Header({ className }: HeaderProps) {
 
         {/* 날짜/시간 */}
         <div className="text-sm text-gray-600">
-          <time dateTime={new Date().toISOString()}>
-            {formatDate(new Date())}
-          </time>
+          <time dateTime={new Date().toISOString()}>{formatDate(new Date())}</time>
         </div>
       </div>
     </header>
@@ -402,12 +397,10 @@ export function RaceTabs({ raceData }: RaceTabsProps) {
       {/* 경주 목록 */}
       <div className="space-y-3">
         {races.length > 0 ? (
-          races.map((race) => (
-            <RaceCard key={race.id} race={race} />
-          ))
+          races.map((race) => <RaceCard key={race.id} race={race} />)
         ) : (
-          <p className="text-center text-gray-500 py-8">
-            오늘 예정된 {TABS.find(t => t.id === activeTab)?.label} 경주가 없습니다.
+          <p className="py-8 text-center text-gray-500">
+            오늘 예정된 {TABS.find((t) => t.id === activeTab)?.label} 경주가 없습니다.
           </p>
         )}
       </div>
@@ -445,7 +438,7 @@ export function OddsDisplay({ raceId, refreshInterval = 30000 }: OddsDisplayProp
 
   if (error) {
     return (
-      <div className="text-center py-4 text-red-500">
+      <div className="py-4 text-center text-red-500">
         배당률을 불러올 수 없습니다.
         <button onClick={refresh} className="ml-2 underline">
           다시 시도
@@ -457,14 +450,9 @@ export function OddsDisplay({ raceId, refreshInterval = 30000 }: OddsDisplayProp
   return (
     <div>
       {/* 마지막 갱신 시간 */}
-      <div className="flex justify-between items-center mb-3">
-        <span className="text-sm text-gray-500">
-          마지막 갱신: {formatTime(lastUpdated)}
-        </span>
-        <button
-          onClick={refresh}
-          className="text-sm text-blue-600 hover:underline"
-        >
+      <div className="mb-3 flex items-center justify-between">
+        <span className="text-sm text-gray-500">마지막 갱신: {formatTime(lastUpdated)}</span>
+        <button onClick={refresh} className="text-sm text-blue-600 hover:underline">
           새로고침
         </button>
       </div>
@@ -581,10 +569,7 @@ interface UseOddsReturn {
  * @param raceId - 경주 ID
  * @param options - 옵션 (갱신 주기 등)
  */
-export function useOdds(
-  raceId: string,
-  options: UseOddsOptions = {}
-): UseOddsReturn {
+export function useOdds(raceId: string, options: UseOddsOptions = {}): UseOddsReturn {
   const { refreshInterval = 30000, enabled = true } = options;
 
   const [odds, setOdds] = useState<RaceOdds | null>(null);
@@ -653,10 +638,7 @@ import { useEffect, useRef } from 'react';
  * @param callback - 실행할 콜백
  * @param delay - 지연 시간 (ms), null이면 중지
  */
-export function useInterval(
-  callback: () => void,
-  delay: number | null
-): void {
+export function useInterval(callback: () => void, delay: number | null): void {
   const savedCallback = useRef<() => void>();
 
   // callback 저장
@@ -695,21 +677,21 @@ const config = {
         primary: {
           50: '#eff6ff',
           100: '#dbeafe',
-          500: '#3b82f6',  // 메인
+          500: '#3b82f6', // 메인
           600: '#2563eb',
           700: '#1d4ed8',
         },
         // 경주 상태
         status: {
-          scheduled: '#6b7280',  // gray
-          'in-progress': '#f59e0b',  // amber
-          finished: '#10b981',  // green
-          cancelled: '#ef4444',  // red
+          scheduled: '#6b7280', // gray
+          'in-progress': '#f59e0b', // amber
+          finished: '#10b981', // green
+          cancelled: '#ef4444', // red
         },
         // 배당률 변화
         odds: {
-          up: '#ef4444',    // red (상승)
-          down: '#3b82f6',  // blue (하락)
+          up: '#ef4444', // red (상승)
+          down: '#3b82f6', // blue (하락)
         },
       },
       fontFamily: {
@@ -717,7 +699,7 @@ const config = {
         mono: ['JetBrains Mono', 'monospace'],
       },
       fontSize: {
-        'odds': ['1.125rem', { lineHeight: '1.5', fontWeight: '600' }],
+        odds: ['1.125rem', { lineHeight: '1.5', fontWeight: '600' }],
       },
     },
   },
@@ -738,15 +720,14 @@ export function cn(...inputs: ClassValue[]) {
 // 사용 예시
 function RaceStatusBadge({ status }: { status: RaceStatus }) {
   return (
-    <span className={cn(
-      "px-2 py-1 rounded text-xs font-medium",
-      {
+    <span
+      className={cn('rounded px-2 py-1 text-xs font-medium', {
         'bg-gray-100 text-gray-600': status === 'scheduled',
         'bg-amber-100 text-amber-700': status === 'in_progress',
         'bg-green-100 text-green-700': status === 'finished',
         'bg-red-100 text-red-700': status === 'cancelled',
-      }
-    )}>
+      })}
+    >
       {statusLabels[status]}
     </span>
   );
@@ -759,12 +740,12 @@ function RaceStatusBadge({ status }: { status: RaceStatus }) {
 
 ### 6.1 브레이크포인트
 
-| 이름 | 크기 | 타겟 기기 |
-|------|------|----------|
-| `sm` | 640px | 큰 스마트폰 |
-| `md` | 768px | 태블릿 세로 |
+| 이름 | 크기   | 타겟 기기                |
+| ---- | ------ | ------------------------ |
+| `sm` | 640px  | 큰 스마트폰              |
+| `md` | 768px  | 태블릿 세로              |
 | `lg` | 1024px | 태블릿 가로, 작은 노트북 |
-| `xl` | 1280px | 데스크톱 |
+| `xl` | 1280px | 데스크톱                 |
 
 ### 6.2 레이아웃 전략
 
@@ -814,12 +795,14 @@ Mobile First 접근법
 ```tsx
 function RaceCard({ race }: { race: Race }) {
   return (
-    <div className={cn(
-      // 모바일: 풀너비, 세로 레이아웃
-      "p-4 bg-white rounded-lg shadow-sm border",
-      // 태블릿+: 가로 레이아웃
-      "md:flex md:items-center md:justify-between"
-    )}>
+    <div
+      className={cn(
+        // 모바일: 풀너비, 세로 레이아웃
+        'rounded-lg border bg-white p-4 shadow-sm',
+        // 태블릿+: 가로 레이아웃
+        'md:flex md:items-center md:justify-between'
+      )}
+    >
       {/* 경주 정보 */}
       <div className="mb-3 md:mb-0">
         <h3 className="font-semibold">
@@ -831,10 +814,7 @@ function RaceCard({ race }: { race: Race }) {
       </div>
 
       {/* 출발 시간 & 상태 */}
-      <div className={cn(
-        "flex items-center justify-between",
-        "md:flex-col md:items-end md:gap-1"
-      )}>
+      <div className={cn('flex items-center justify-between', 'md:flex-col md:items-end md:gap-1')}>
         <time className="text-sm">{formatTime(race.startTime)}</time>
         <RaceStatusBadge status={race.status} />
       </div>
@@ -873,23 +853,20 @@ function RaceCard({ race }: { race: Race }) {
 import dynamic from 'next/dynamic';
 
 // 배당률 컴포넌트 - 경주 상세에서만 로드
-const OddsDisplay = dynamic(
-  () => import('@/components/race/OddsDisplay'),
-  {
-    loading: () => <OddsSkeleton />,
-    ssr: false, // 클라이언트에서만 렌더링
-  }
-);
+const OddsDisplay = dynamic(() => import('@/components/race/OddsDisplay'), {
+  loading: () => <OddsSkeleton />,
+  ssr: false, // 클라이언트에서만 렌더링
+});
 ```
 
 ### 7.3 성능 목표
 
-| 지표 | 목표 | 측정 도구 |
-|------|------|----------|
-| LCP | < 2.5s | Lighthouse |
-| FID | < 100ms | Lighthouse |
-| CLS | < 0.1 | Lighthouse |
-| TTI | < 3.8s | Lighthouse |
+| 지표        | 목표           | 측정 도구    |
+| ----------- | -------------- | ------------ |
+| LCP         | < 2.5s         | Lighthouse   |
+| FID         | < 100ms        | Lighthouse   |
+| CLS         | < 0.1          | Lighthouse   |
+| TTI         | < 3.8s         | Lighthouse   |
 | Bundle Size | < 100KB (초기) | Next.js 분석 |
 
 ---
@@ -898,12 +875,12 @@ const OddsDisplay = dynamic(
 
 ### 8.1 접근성 요구사항
 
-| 항목 | 요구사항 | WCAG |
-|------|----------|------|
-| 색상 대비 | 4.5:1 이상 | AA |
-| 키보드 접근 | 모든 기능 | AA |
-| 스크린 리더 | 주요 콘텐츠 | AA |
-| 포커스 표시 | 명확한 표시 | AA |
+| 항목        | 요구사항    | WCAG |
+| ----------- | ----------- | ---- |
+| 색상 대비   | 4.5:1 이상  | AA   |
+| 키보드 접근 | 모든 기능   | AA   |
+| 스크린 리더 | 주요 콘텐츠 | AA   |
+| 포커스 표시 | 명확한 표시 | AA   |
 
 ### 8.2 접근성 구현
 
@@ -911,11 +888,7 @@ const OddsDisplay = dynamic(
 // 탭 컴포넌트 접근성 예시
 function TabGroup({ tabs, activeTab, onTabChange }) {
   return (
-    <div
-      role="tablist"
-      aria-label="경주 종목 선택"
-      className="flex gap-2"
-    >
+    <div role="tablist" aria-label="경주 종목 선택" className="flex gap-2">
       {tabs.map((tab) => (
         <button
           key={tab.id}
@@ -927,11 +900,9 @@ function TabGroup({ tabs, activeTab, onTabChange }) {
           onClick={() => onTabChange(tab.id)}
           onKeyDown={(e) => handleKeyDown(e, tab.id)}
           className={cn(
-            "px-4 py-2 rounded transition-colors",
-            "focus:outline-none focus:ring-2 focus:ring-blue-500",
-            activeTab === tab.id
-              ? "bg-blue-600 text-white"
-              : "bg-gray-100 hover:bg-gray-200"
+            'rounded px-4 py-2 transition-colors',
+            'focus:outline-none focus:ring-2 focus:ring-blue-500',
+            activeTab === tab.id ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'
           )}
         >
           <span aria-hidden="true">{tab.icon}</span>
@@ -949,13 +920,13 @@ function TabGroup({ tabs, activeTab, onTabChange }) {
 
 ### A. 파일 명명 규칙
 
-| 유형 | 규칙 | 예시 |
-|------|------|------|
-| 컴포넌트 | PascalCase | `RaceCard.tsx` |
-| 훅 | camelCase + use | `useOdds.ts` |
-| 유틸리티 | camelCase | `formatDate.ts` |
-| 테스트 | *.test.tsx | `RaceCard.test.tsx` |
-| 스타일 | *.module.css (선택) | - |
+| 유형     | 규칙                 | 예시                |
+| -------- | -------------------- | ------------------- |
+| 컴포넌트 | PascalCase           | `RaceCard.tsx`      |
+| 훅       | camelCase + use      | `useOdds.ts`        |
+| 유틸리티 | camelCase            | `formatDate.ts`     |
+| 테스트   | \*.test.tsx          | `RaceCard.test.tsx` |
+| 스타일   | \*.module.css (선택) | -                   |
 
 ### B. 임포트 순서
 
@@ -977,4 +948,4 @@ import { RaceCard } from './RaceCard';
 
 ---
 
-*이 문서는 프론트엔드 스펙 변경 시 업데이트됩니다.*
+_이 문서는 프론트엔드 스펙 변경 시 업데이트됩니다._

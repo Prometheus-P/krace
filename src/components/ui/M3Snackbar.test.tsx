@@ -7,7 +7,7 @@ import { M3Snackbar } from './M3Snackbar';
 // Mock window.matchMedia for useReducedMotion hook
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: jest.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,

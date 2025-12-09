@@ -23,14 +23,14 @@ This plan outlines the implementation of a new layout with an enhanced header an
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-*   [ ] TDD cycle followed (evidence of red-green-refactor) - *Not yet applicable*
-*   [ ] Structural and behavioral changes in separate commits - *Not yet applicable*
-*   [ ] No unnecessary complexity beyond requirements - *Not yet applicable*
-*   [ ] Data flow follows established pattern - *Not yet applicable*
-*   [ ] Mobile-first responsive implementation verified - *Not yet applicable*
-*   [ ] All tests pass including E2E critical paths - *Not yet applicable*
+- [ ] TDD cycle followed (evidence of red-green-refactor) - _Not yet applicable_
+- [ ] Structural and behavioral changes in separate commits - _Not yet applicable_
+- [ ] No unnecessary complexity beyond requirements - _Not yet applicable_
+- [ ] Data flow follows established pattern - _Not yet applicable_
+- [ ] Mobile-first responsive implementation verified - _Not yet applicable_
+- [ ] All tests pass including E2E critical paths - _Not yet applicable_
 
 ## Project Structure
 
@@ -78,7 +78,7 @@ src/
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| Violation                  | Why Needed         | Simpler Alternative Rejected Because |
+| -------------------------- | ------------------ | ------------------------------------ |
+| [e.g., 4th project]        | [current need]     | [why 3 projects insufficient]        |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient]  |

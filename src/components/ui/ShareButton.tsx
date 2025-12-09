@@ -18,11 +18,7 @@ const ShareButton = ({ url, title }: { url: string; title: string }) => {
     }
   };
 
-  return (
-    <button onClick={handleShare}>
-      Share
-    </button>
-  );
+  return <button onClick={handleShare}>Share</button>;
 };
 
 export default ShareButton;

@@ -6,9 +6,9 @@ KRace는 공공데이터포털의 API를 활용하여 경마/경륜/경정 정�
 
 ### 1.1 데이터 소스
 
-| 기관 | API 종류 | Base URL |
-|------|----------|----------|
-| 한국마사회 | 경마 정보 | `http://apis.data.go.kr/B551015` |
+| 기관             | API 종류       | Base URL                         |
+| ---------------- | -------------- | -------------------------------- |
+| 한국마사회       | 경마 정보      | `http://apis.data.go.kr/B551015` |
 | 국민체육진흥공단 | 경륜/경정 정보 | `http://apis.data.go.kr/B551014` |
 
 ### 1.2 인증
@@ -36,11 +36,13 @@ KRace는 공공데이터포털의 API를 활용하여 경마/경륜/경정 정�
 | `_type` | ❌ | 응답 형식 | json |
 
 **Request Example**:
+
 ```
 GET /API214_17/raceHorse_1?serviceKey={KEY}&numOfRows=50&pageNo=1&rc_date=20240115&_type=json
 ```
 
 **Response**:
+
 ```json
 {
   "response": {
@@ -197,9 +199,9 @@ GET /API214_17/raceHorse_1?serviceKey={KEY}&numOfRows=50&pageNo=1&rc_date=202401
 // 오늘 모든 종목의 경주 목록
 
 interface Response {
-  success: boolean
-  data: Race[]
-  timestamp: string
+  success: boolean;
+  data: Race[];
+  timestamp: string;
 }
 ```
 
@@ -211,9 +213,9 @@ interface Response {
 // GET /api/races/boat
 
 interface Response {
-  success: boolean
-  data: Race[]
-  timestamp: string
+  success: boolean;
+  data: Race[];
+  timestamp: string;
 }
 ```
 
@@ -224,9 +226,9 @@ interface Response {
 // 예: /api/race/horse-1-1-20240115
 
 interface Response {
-  success: boolean
-  data: Race
-  timestamp: string
+  success: boolean;
+  data: Race;
+  timestamp: string;
 }
 ```
 
@@ -236,19 +238,19 @@ interface Response {
 // GET /api/stats/today
 
 interface Response {
-  success: boolean
+  success: boolean;
   data: {
-    totalRaces: number
-    horseRaces: number
-    cycleRaces: number
-    boatRaces: number
+    totalRaces: number;
+    horseRaces: number;
+    cycleRaces: number;
+    boatRaces: number;
     nextRace?: {
-      type: string
-      track: string
-      time: string
-    }
-  }
-  timestamp: string
+      type: string;
+      track: string;
+      time: string;
+    };
+  };
+  timestamp: string;
 }
 ```
 
@@ -258,37 +260,37 @@ interface Response {
 
 ### 5.1 공공데이터 API 에러
 
-| 코드 | 설명 | 대응 |
-|------|------|------|
-| `00` | 정상 | - |
-| `01` | 어플리케이션 에러 | 재시도 |
-| `02` | DB 에러 | 재시도 |
-| `03` | 데이터 없음 | 빈 결과 반환 |
-| `04` | HTTP 에러 | 재시도 |
-| `10` | 잘못된 요청 | 파라미터 확인 |
-| `11` | 인증 실패 | API 키 확인 |
-| `20` | 서비스 접근 거부 | 권한 확인 |
-| `22` | 호출 제한 초과 | 캐싱 활용 |
+| 코드 | 설명              | 대응          |
+| ---- | ----------------- | ------------- |
+| `00` | 정상              | -             |
+| `01` | 어플리케이션 에러 | 재시도        |
+| `02` | DB 에러           | 재시도        |
+| `03` | 데이터 없음       | 빈 결과 반환  |
+| `04` | HTTP 에러         | 재시도        |
+| `10` | 잘못된 요청       | 파라미터 확인 |
+| `11` | 인증 실패         | API 키 확인   |
+| `20` | 서비스 접근 거부  | 권한 확인     |
+| `22` | 호출 제한 초과    | 캐싱 활용     |
 
 ### 5.2 내부 API 에러
 
 ```typescript
 interface ErrorResponse {
-  success: false
+  success: false;
   error: {
-    code: string
-    message: string
-  }
-  timestamp: string
+    code: string;
+    message: string;
+  };
+  timestamp: string;
 }
 ```
 
-| 코드 | HTTP | 설명 |
-|------|------|------|
-| `NOT_FOUND` | 404 | 경주를 찾을 수 없음 |
-| `INVALID_PARAMS` | 400 | 잘못된 파라미터 |
-| `API_ERROR` | 502 | 외부 API 오류 |
-| `SERVER_ERROR` | 500 | 서버 오류 |
+| 코드             | HTTP | 설명                |
+| ---------------- | ---- | ------------------- |
+| `NOT_FOUND`      | 404  | 경주를 찾을 수 없음 |
+| `INVALID_PARAMS` | 400  | 잘못된 파라미터     |
+| `API_ERROR`      | 502  | 외부 API 오류       |
+| `SERVER_ERROR`   | 500  | 서버 오류           |
 
 ---
 
@@ -296,21 +298,22 @@ interface ErrorResponse {
 
 ### 6.1 공공데이터 API 제한
 
-| 구분 | 제한 |
-|------|------|
+| 구분      | 제한           |
+| --------- | -------------- |
 | 일일 호출 | 1,000회 (기본) |
-| 초당 호출 | 제한 없음 |
+| 초당 호출 | 제한 없음      |
 
 ### 6.2 캐싱 전략
 
 ```typescript
 // Next.js fetch 캐싱
 const response = await fetch(url, {
-  next: { revalidate: 60 } // 60초 캐시
-})
+  next: { revalidate: 60 }, // 60초 캐시
+});
 ```
 
 예상 호출 수:
+
 - 페이지 로드당 API 호출: 3회 (경마, 경륜, 경정)
 - 캐시 미스 시에만 실제 호출
 - 일 예상 호출: ~200회 (여유 확보)
@@ -337,7 +340,7 @@ API 키 없이 개발 시 자동으로 더미 데이터 반환:
 
 ```typescript
 if (!KRA_API_KEY) {
-  return getDummyHorseRaces()
+  return getDummyHorseRaces();
 }
 ```
 
@@ -345,10 +348,11 @@ if (!KRA_API_KEY) {
 
 ## 8. 변경 이력
 
-| 버전 | 일자 | 변경 내용 |
-|------|------|----------|
-| 1.0 | 2024-XX-XX | 최초 작성 |
+| 버전 | 일자       | 변경 내용 |
+| ---- | ---------- | --------- |
+| 1.0  | 2024-XX-XX | 최초 작성 |
 
 ---
+
 **문서 버전**: 1.0
 **최종 수정일**: 2024-XX-XX

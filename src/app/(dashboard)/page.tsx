@@ -11,7 +11,7 @@ const DashboardPage = () => {
 
   const fetchStatus = () => {
     // In a real application, you would fetch this data from an API.
-    const newServices = services.map(service => {
+    const newServices = services.map((service) => {
       const newStatus = Math.random() > 0.8 ? 'degraded' : 'operational';
       return {
         ...service,
@@ -21,7 +21,7 @@ const DashboardPage = () => {
     });
     setServices(newServices);
 
-    const isAnyDegraded = newServices.some(service => service.status === 'degraded');
+    const isAnyDegraded = newServices.some((service) => service.status === 'degraded');
     setOverallStatus(isAnyDegraded ? 'degraded' : 'operational');
   };
 
@@ -35,15 +35,25 @@ const DashboardPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">System Status Dashboard</h1>
+      <h1 className="mb-4 text-2xl font-bold">System Status Dashboard</h1>
       <div className="mb-4">
-        <strong>Overall Status:</strong> <span className={overallStatus === 'operational' ? 'text-green-500' : 'text-yellow-500'}>{overallStatus}</span>
+        <strong>Overall Status:</strong>{' '}
+        <span className={overallStatus === 'operational' ? 'text-green-500' : 'text-yellow-500'}>
+          {overallStatus}
+        </span>
       </div>
       <div className="space-y-4">
-        {services.map(service => (
-          <div key={service.name} className="p-4 border rounded">
+        {services.map((service) => (
+          <div key={service.name} className="rounded border p-4">
             <h2 className="text-xl font-semibold">{service.name}</h2>
-            <p>Status: <span className={service.status === 'operational' ? 'text-green-500' : 'text-yellow-500'}>{service.status}</span></p>
+            <p>
+              Status:{' '}
+              <span
+                className={service.status === 'operational' ? 'text-green-500' : 'text-yellow-500'}
+              >
+                {service.status}
+              </span>
+            </p>
             <p>Last Checked: {new Date(service.lastChecked).toLocaleString()}</p>
           </div>
         ))}

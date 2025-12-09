@@ -6,12 +6,7 @@ import OddsDisplay from '@/components/OddsDisplay';
 import ResultsTable from '@/components/ResultsTable';
 import HorseEntryTable from '@/components/HorseEntryTable';
 import { RaceResult, Entry } from '@/types';
-import {
-  RaceNotFound,
-  BackNavigation,
-  RaceHeader,
-  EntriesSection,
-} from './components';
+import { RaceNotFound, BackNavigation, RaceHeader, EntriesSection } from './components';
 
 type Props = {
   params: { id: string };
@@ -60,7 +55,10 @@ export async function generateMetadata(
 }
 
 // Mock results for demonstration (will be replaced with API data)
-function getMockResults(raceStatus: string, entries: { no: number; name: string; jockey?: string; odds?: number }[]): RaceResult[] {
+function getMockResults(
+  raceStatus: string,
+  entries: { no: number; name: string; jockey?: string; odds?: number }[]
+): RaceResult[] {
   if (raceStatus !== 'finished' || entries.length < 3) {
     return [];
   }
@@ -88,10 +86,8 @@ export default async function RaceDetailPage({ params }: Props) {
   const idParts = race.id.split('-');
   const raceDate = idParts[idParts.length - 1] || '';
 
-  const horseEntryDetails = race.type === 'horse'
-    ? await fetchHorseEntryDetail(raceDate)
-    : [];
-  const detailedEntries: Entry[] = horseEntryDetails.map(detail => ({
+  const horseEntryDetails = race.type === 'horse' ? await fetchHorseEntryDetail(raceDate) : [];
+  const detailedEntries: Entry[] = horseEntryDetails.map((detail) => ({
     no: detail.entryNo,
     name: detail.horseName,
     trainer: detail.trainer,
@@ -138,13 +134,16 @@ export default async function RaceDetailPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'SportsEvent',
     name: `${race.track} 제${race.raceNo}경주`,
-    description: race.distance ? `${raceTypeKorean} ${race.distance}m 경주` : `${raceTypeKorean} 경주`,
+    description: race.distance
+      ? `${raceTypeKorean} ${race.distance}m 경주`
+      : `${raceTypeKorean} 경주`,
     startDate: new Date().toISOString().split('T')[0] + 'T' + race.startTime + ':00',
-    eventStatus: race.status === 'finished'
-      ? 'https://schema.org/EventCompleted'
-      : race.status === 'live'
-      ? 'https://schema.org/EventLive'
-      : 'https://schema.org/EventScheduled',
+    eventStatus:
+      race.status === 'finished'
+        ? 'https://schema.org/EventCompleted'
+        : race.status === 'live'
+          ? 'https://schema.org/EventLive'
+          : 'https://schema.org/EventScheduled',
     location: {
       '@type': 'Place',
       name: race.track,
@@ -179,27 +178,33 @@ export default async function RaceDetailPage({ params }: Props) {
           <HorseEntryTable race={race} entries={detailedEntries} />
         )}
 
-      {/* Odds section */}
-      <section
-        className="bg-white p-4 md:p-6 rounded-xl shadow-sm"
-        data-testid="odds"
-        aria-labelledby="odds-heading"
-      >
-        <h2 id="odds-heading" className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <span aria-hidden="true">💰</span>
-          단승 배당률
-        </h2>
-        <OddsDisplay entries={race.entries} raceType={race.type} />
-      </section>
+        {/* Odds section */}
+        <section
+          className="rounded-xl bg-white p-4 shadow-sm md:p-6"
+          data-testid="odds"
+          aria-labelledby="odds-heading"
+        >
+          <h2
+            id="odds-heading"
+            className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900"
+          >
+            <span aria-hidden="true">💰</span>
+            단승 배당률
+          </h2>
+          <OddsDisplay entries={race.entries} raceType={race.type} />
+        </section>
 
         {/* Results section (only for finished races) */}
         {isFinished && results.length > 0 && (
           <section
-            className="bg-white p-4 md:p-6 rounded-xl shadow-sm"
+            className="rounded-xl bg-white p-4 shadow-sm md:p-6"
             data-testid="results"
             aria-labelledby="results-heading"
           >
-            <h2 id="results-heading" className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <h2
+              id="results-heading"
+              className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900"
+            >
               <span aria-hidden="true">🏆</span>
               경주 결과
             </h2>

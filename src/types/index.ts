@@ -3,51 +3,51 @@
 export type RaceType = 'horse' | 'cycle' | 'boat';
 
 export interface Entry {
-  no: number;              // 번호 (마번/선수 번호)
-  name: string;            // 마명/선수명
-  jockey?: string;         // 기수 (경마)
-  trainer?: string;        // 조교사 (경마)
-  age?: number;            // 연령
-  weight?: number;         // 부담중량 (경마)
-  recentRecord?: string;   // 최근 성적
-  odds?: number;           // 단승 배당률 (Phase 2)
+  no: number; // 번호 (마번/선수 번호)
+  name: string; // 마명/선수명
+  jockey?: string; // 기수 (경마)
+  trainer?: string; // 조교사 (경마)
+  age?: number; // 연령
+  weight?: number; // 부담중량 (경마)
+  recentRecord?: string; // 최근 성적
+  odds?: number; // 단승 배당률 (Phase 2)
   // Add other properties as needed from API_SPECIFICATION.md
 }
 
 export interface Race {
-  id: string;              // 고유 ID (예: horse-1-1-20240101)
-  type: RaceType;          // 종목
-  raceNo: number;          // 경주 번호
-  track: string;           // 경기장 (서울, 부산경남, 제주, 광명, 미사리)
-  startTime: string;       // 발주 시간 (HH:mm)
-  distance?: number;       // 거리 (m) - Made optional as not always available
-  grade?: string;          // 등급
+  id: string; // 고유 ID (예: horse-1-1-20240101)
+  type: RaceType; // 종목
+  raceNo: number; // 경주 번호
+  track: string; // 경기장 (서울, 부산경남, 제주, 광명, 미사리)
+  startTime: string; // 발주 시간 (HH:mm)
+  distance?: number; // 거리 (m) - Made optional as not always available
+  grade?: string; // 등급
   status: 'upcoming' | 'live' | 'finished' | 'canceled'; // 상태
-  entries: Entry[];        // 출전 목록
+  entries: Entry[]; // 출전 목록
 }
 
 // Odds types for betting information
 export interface Odds {
-  win: number | null;      // 단승 배당률
-  place: number | null;    // 복승 배당률
+  win: number | null; // 단승 배당률
+  place: number | null; // 복승 배당률
   quinella: number | null; // 쌍승 배당률
 }
 
 // Raw KSPO odds response item
 export interface KSPOOddsResponse {
-  oddsDansng?: string | null;    // 단승 배당
-  oddsBoksng?: string | null;    // 복승 배당
-  oddsSsangsng?: string | null;  // 쌍승 배당
+  oddsDansng?: string | null; // 단승 배당
+  oddsBoksng?: string | null; // 복승 배당
+  oddsSsangsng?: string | null; // 쌍승 배당
 }
 
 // Race result for finished races
 export interface RaceResult {
-  rank: number;           // 순위 (1, 2, 3, ...)
-  no: number;             // 번호 (마번/선수 번호)
-  name: string;           // 마명/선수명
-  jockey?: string;        // 기수 (경마)
-  odds?: number;          // 확정 배당률
-  payout?: number;        // 배당금 (원)
+  rank: number; // 순위 (1, 2, 3, ...)
+  no: number; // 번호 (마번/선수 번호)
+  name: string; // 마명/선수명
+  jockey?: string; // 기수 (경마)
+  odds?: number; // 확정 배당률
+  payout?: number; // 배당금 (원)
 }
 
 // ============================================
@@ -118,35 +118,35 @@ export interface Track {
 
 // Racer information (경정/경륜 선수)
 export interface Racer {
-  id: string;            // 선수 번호
-  name: string;          // 선수명
-  grade?: string;        // 등급 코드
-  totalStarts?: number;  // 출주 수
+  id: string; // 선수 번호
+  name: string; // 선수명
+  grade?: string; // 등급 코드
+  totalStarts?: number; // 출주 수
   avgRank?: number | null;
   winRate?: number | null;
-  topRate?: number | null;   // 입상률
-  top3Rate?: number | null;  // 3위 내 입상률
+  topRate?: number | null; // 입상률
+  top3Rate?: number | null; // 3위 내 입상률
   avgStartTime?: number | null;
   accidentScore?: number | null;
 }
 
 // Boat operation/support info
 export interface BoatPartMaster {
-  codeName: string;      // parts_item_cd_nm
-  spec: string;          // supp_spec_nm
+  codeName: string; // parts_item_cd_nm
+  spec: string; // supp_spec_nm
 }
 
 export interface BoatSupplierInfo {
-  name: string;          // supp_nm
-  spec: string;          // supp_spec_nm
+  name: string; // supp_nm
+  spec: string; // supp_spec_nm
 }
 
 export interface BoatEquipmentReport {
-  year: string;          // stnd_yr
-  reprDate: string;      // repr_ymd
+  year: string; // stnd_yr
+  reprDate: string; // repr_ymd
   equipmentType: string; // equip_tpe_nm
-  description: string;   // repr_desc_cn
-  mainParts: string;     // mjr_parts_nm
+  description: string; // repr_desc_cn
+  mainParts: string; // mjr_parts_nm
 }
 
 export interface BoatRacerTilt {

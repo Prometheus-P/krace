@@ -9,6 +9,7 @@ This project follows strict TDD (Test-Driven Development) principles based on Ke
 ## Quick Reference
 
 ### Core Principles
+
 1. **Red → Green → Refactor** cycle is mandatory
 2. **Never mix** structural changes with behavioral changes
 3. **All commits** must have passing tests
@@ -16,6 +17,7 @@ This project follows strict TDD (Test-Driven Development) principles based on Ke
 5. **Small commits**: One logical unit per commit
 
 ### Before Every Change
+
 - [ ] Is there a failing test? (Red)
 - [ ] Does the implementation pass the test? (Green)
 - [ ] Is refactoring needed? (Only in Green state)
@@ -23,6 +25,7 @@ This project follows strict TDD (Test-Driven Development) principles based on Ke
 - [ ] Do all tests pass before committing?
 
 ### Commit Types
+
 - `chore(structure):` - Structural changes only
 - `feat(behavior):` - New features with tests
 - `fix(behavior):` - Bug fixes with tests
@@ -32,6 +35,7 @@ This project follows strict TDD (Test-Driven Development) principles based on Ke
 ## Workflow Command
 
 When you receive `"go"`:
+
 1. Define the next test to write
 2. Write failing test (Red)
 3. Minimal implementation (Green)

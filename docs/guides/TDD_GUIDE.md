@@ -2,7 +2,7 @@
 title: KRace TDD 가이드
 version: 1.0.0
 status: Approved
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -18,8 +18,8 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
+| 버전  | 날짜       | 작성자        | 변경 내용 |
+| ----- | ---------- | ------------- | --------- |
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
 
 ## 관련 문서 (Related Documents)
@@ -68,13 +68,13 @@ language: Korean (한국어)
 
 ### 1.2 TDD의 이점
 
-| 이점 | 설명 |
-|------|------|
+| 이점          | 설명                                  |
+| ------------- | ------------------------------------- |
 | **버그 감소** | 코드 작성 전 테스트로 요구사항 명확화 |
-| **설계 개선** | 테스트 가능한 코드 = 좋은 설계 |
-| **문서화** | 테스트가 코드의 사용법을 보여줌 |
-| **자신감** | 변경 시 회귀 버그 즉시 발견 |
-| **생산성** | 디버깅 시간 대폭 감소 |
+| **설계 개선** | 테스트 가능한 코드 = 좋은 설계        |
+| **문서화**    | 테스트가 코드의 사용법을 보여줌       |
+| **자신감**    | 변경 시 회귀 버그 즉시 발견           |
+| **생산성**    | 디버깅 시간 대폭 감소                 |
 
 ### 1.3 TDD vs 기존 개발
 
@@ -141,6 +141,7 @@ describe('formatOdds', () => {
 ```
 
 **RED 단계 체크리스트:**
+
 - [ ] 테스트가 원하는 동작을 명확히 표현하는가?
 - [ ] 테스트가 실패하는가? (반드시 실패 확인)
 - [ ] 테스트 하나만 작성했는가?
@@ -153,13 +154,14 @@ describe('formatOdds', () => {
 // 테스트를 통과하는 가장 간단한 코드 작성
 
 function formatOdds(value: number): string {
-  return value.toFixed(1);  // 최소한의 구현
+  return value.toFixed(1); // 최소한의 구현
 }
 
 // 실행 결과: PASS
 ```
 
 **GREEN 단계 체크리스트:**
+
 - [ ] 테스트가 통과하는가?
 - [ ] 가장 간단한 구현인가?
 - [ ] 불필요한 기능을 추가하지 않았는가?
@@ -188,6 +190,7 @@ it('should return dash for null value', () => {
 ```
 
 **REFACTOR 단계 체크리스트:**
+
 - [ ] 모든 테스트가 여전히 통과하는가?
 - [ ] 중복 코드를 제거했는가?
 - [ ] 네이밍이 명확한가?
@@ -234,8 +237,8 @@ describe('RaceService', () => {
 
 // ❌ 나쁜 예시
 describe('RaceService', () => {
-  it('test getRaceById', () => {});      // 무엇을 테스트?
-  it('works', () => {});                  // 구체적이지 않음
+  it('test getRaceById', () => {}); // 무엇을 테스트?
+  it('works', () => {}); // 구체적이지 않음
   it('getRaceById returns race', () => {}); // 조건 없음
 });
 ```
@@ -422,7 +425,7 @@ function validateRaceParams(type: RaceType, date: string): void {
 
 async function fetchRacesFromAPI(type: RaceType, date: string): Promise<RawRace[]> {
   const response = await fetch(`${API_URL}?type=${type}&date=${date}`);
-  return response.json().then(data => data.items);
+  return response.json().then((data) => data.items);
 }
 
 function mapToRace(raw: RawRace): Race {
@@ -509,9 +512,7 @@ import { NextRequest } from 'next/server';
 describe('GET /api/races/horse', () => {
   it('should return horse races list for valid date', async () => {
     // Arrange
-    const request = new NextRequest(
-      'https://racelab.kr/api/races/horse?date=2025-11-25'
-    );
+    const request = new NextRequest('https://racelab.kr/api/races/horse?date=2025-11-25');
 
     // Act
     const response = await GET(request);
@@ -535,7 +536,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   return NextResponse.json({
     success: true,
-    data: [],  // 최소 구현: 빈 배열 반환
+    data: [], // 최소 구현: 빈 배열 반환
   });
 }
 ```
@@ -545,9 +546,7 @@ export async function GET(request: NextRequest) {
 ```typescript
 // 테스트 추가
 it('should return 400 for invalid date format', async () => {
-  const request = new NextRequest(
-    'https://racelab.kr/api/races/horse?date=invalid'
-  );
+  const request = new NextRequest('https://racelab.kr/api/races/horse?date=invalid');
 
   const response = await GET(request);
   const data = await response.json();
@@ -769,11 +768,7 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.stories.{ts,tsx}',
-  ],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.stories.{ts,tsx}'],
   coverageThreshold: {
     global: {
       branches: 80,
@@ -851,4 +846,4 @@ npm test -- --updateSnapshot  # 스냅샷 업데이트
 
 ---
 
-*TDD는 연습이 필요합니다. 작은 것부터 시작하세요!* 🚀
+_TDD는 연습이 필요합니다. 작은 것부터 시작하세요!_ 🚀

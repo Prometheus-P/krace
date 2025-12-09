@@ -10,7 +10,9 @@ import { SUCCESS_CACHE_CONTROL, ERROR_CACHE_CONTROL } from '@/lib/constants/cach
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
-export async function GET(request: NextRequest): Promise<NextResponse<ApiResponse<PaginatedResults<HistoricalRace>>>> {
+export async function GET(
+  request: NextRequest
+): Promise<NextResponse<ApiResponse<PaginatedResults<HistoricalRace>>>> {
   try {
     const { searchParams } = request.nextUrl;
 
@@ -47,7 +49,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
 
     // Parse types array from comma-separated string
     const types: RaceType[] | undefined = typesParam
-      ? (typesParam.split(',').filter(t => ['horse', 'cycle', 'boat'].includes(t)) as RaceType[])
+      ? (typesParam.split(',').filter((t) => ['horse', 'cycle', 'boat'].includes(t)) as RaceType[])
       : undefined;
 
     // Validate date range
@@ -95,7 +97,8 @@ export async function GET(request: NextRequest): Promise<NextResponse<ApiRespons
   } catch (error: unknown) {
     console.error('Error fetching historical results:', error);
 
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch historical results';
+    const errorMessage =
+      error instanceof Error ? error.message : 'Failed to fetch historical results';
     const errorResponse: ApiResponse<PaginatedResults<HistoricalRace>> = {
       success: false,
       error: {

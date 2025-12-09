@@ -86,11 +86,11 @@ export function Pagination({
         onClick={handlePrevious}
         disabled={currentPage === 1}
         aria-label="이전 페이지"
-        className={`min-w-[44px] min-h-[44px] px-3 py-2 rounded-m3-sm text-body-medium transition-colors
-          ${currentPage === 1
-            ? 'text-on-surface-variant opacity-50 cursor-not-allowed'
+        className={`min-h-[44px] min-w-[44px] rounded-m3-sm px-3 py-2 text-body-medium transition-colors ${
+          currentPage === 1
+            ? 'cursor-not-allowed text-on-surface-variant opacity-50'
             : 'text-on-surface hover:bg-surface-container-high focus:outline-none focus:ring-2 focus:ring-primary'
-          }`}
+        }`}
       >
         ‹ 이전
       </button>
@@ -100,10 +100,7 @@ export function Pagination({
         {pageNumbers.map((page, index) => {
           if (page === 'ellipsis') {
             return (
-              <span
-                key={`ellipsis-${index}`}
-                className="w-10 text-center text-on-surface-variant"
-              >
+              <span key={`ellipsis-${index}`} className="w-10 text-center text-on-surface-variant">
                 ...
               </span>
             );
@@ -118,12 +115,11 @@ export function Pagination({
               aria-label={`${page} 페이지`}
               aria-current={isActive ? 'page' : undefined}
               data-testid={`page-${page}`}
-              className={`min-w-[44px] min-h-[44px] px-3 py-2 rounded-m3-sm text-body-medium transition-colors
-                focus:outline-none focus:ring-2 focus:ring-primary
-                ${isActive
+              className={`min-h-[44px] min-w-[44px] rounded-m3-sm px-3 py-2 text-body-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
+                isActive
                   ? 'bg-primary text-white'
                   : 'text-on-surface hover:bg-surface-container-high'
-                }`}
+              }`}
             >
               {page}
             </button>
@@ -137,11 +133,11 @@ export function Pagination({
         onClick={handleNext}
         disabled={currentPage === totalPages}
         aria-label="다음 페이지"
-        className={`min-w-[44px] min-h-[44px] px-3 py-2 rounded-m3-sm text-body-medium transition-colors
-          ${currentPage === totalPages
-            ? 'text-on-surface-variant opacity-50 cursor-not-allowed'
+        className={`min-h-[44px] min-w-[44px] rounded-m3-sm px-3 py-2 text-body-medium transition-colors ${
+          currentPage === totalPages
+            ? 'cursor-not-allowed text-on-surface-variant opacity-50'
             : 'text-on-surface hover:bg-surface-container-high focus:outline-none focus:ring-2 focus:ring-primary'
-          }`}
+        }`}
       >
         다음 ›
       </button>

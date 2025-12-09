@@ -54,25 +54,19 @@ describe('ResultsTable', () => {
 
   describe('race type styling', () => {
     it('should apply horse type colors', () => {
-      const { container } = render(
-        <ResultsTable results={mockResults} raceType="horse" />
-      );
+      const { container } = render(<ResultsTable results={mockResults} raceType="horse" />);
 
       expect(container.querySelector('.text-horse')).toBeInTheDocument();
     });
 
     it('should apply cycle type colors', () => {
-      const { container } = render(
-        <ResultsTable results={mockResults} raceType="cycle" />
-      );
+      const { container } = render(<ResultsTable results={mockResults} raceType="cycle" />);
 
       expect(container.querySelector('.text-cycle')).toBeInTheDocument();
     });
 
     it('should apply boat type colors', () => {
-      const { container } = render(
-        <ResultsTable results={mockResults} raceType="boat" />
-      );
+      const { container } = render(<ResultsTable results={mockResults} raceType="boat" />);
 
       expect(container.querySelector('.text-boat')).toBeInTheDocument();
     });
@@ -80,25 +74,19 @@ describe('ResultsTable', () => {
 
   describe('rank styling', () => {
     it('should apply gold styling for 1st place', () => {
-      const { container } = render(
-        <ResultsTable results={mockResults} raceType="horse" />
-      );
+      const { container } = render(<ResultsTable results={mockResults} raceType="horse" />);
 
       expect(container.querySelector('.bg-yellow-400')).toBeInTheDocument();
     });
 
     it('should apply silver styling for 2nd place', () => {
-      const { container } = render(
-        <ResultsTable results={mockResults} raceType="horse" />
-      );
+      const { container } = render(<ResultsTable results={mockResults} raceType="horse" />);
 
       expect(container.querySelector('.bg-gray-300')).toBeInTheDocument();
     });
 
     it('should apply bronze styling for 3rd place', () => {
-      const { container } = render(
-        <ResultsTable results={mockResults} raceType="horse" />
-      );
+      const { container } = render(<ResultsTable results={mockResults} raceType="horse" />);
 
       expect(container.querySelector('.bg-orange-300')).toBeInTheDocument();
     });

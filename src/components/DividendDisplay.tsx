@@ -31,18 +31,13 @@ export function DividendDisplay({
 
   if (compact) {
     // Show only win dividend in compact mode
-    const winDividend = dividends.find(d => d.type === 'win');
+    const winDividend = dividends.find((d) => d.type === 'win');
     if (!winDividend) return null;
 
     return (
-      <div
-        className="flex items-center gap-2 text-body-small"
-        data-testid={testId}
-      >
+      <div className="flex items-center gap-2 text-body-small" data-testid={testId}>
         <span className="text-on-surface-variant">{dividendLabels.win}</span>
-        <span className="font-medium text-on-surface">
-          ₩{formatAmount(winDividend.amount)}
-        </span>
+        <span className="font-medium text-on-surface">₩{formatAmount(winDividend.amount)}</span>
       </div>
     );
   }
@@ -50,14 +45,12 @@ export function DividendDisplay({
   // Full dividend display
   return (
     <div className="space-y-2" data-testid={testId}>
-      <div className="text-label-medium text-on-surface-variant font-medium">
-        배당금
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+      <div className="text-label-medium font-medium text-on-surface-variant">배당금</div>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
         {dividends.map((dividend, index) => (
           <div
             key={`${dividend.type}-${index}`}
-            className="flex items-center justify-between bg-surface-container-low rounded-m3-sm px-3 py-2"
+            className="flex items-center justify-between rounded-m3-sm bg-surface-container-low px-3 py-2"
           >
             <div className="flex items-center gap-2">
               <span className="text-body-small text-on-surface-variant">

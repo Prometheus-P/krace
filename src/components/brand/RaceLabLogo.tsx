@@ -57,7 +57,9 @@ export function RaceLabLogo({
 
   const isInteractive = !!onClick;
   const hoverClass = isInteractive && !prefersReducedMotion ? 'hover:scale-[1.02]' : '';
-  const transitionClass = !prefersReducedMotion ? 'transition-transform duration-500 ease-in-out' : '';
+  const transitionClass = !prefersReducedMotion
+    ? 'transition-transform duration-500 ease-in-out'
+    : '';
   const cursorClass = isInteractive ? 'cursor-pointer' : '';
 
   // Inline SVG for the symbol (allows color queries in tests)
@@ -130,7 +132,8 @@ export function RaceLabLogo({
     }
   };
 
-  const baseClassName = `inline-flex items-center gap-2 ${hoverClass} ${transitionClass} ${cursorClass} ${className}`.trim();
+  const baseClassName =
+    `inline-flex items-center gap-2 ${hoverClass} ${transitionClass} ${cursorClass} ${className}`.trim();
 
   const Element = isInteractive ? 'button' : 'div';
 

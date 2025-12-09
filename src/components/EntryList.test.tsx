@@ -4,8 +4,24 @@ import EntryList from './EntryList';
 
 describe('EntryList', () => {
   const mockEntries = [
-    { no: 1, name: '번개', jockey: '김철수', trainer: '이영희', age: 4, weight: 54, recentRecord: '1-2-3' },
-    { no: 2, name: '태풍', jockey: '박민수', trainer: '최지현', age: 5, weight: 55, recentRecord: '4-5-6' },
+    {
+      no: 1,
+      name: '번개',
+      jockey: '김철수',
+      trainer: '이영희',
+      age: 4,
+      weight: 54,
+      recentRecord: '1-2-3',
+    },
+    {
+      no: 2,
+      name: '태풍',
+      jockey: '박민수',
+      trainer: '최지현',
+      age: 5,
+      weight: 55,
+      recentRecord: '4-5-6',
+    },
   ];
 
   it('should render all entries', () => {

@@ -64,10 +64,7 @@ export function TrackFilter({
 
   return (
     <div className={`flex flex-col gap-1 ${className}`} data-testid={testId}>
-      <label
-        htmlFor="track-select"
-        className="text-label-medium text-on-surface-variant"
-      >
+      <label htmlFor="track-select" className="text-label-medium text-on-surface-variant">
         경기장
       </label>
       <select
@@ -75,9 +72,7 @@ export function TrackFilter({
         value={selectedTrack || ''}
         onChange={handleChange}
         aria-label="경기장 선택"
-        className="px-3 py-2 border border-outline rounded-lg bg-surface text-on-surface
-                   focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
-                   text-body-medium"
+        className="rounded-lg border border-outline bg-surface px-3 py-2 text-body-medium text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary"
       >
         <option value="">전체</option>
         {raceTypesToShow.map((raceType) => {

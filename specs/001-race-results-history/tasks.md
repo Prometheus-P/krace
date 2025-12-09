@@ -39,6 +39,7 @@
 **Purpose**: Establish M3 design tokens, typography, and component foundations for consistent UI
 
 **Design Decisions** (from spec.md Clarifications 2025-12-02):
+
 - Color: M3 neutral brand + semantic race colors (horse=green, cycle=red, boat=blue)
 - Components: M3 Elevated Cards for results, Filter Chips, Search Bar
 - Typography: Pretendard font with M3 Type Scale

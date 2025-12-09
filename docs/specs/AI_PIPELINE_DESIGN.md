@@ -2,7 +2,7 @@
 title: KRace AI 파이프라인 설계
 version: 1.0.0
 status: Draft
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -18,8 +18,8 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
+| 버전  | 날짜       | 작성자        | 변경 내용             |
+| ----- | ---------- | ------------- | --------------------- |
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 (설계 초안) |
 
 ## 관련 문서 (Related Documents)
@@ -71,11 +71,13 @@ language: Korean (한국어)
 ### 1.3 범위 정의
 
 **In-Scope (포함)**
+
 - 기수/선수 성적 분석
 - 경주 패턴 분석
 - 통계 기반 인사이트
 
 **Out-of-Scope (제외)**
+
 - 베팅 추천/조언
 - 승률 "예측" (법적 이슈)
 - 실시간 AI 추론 (비용)
@@ -110,27 +112,27 @@ timeline
 
 #### Phase 2: 통계 분석 (기초)
 
-| 기능 | 설명 | 기술 |
-|------|------|------|
-| 기수 성적표 | 최근 N경주 성적, 승률 | SQL 집계 |
-| 경주장 통계 | 거리별, 등급별 통계 | SQL 집계 |
-| 히스토리 검색 | 과거 경주 결과 검색 | 전문 검색 |
+| 기능          | 설명                  | 기술      |
+| ------------- | --------------------- | --------- |
+| 기수 성적표   | 최근 N경주 성적, 승률 | SQL 집계  |
+| 경주장 통계   | 거리별, 등급별 통계   | SQL 집계  |
+| 히스토리 검색 | 과거 경주 결과 검색   | 전문 검색 |
 
 #### Phase 3: 패턴 분석 (중급)
 
-| 기능 | 설명 | 기술 |
-|------|------|------|
-| 성적 추이 | 시계열 성적 변화 | 시계열 분석 |
-| 상관 분석 | 조건별 성적 상관관계 | 통계 분석 |
-| 대시보드 | 인터랙티브 차트 | Chart.js |
+| 기능      | 설명                 | 기술        |
+| --------- | -------------------- | ----------- |
+| 성적 추이 | 시계열 성적 변화     | 시계열 분석 |
+| 상관 분석 | 조건별 성적 상관관계 | 통계 분석   |
+| 대시보드  | 인터랙티브 차트      | Chart.js    |
 
 #### Phase 4: 고급 분석 (고급)
 
-| 기능 | 설명 | 기술 |
-|------|------|------|
-| 클러스터링 | 유사 기수/선수 그룹화 | K-means |
-| 유사 경주 | 과거 유사 경주 검색 | 코사인 유사도 |
-| 개인화 | 관심 경주 추천 | 협업 필터링 |
+| 기능       | 설명                  | 기술          |
+| ---------- | --------------------- | ------------- |
+| 클러스터링 | 유사 기수/선수 그룹화 | K-means       |
+| 유사 경주  | 과거 유사 경주 검색   | 코사인 유사도 |
+| 개인화     | 관심 경주 추천        | 협업 필터링   |
 
 ---
 
@@ -178,29 +180,29 @@ interface DataIngestionConfig {
   // 수집 소스
   sources: {
     kspo: {
-      races: '경주 목록',
-      entries: '출주 정보',
-      results: '경주 결과',
+      races: '경주 목록';
+      entries: '출주 정보';
+      results: '경주 결과';
     };
     kra: {
-      races: '경마 경주',
-      entries: '경마 출주',
-      results: '경마 결과',
+      races: '경마 경주';
+      entries: '경마 출주';
+      results: '경마 결과';
     };
   };
 
   // 수집 주기
   schedule: {
-    races: 'every 30 minutes',      // 경주 목록
-    results: 'after race finished', // 결과
-    daily: '매일 자정',              // 일간 집계
+    races: 'every 30 minutes'; // 경주 목록
+    results: 'after race finished'; // 결과
+    daily: '매일 자정'; // 일간 집계
   };
 
   // 저장소
   storage: {
-    raw: 'S3 / Blob Storage',      // 원본 데이터
-    processed: 'PostgreSQL',        // 가공 데이터
-    analytics: 'ClickHouse',        // 분석용 (선택)
+    raw: 'S3 / Blob Storage'; // 원본 데이터
+    processed: 'PostgreSQL'; // 가공 데이터
+    analytics: 'ClickHouse'; // 분석용 (선택)
   };
 }
 ```
@@ -274,36 +276,33 @@ GROUP BY e.jockey_name;
 interface RaceFeatures {
   // 기수/선수 특성
   jockey: {
-    recentWinRate: number;      // 최근 30일 승률
-    venueWinRate: number;       // 해당 경주장 승률
-    distanceWinRate: number;    // 해당 거리 승률
-    classWinRate: number;       // 해당 등급 승률
-    currentStreak: number;      // 연속 성적 (양수: 연승, 음수: 연패)
+    recentWinRate: number; // 최근 30일 승률
+    venueWinRate: number; // 해당 경주장 승률
+    distanceWinRate: number; // 해당 거리 승률
+    classWinRate: number; // 해당 등급 승률
+    currentStreak: number; // 연속 성적 (양수: 연승, 음수: 연패)
   };
 
   // 경주 조건 특성
   race: {
     distanceCategory: 'short' | 'middle' | 'long';
-    classLevel: number;         // 등급 숫자화
-    fieldSize: number;          // 출주 수
+    classLevel: number; // 등급 숫자화
+    fieldSize: number; // 출주 수
     timeOfDay: 'morning' | 'afternoon' | 'evening';
   };
 
   // 과거 데이터 특성
   historical: {
-    avgFinishPosition: number;  // 평균 착순
-    stdFinishPosition: number;  // 착순 표준편차
-    daysFromLastRace: number;   // 최근 경주로부터 일수
+    avgFinishPosition: number; // 평균 착순
+    stdFinishPosition: number; // 착순 표준편차
+    daysFromLastRace: number; // 최근 경주로부터 일수
   };
 }
 
 /**
  * 특성 계산 함수
  */
-function calculateFeatures(
-  jockeyId: string,
-  raceContext: RaceContext
-): RaceFeatures {
+function calculateFeatures(jockeyId: string, raceContext: RaceContext): RaceFeatures {
   // 구현 예정
   return {} as RaceFeatures;
 }
@@ -464,21 +463,21 @@ class JockeyClusterModel:
 ### 5.2 비용 추정
 
 | 구성요소 | Option A (서버리스) | Option B (컨테이너) |
-|---------|-------------------|-------------------|
-| 컴퓨팅 | $10-30/월 | $50-100/월 |
-| 스토리지 | $5-10/월 | $20-30/월 |
-| DB | $0-15/월 | $30-50/월 |
-| **총합** | **$15-55/월** | **$100-180/월** |
+| -------- | ------------------- | ------------------- |
+| 컴퓨팅   | $10-30/월           | $50-100/월          |
+| 스토리지 | $5-10/월            | $20-30/월           |
+| DB       | $0-15/월            | $30-50/월           |
+| **총합** | **$15-55/월**       | **$100-180/월**     |
 
 ### 5.3 추천 기술 스택
 
-| 레이어 | 기술 | 대안 |
-|--------|------|------|
-| 스케줄링 | Vercel Cron / GitHub Actions | AWS EventBridge |
-| 분석 | Vercel Functions / Lambda | Cloud Functions |
-| 데이터 저장 | Vercel Postgres / Supabase | PlanetScale |
-| ML (선택) | Python Lambda Layer | SageMaker |
-| 시각화 | Chart.js / Recharts | D3.js |
+| 레이어      | 기술                         | 대안            |
+| ----------- | ---------------------------- | --------------- |
+| 스케줄링    | Vercel Cron / GitHub Actions | AWS EventBridge |
+| 분석        | Vercel Functions / Lambda    | Cloud Functions |
+| 데이터 저장 | Vercel Postgres / Supabase   | PlanetScale     |
+| ML (선택)   | Python Lambda Layer          | SageMaker       |
+| 시각화      | Chart.js / Recharts          | D3.js           |
 
 ---
 
@@ -516,11 +515,11 @@ class JockeyClusterModel:
 
 ### 6.2 법적 고려사항
 
-| 항목 | 현황 | 대응 |
-|------|------|------|
-| 베팅 조언 | 법적 제한 | "분석 정보" 만 제공 |
-| 예측 서비스 | 규제 대상 가능 | 승률 예측 미제공 |
-| 데이터 사용 | 공공데이터 | 이용 약관 준수 |
+| 항목        | 현황           | 대응                |
+| ----------- | -------------- | ------------------- |
+| 베팅 조언   | 법적 제한      | "분석 정보" 만 제공 |
+| 예측 서비스 | 규제 대상 가능 | 승률 예측 미제공    |
+| 데이터 사용 | 공공데이터     | 이용 약관 준수      |
 
 ### 6.3 사용자 고지
 
@@ -543,12 +542,12 @@ class JockeyClusterModel:
 
 ### A. 용어 정의
 
-| 용어 | 정의 |
-|------|------|
+| 용어                | 정의                               |
+| ------------------- | ---------------------------------- |
 | Feature Engineering | 원시 데이터에서 유의미한 특성 추출 |
-| Clustering | 유사한 데이터 그룹화 |
-| 시계열 분석 | 시간에 따른 데이터 패턴 분석 |
-| 코사인 유사도 | 벡터 간 유사도 측정 방법 |
+| Clustering          | 유사한 데이터 그룹화               |
+| 시계열 분석         | 시간에 따른 데이터 패턴 분석       |
+| 코사인 유사도       | 벡터 간 유사도 측정 방법           |
 
 ### B. 참고 자료
 
@@ -580,5 +579,5 @@ Phase 4 (ML)
 
 ---
 
-*이 문서는 AI 기능 개발 시 업데이트됩니다.*
-*현재 상태: 설계 초안 (Draft)*
+_이 문서는 AI 기능 개발 시 업데이트됩니다._
+_현재 상태: 설계 초안 (Draft)_

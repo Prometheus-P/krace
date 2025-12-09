@@ -4,17 +4,18 @@
 
 ## 프로젝트 개요
 
-| 항목 | 내용 |
-|------|------|
-| 프로젝트명 | KRace |
-| 도메인 | https://racelab.kr |
-| 기술스택 | Next.js 14, TypeScript, Tailwind CSS |
+| 항목       | 내용                                          |
+| ---------- | --------------------------------------------- |
+| 프로젝트명 | KRace                                         |
+| 도메인     | https://racelab.kr                            |
+| 기술스택   | Next.js 14, TypeScript, Tailwind CSS          |
 | 데이터소스 | 공공데이터포털 (한국마사회, 국민체육진흥공단) |
-| 수익모델 | Google AdSense, 제휴 마케팅 |
+| 수익모델   | Google AdSense, 제휴 마케팅                   |
 
 ## 핵심 기능
 
 ### MVP (Phase 1)
+
 - [ ] 오늘의 경주 일정 통합 조회
 - [ ] 종목별 출마표/출전표 제공
 - [ ] 실시간 배당률 표시
@@ -22,12 +23,14 @@
 - [ ] 반응형 모바일 UI
 
 ### Phase 2
+
 - [ ] 배당률 변동 알림
 - [ ] 과거 경주 데이터 분석
 - [ ] 마필/선수 상세 정보
 - [ ] PWA 지원
 
 ### Phase 3
+
 - [ ] AI 기반 예측 데이터
 - [ ] 커뮤니티 기능
 - [ ] 유료 프리미엄 서비스
@@ -52,13 +55,13 @@ npm run start
 
 ## 환경변수
 
-| 변수명 | 필수 | 설명 |
-|--------|------|------|
-| `KRA_API_KEY` | ✅ | 한국마사회 API 키 |
-| `KSPO_API_KEY` | ✅ | 국민체육진흥공단 API 키 |
-| `NEXT_PUBLIC_SITE_URL` | ✅ | 사이트 URL |
-| `NEXT_PUBLIC_GA_ID` | ❌ | Google Analytics ID |
-| `NEXT_PUBLIC_ADSENSE_ID` | ❌ | AdSense Publisher ID |
+| 변수명                   | 필수 | 설명                    |
+| ------------------------ | ---- | ----------------------- |
+| `KRA_API_KEY`            | ✅   | 한국마사회 API 키       |
+| `KSPO_API_KEY`           | ✅   | 국민체육진흥공단 API 키 |
+| `NEXT_PUBLIC_SITE_URL`   | ✅   | 사이트 URL              |
+| `NEXT_PUBLIC_GA_ID`      | ❌   | Google Analytics ID     |
+| `NEXT_PUBLIC_ADSENSE_ID` | ❌   | AdSense Publisher ID    |
 
 ## 프로젝트 구조
 
@@ -120,10 +123,12 @@ krace/
 ## API 연동
 
 ### 한국마사회 (경마)
+
 - 엔드포인트: `http://apis.data.go.kr/B551015`
 - 주요 API: 경주일정, 출마표, 배당률, 경주결과
 
 ### 국민체육진흥공단 (경륜/경정)
+
 - 엔드포인트: `http://apis.data.go.kr/B551014`
 - 경륜: API214_01, API214_03
 - 경정: API214_02

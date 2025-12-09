@@ -1,5 +1,13 @@
 // src/lib/api.ts
-import { Race, Entry, HistoricalRace, ResultsSearchParams, PaginatedResults, RaceType, Dividend } from '@/types';
+import {
+  Race,
+  Entry,
+  HistoricalRace,
+  ResultsSearchParams,
+  PaginatedResults,
+  RaceType,
+  Dividend,
+} from '@/types';
 import {
   mapKRA299ToRaces,
   mapKRAHorseEntryRegistration,
@@ -37,7 +45,6 @@ import {
 import { MOCK_RACES } from './mockData';
 import { MOCK_HISTORICAL_RACES } from './mockHistoricalResults';
 
-
 const KRA_BASE_URL = 'https://apis.data.go.kr/B551015';
 const KSPO_BASE_URL = 'https://apis.data.go.kr/B551014';
 type HistoricalResultItem = Record<string, unknown>;
@@ -50,15 +57,7 @@ function paginateMockHistoricalResults(
   params: ResultsSearchParams,
   options: MockPaginationOptions = {}
 ): PaginatedResults<HistoricalRace> {
-  const {
-    dateFrom,
-    dateTo,
-    types,
-    track,
-    jockey,
-    page = 1,
-    limit = 20,
-  } = params;
+  const { dateFrom, dateTo, types, track, jockey, page = 1, limit = 20 } = params;
 
   const normalizedPage = Number.isFinite(page) && page > 0 ? page : 1;
   const normalizedLimit = Number.isFinite(limit) && limit > 0 ? Math.min(limit, 100) : 20;
@@ -68,25 +67,25 @@ function paginateMockHistoricalResults(
   let results = [...MOCK_HISTORICAL_RACES];
 
   if (types && types.length > 0) {
-    results = results.filter(race => types.includes(race.type));
+    results = results.filter((race) => types.includes(race.type));
   }
 
   if (!options.ignoreDateRange) {
     if (normalizedDateFrom) {
-      results = results.filter(race => race.date >= normalizedDateFrom);
+      results = results.filter((race) => race.date >= normalizedDateFrom);
     }
     if (normalizedDateTo) {
-      results = results.filter(race => race.date <= normalizedDateTo);
+      results = results.filter((race) => race.date <= normalizedDateTo);
     }
   }
 
   if (track) {
-    results = results.filter(race => race.track === track);
+    results = results.filter((race) => race.track === track);
   }
 
   if (jockey) {
-    results = results.filter(race =>
-      race.results.some(result => result.jockey?.includes(jockey))
+    results = results.filter((race) =>
+      race.results.some((result) => result.jockey?.includes(jockey))
     );
   }
 
@@ -110,7 +109,6 @@ function paginateMockHistoricalResults(
   };
 }
 
-
 // Generic API fetch function with flexible date parameter
 async function fetchApi(
   baseUrl: string,
@@ -120,7 +118,7 @@ async function fetchApi(
   rcDate: string,
   apiName: string,
   envVarName: string,
-  dateParamName: string = 'rc_date',
+  dateParamName: string = 'rc_date'
 ): Promise<unknown[]> {
   if (!apiKey) {
     console.warn(`[${apiName}] ${envVarName} is not set. Returning empty array.`);
@@ -145,7 +143,7 @@ async function fetchApi(
 
   try {
     const response = await fetch(finalUrl, {
-      next: { revalidate: 60 }
+      next: { revalidate: 60 },
     });
 
     if (!response.ok) {
@@ -163,10 +161,9 @@ async function fetchApi(
   }
 }
 
-
 export async function fetchHorseRaceSchedules(rcDate: string): Promise<Race[]> {
   if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
-    return MOCK_RACES.filter(race => race.type === 'horse');
+    return MOCK_RACES.filter((race) => race.type === 'horse');
   }
 
   const KRA_API_KEY = process.env.KRA_API_KEY;
@@ -189,7 +186,7 @@ export async function fetchHorseRaceSchedules(rcDate: string): Promise<Race[]> {
 
 export async function fetchCycleRaceSchedules(rcDate: string): Promise<Race[]> {
   if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
-    return MOCK_RACES.filter(race => race.type === 'cycle');
+    return MOCK_RACES.filter((race) => race.type === 'cycle');
   }
 
   const KSPO_API_KEY = process.env.KSPO_API_KEY;
@@ -212,7 +209,7 @@ export async function fetchCycleRaceSchedules(rcDate: string): Promise<Race[]> {
 
 export async function fetchBoatRaceSchedules(rcDate: string): Promise<Race[]> {
   if (process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true') {
-    return MOCK_RACES.filter(race => race.type === 'boat');
+    return MOCK_RACES.filter((race) => race.type === 'boat');
   }
 
   const KSPO_API_KEY = process.env.KSPO_API_KEY;
@@ -249,7 +246,7 @@ export async function fetchRaceById(id: string): Promise<Race | null> {
       break;
   }
 
-  return races.find(race => race.id === id) || null;
+  return races.find((race) => race.id === id) || null;
 }
 
 export async function fetchRaceEntries(raceId: string): Promise<Entry[] | null> {
@@ -264,7 +261,9 @@ export async function fetchRaceEntries(raceId: string): Promise<Entry[] | null> 
   return race.entries || [];
 }
 
-export async function fetchRaceOdds(raceId: string): Promise<Array<{ no: number; name: string; odds: number }> | null> {
+export async function fetchRaceOdds(
+  raceId: string
+): Promise<Array<{ no: number; name: string; odds: number }> | null> {
   const entries = await fetchRaceEntries(raceId);
 
   if (!entries) {
@@ -273,7 +272,7 @@ export async function fetchRaceOdds(raceId: string): Promise<Array<{ no: number;
 
   // Extract odds information from entries
   // In the future, this will call the actual API for real-time odds
-  return entries.map(entry => ({
+  return entries.map((entry) => ({
     no: entry.no,
     name: entry.name,
     odds: entry.odds || 0,
@@ -313,25 +312,33 @@ function normalizeDate(value: unknown): string {
 }
 
 function parseNumber(value: unknown): number | undefined {
-  const num = typeof value === 'number' ? value : typeof value === 'string' ? parseInt(value, 10) : NaN;
+  const num =
+    typeof value === 'number' ? value : typeof value === 'string' ? parseInt(value, 10) : NaN;
   return Number.isFinite(num) ? num : undefined;
 }
 
 function trackNameFromMeet(type: RaceType, meet: unknown): string {
   const meetStr = typeof meet === 'number' ? meet.toString() : (meet as string) || '';
   const meetMap: Record<RaceType, Record<string, string>> = {
-    horse: { '1': '서울', '2': '부산경남', '3': '제주', '서울': '서울', '부산': '부산경남', '제주': '제주' },
-    cycle: { '1': '광명', '2': '창원', '3': '부산', '광명': '광명', '창원': '창원', '부산': '부산' },
-    boat: { '1': '미사리', '미사리': '미사리' },
+    horse: {
+      '1': '서울',
+      '2': '부산경남',
+      '3': '제주',
+      서울: '서울',
+      부산: '부산경남',
+      제주: '제주',
+    },
+    cycle: { '1': '광명', '2': '창원', '3': '부산', 광명: '광명', 창원: '창원', 부산: '부산' },
+    boat: { '1': '미사리', 미사리: '미사리' },
   };
   return meetMap[type][meetStr] || meetStr || '서울';
 }
 
 function trackCodeFromName(type: RaceType, track: string): string {
   const codeMap: Record<RaceType, Record<string, string>> = {
-    horse: { '서울': '1', '부산경남': '2', '제주': '3' },
-    cycle: { '광명': '1', '창원': '2', '부산': '3' },
-    boat: { '미사리': '1' },
+    horse: { 서울: '1', 부산경남: '2', 제주: '3' },
+    cycle: { 광명: '1', 창원: '2', 부산: '3' },
+    boat: { 미사리: '1' },
   };
   return codeMap[type][track] || '1';
 }
@@ -380,9 +387,18 @@ function mapToHistoricalRaces(type: RaceType, items: HistoricalResultItem[]): Hi
     }
 
     const rank = parseNumber(item.ord ?? item.rank_no) ?? race.results.length + 1;
-    const entryNo = parseNumber(item.chulNo ?? item.hrNo ?? item.hr_no ?? item.hrno ?? item.back_no) ?? rank;
-    const name = (item.hrName || item.hrNm || item.hr_name || item.hr_name_eng || item.hrNameEng || item.hr_name_en || item.racer_nm) as string | undefined;
-    const jockey = (item.jkName || item.riderName || item.driverName || item.racer_nm) as string | undefined;
+    const entryNo =
+      parseNumber(item.chulNo ?? item.hrNo ?? item.hr_no ?? item.hrno ?? item.back_no) ?? rank;
+    const name = (item.hrName ||
+      item.hrNm ||
+      item.hr_name ||
+      item.hr_name_eng ||
+      item.hrNameEng ||
+      item.hr_name_en ||
+      item.racer_nm) as string | undefined;
+    const jockey = (item.jkName || item.riderName || item.driverName || item.racer_nm) as
+      | string
+      | undefined;
     const time = item.rcTime ? String(item.rcTime) : undefined;
 
     race.results.push({
@@ -395,13 +411,15 @@ function mapToHistoricalRaces(type: RaceType, items: HistoricalResultItem[]): Hi
     });
   }
 
-  return Array.from(raceMap.values()).map(race => ({
-    ...race,
-    results: race.results.sort((a, b) => a.rank - b.rank),
-  })).sort((a, b) => {
-    if (a.date !== b.date) return b.date.localeCompare(a.date);
-    return a.raceNo - b.raceNo;
-  });
+  return Array.from(raceMap.values())
+    .map((race) => ({
+      ...race,
+      results: race.results.sort((a, b) => a.rank - b.rank),
+    }))
+    .sort((a, b) => {
+      if (a.date !== b.date) return b.date.localeCompare(a.date);
+      return a.raceNo - b.raceNo;
+    });
 }
 
 async function fetchHistoricalApiItems(
@@ -411,7 +429,7 @@ async function fetchHistoricalApiItems(
   rcDate: string,
   apiName: string,
   envVarName: string,
-  dateParamName: string = 'rc_date',
+  dateParamName: string = 'rc_date'
 ): Promise<HistoricalResultItem[]> {
   if (!apiKey) {
     console.warn(`[${apiName}] ${envVarName} is not set. Skipping fetch.`);
@@ -445,14 +463,20 @@ async function fetchHistoricalApiItems(
 }
 
 function mapPayoffs(items: unknown[]): Dividend[] {
-  return items.map(item => {
+  return items.map((item) => {
     const obj = item as Record<string, unknown>;
     const amount = parseNumber(obj.payoff ?? obj.amount ?? obj.dividend) || 0;
     const type = (obj.betType || obj.bettyp || obj.type || 'win') as Dividend['type'];
     const entriesRaw = obj.entries || obj.combination || obj.no || obj.noList || '';
-    const entries = typeof entriesRaw === 'string'
-      ? entriesRaw.split(/[^0-9]/).filter(Boolean).map(n => parseInt(n, 10))
-      : Array.isArray(entriesRaw) ? (entriesRaw as unknown[]).map(e => parseNumber(e) || 0) : [];
+    const entries =
+      typeof entriesRaw === 'string'
+        ? entriesRaw
+            .split(/[^0-9]/)
+            .filter(Boolean)
+            .map((n) => parseInt(n, 10))
+        : Array.isArray(entriesRaw)
+          ? (entriesRaw as unknown[]).map((e) => parseNumber(e) || 0)
+          : [];
 
     return {
       type: type === 'place' || type === 'quinella' ? type : 'win',
@@ -556,22 +580,20 @@ export async function fetchHistoricalResults(
   }
 
   if (normalizedDateFrom) {
-    results = results.filter(race => race.date >= normalizedDateFrom);
+    results = results.filter((race) => race.date >= normalizedDateFrom);
   }
 
   if (normalizedDateTo) {
-    results = results.filter(race => race.date <= normalizedDateTo);
+    results = results.filter((race) => race.date <= normalizedDateTo);
   }
 
   if (track) {
-    results = results.filter(race => race.track === track);
+    results = results.filter((race) => race.track === track);
   }
 
   // Filter by jockey name if provided
   if (jockey) {
-    results = results.filter(race =>
-      race.results.some(r => r.jockey?.includes(jockey))
-    );
+    results = results.filter((race) => race.results.some((r) => r.jockey?.includes(jockey)));
   }
 
   results = results.sort((a, b) => {
@@ -613,10 +635,8 @@ export async function fetchHistoricalResultById(id: string): Promise<HistoricalR
     limit: 50,
   });
 
-  return results.items.find(item => item.id === id) || null;
+  return results.items.find((item) => item.id === id) || null;
 }
-
-
 
 // ============================================
 // Auxiliary APIs (KRA / KSPO)
@@ -631,36 +651,90 @@ async function fetchServiceItems(
   envVarName: string,
   dateParamName: string = 'rc_date'
 ): Promise<unknown[]> {
-  return fetchHistoricalApiItems(baseUrl, endpoint, apiKey, rcDate, apiName, envVarName, dateParamName);
+  return fetchHistoricalApiItems(
+    baseUrl,
+    endpoint,
+    apiKey,
+    rcDate,
+    apiName,
+    envVarName,
+    dateParamName
+  );
 }
 
 // KRA (B551015)
 export const fetchHorseRaceInfo = (rcDate: string) =>
-  fetchServiceItems(KRA_BASE_URL, '/API187', process.env.KRA_API_KEY, rcDate, 'KRA API187', 'KRA_API_KEY');
+  fetchServiceItems(
+    KRA_BASE_URL,
+    '/API187',
+    process.env.KRA_API_KEY,
+    rcDate,
+    'KRA API187',
+    'KRA_API_KEY'
+  );
 
 export const fetchHorseRaceResultDetail = (rcDate: string) =>
-  fetchServiceItems(KRA_BASE_URL, '/API156', process.env.KRA_API_KEY, rcDate, 'KRA API156', 'KRA_API_KEY');
+  fetchServiceItems(
+    KRA_BASE_URL,
+    '/API156',
+    process.env.KRA_API_KEY,
+    rcDate,
+    'KRA API156',
+    'KRA_API_KEY'
+  );
 
 export const fetchHorseEntryRegistration = (rcDate: string) =>
-  fetchServiceItems(KRA_BASE_URL, '/API23_1', process.env.KRA_API_KEY, rcDate, 'KRA API23_1', 'KRA_API_KEY')
-    .then(items => mapKRAHorseEntryRegistration(items as KRAHorseEntryItem[]));
+  fetchServiceItems(
+    KRA_BASE_URL,
+    '/API23_1',
+    process.env.KRA_API_KEY,
+    rcDate,
+    'KRA API23_1',
+    'KRA_API_KEY'
+  ).then((items) => mapKRAHorseEntryRegistration(items as KRAHorseEntryItem[]));
 
 export const fetchHorseDividendSummary = (rcDate: string) =>
-  fetchServiceItems(KRA_BASE_URL, '/API301', process.env.KRA_API_KEY, rcDate, 'KRA API301', 'KRA_API_KEY')
-    .then(items => mapKRAHorseDividendSummary(items as KRAHorseDividendSummaryItem[]));
+  fetchServiceItems(
+    KRA_BASE_URL,
+    '/API301',
+    process.env.KRA_API_KEY,
+    rcDate,
+    'KRA API301',
+    'KRA_API_KEY'
+  ).then((items) => mapKRAHorseDividendSummary(items as KRAHorseDividendSummaryItem[]));
 
 export const fetchHorseEntryDetail = (rcDate: string) =>
-  fetchServiceItems(KRA_BASE_URL, '/API26_2', process.env.KRA_API_KEY, rcDate, 'KRA API26_2', 'KRA_API_KEY')
-    .then(items => mapKRAHorseEntryDetails(items as KRAHorseEntryDetailItem[]));
+  fetchServiceItems(
+    KRA_BASE_URL,
+    '/API26_2',
+    process.env.KRA_API_KEY,
+    rcDate,
+    'KRA API26_2',
+    'KRA_API_KEY'
+  ).then((items) => mapKRAHorseEntryDetails(items as KRAHorseEntryDetailItem[]));
 
 // KSPO (B551014) - Boat/Cycle shared key
 export const fetchBoatPayoffs = async (rcDate: string): Promise<Dividend[]> => {
-  const items = await fetchServiceItems(KSPO_BASE_URL, '/SRVC_OD_API_MBR_PAYOFF', process.env.KSPO_API_KEY, rcDate, 'KSPO Boat Payoff', 'KSPO_API_KEY');
+  const items = await fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_OD_API_MBR_PAYOFF',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Boat Payoff',
+    'KSPO_API_KEY'
+  );
   return mapPayoffs(items);
 };
 
 export const fetchCyclePayoffs = async (rcDate: string): Promise<Dividend[]> => {
-  const items = await fetchServiceItems(KSPO_BASE_URL, '/SRVC_OD_API_CRA_PAYOFF', process.env.KSPO_API_KEY, rcDate, 'KSPO Cycle Payoff', 'KSPO_API_KEY');
+  const items = await fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_OD_API_CRA_PAYOFF',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Cycle Payoff',
+    'KSPO_API_KEY'
+  );
   return mapKSPOCyclePayoffs(items as KSPOCyclePayoffItem[]);
 };
 
@@ -689,38 +763,94 @@ export const fetchBoatRaceRankings = async (rcDate: string) => {
 };
 
 export const fetchCycleRaceRankings = (rcDate: string) =>
-  fetchServiceItems(KSPO_BASE_URL, '/SRVC_CRA_RACE_RANK', process.env.KSPO_API_KEY, rcDate, 'KSPO Cycle Race Rank', 'KSPO_API_KEY').then(items =>
-    mapKSPOCycleRaceRankings(items as KSPOCycleRaceRankItem[])
-  );
+  fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_CRA_RACE_RANK',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Cycle Race Rank',
+    'KSPO_API_KEY'
+  ).then((items) => mapKSPOCycleRaceRankings(items as KSPOCycleRaceRankItem[]));
 
 export const fetchBoatRacerInfo = (rcDate: string) =>
-  fetchServiceItems(KSPO_BASE_URL, '/SRVC_VWEB_MBR_RACER_INFO', process.env.KSPO_API_KEY, rcDate, 'KSPO Boat Racer Info', 'KSPO_API_KEY');
+  fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_VWEB_MBR_RACER_INFO',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Boat Racer Info',
+    'KSPO_API_KEY'
+  );
 
 export const fetchCycleRacerInfo = (rcDate: string) =>
-  fetchServiceItems(KSPO_BASE_URL, '/SRVC_CRA_RACER_INFO', process.env.KSPO_API_KEY, rcDate, 'KSPO Cycle Racer Info', 'KSPO_API_KEY')
-    .then(items => mapKSPOCycleRacerInfo(items as KSPOCycleRacerInfoItem[]));
+  fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_CRA_RACER_INFO',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Cycle Racer Info',
+    'KSPO_API_KEY'
+  ).then((items) => mapKSPOCycleRacerInfo(items as KSPOCycleRacerInfoItem[]));
 
 export const fetchBoatOperationInfo = (rcDate: string) =>
-  fetchServiceItems(KSPO_BASE_URL, '/SRVC_OD_API_MRA_SUPP_CD', process.env.KSPO_API_KEY, rcDate, 'KSPO Boat Operation Info', 'KSPO_API_KEY');
+  fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_OD_API_MRA_SUPP_CD',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Boat Operation Info',
+    'KSPO_API_KEY'
+  );
 
 export const fetchCycleOperationInfo = (rcDate: string) =>
-  fetchServiceItems(KSPO_BASE_URL, '/SRVC_OD_API_CRA_CYCLE_EXER', process.env.KSPO_API_KEY, rcDate, 'KSPO Cycle Operation Info', 'KSPO_API_KEY');
+  fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_OD_API_CRA_CYCLE_EXER',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Cycle Operation Info',
+    'KSPO_API_KEY'
+  );
 
 export const fetchCycleExerciseStats = (rcDate: string) =>
-  fetchServiceItems(KSPO_BASE_URL, '/SRVC_OD_API_CRA_CYCLE_EXER', process.env.KSPO_API_KEY, rcDate, 'KSPO Cycle Exercise', 'KSPO_API_KEY')
-    .then(items => mapKSPOCycleExercise(items as KSPOCycleExerciseItem[]));
+  fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_OD_API_CRA_CYCLE_EXER',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Cycle Exercise',
+    'KSPO_API_KEY'
+  ).then((items) => mapKSPOCycleExercise(items as KSPOCycleExerciseItem[]));
 
 export const fetchCyclePartUnits = (rcDate: string) =>
-  fetchServiceItems(KSPO_BASE_URL, '/SRVC_OD_API_CRA_CYCLE_PART', process.env.KSPO_API_KEY, rcDate, 'KSPO Cycle Part', 'KSPO_API_KEY')
-    .then(items => mapKSPOCycleParts(items as KSPOCyclePartItem[]));
+  fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_OD_API_CRA_CYCLE_PART',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Cycle Part',
+    'KSPO_API_KEY'
+  ).then((items) => mapKSPOCycleParts(items as KSPOCyclePartItem[]));
 
 export const fetchCycleInspectStats = (rcDate: string) =>
-  fetchServiceItems(KSPO_BASE_URL, '/SRVC_OD_API_CRA_INSPECT', process.env.KSPO_API_KEY, rcDate, 'KSPO Cycle Inspect', 'KSPO_API_KEY')
-    .then(items => mapKSPOCycleInspects(items as KSPOCycleInspectItem[]));
+  fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_OD_API_CRA_INSPECT',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Cycle Inspect',
+    'KSPO_API_KEY'
+  ).then((items) => mapKSPOCycleInspects(items as KSPOCycleInspectItem[]));
 
 export const fetchCycleInOutStats = (rcDate: string) =>
-  fetchServiceItems(KSPO_BASE_URL, '/SRVC_OD_API_CRA_INOUT', process.env.KSPO_API_KEY, rcDate, 'KSPO Cycle InOut', 'KSPO_API_KEY')
-    .then(items => mapKSPOCycleInOut(items as KSPOCycleInOutItem[]));
+  fetchServiceItems(
+    KSPO_BASE_URL,
+    '/SRVC_OD_API_CRA_INOUT',
+    process.env.KSPO_API_KEY,
+    rcDate,
+    'KSPO Cycle InOut',
+    'KSPO_API_KEY'
+  ).then((items) => mapKSPOCycleInOut(items as KSPOCycleInOutItem[]));
 
 /**
  * Fetch boat race results (SRVC_OD_API_MBR_RACE_RESULT)

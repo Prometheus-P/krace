@@ -5,7 +5,7 @@
 **Status**: Draft
 **Input**: User description: "상단 메뉴바, 하단 푸터, 모니터링 대시보드, 텔레그램 버튼, 공유 버튼 추가"
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Share Race Information (Priority: P1)
 
@@ -99,11 +99,12 @@ Administrators and power users want to view system health, API status, and servi
 - How do we display the share button when the content has no shareable URL?
 - What if social media links in footer point to pages that don't exist yet?
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
 **Share Functionality**
+
 - **FR-001**: System MUST provide a share button on race result cards and race detail pages
 - **FR-002**: System MUST support native share API on compatible mobile devices
 - **FR-003**: System MUST provide a "copy link" fallback option on all devices
@@ -111,22 +112,26 @@ Administrators and power users want to view system health, API status, and servi
 - **FR-005**: Shared links MUST display meaningful preview metadata (title, description, image) when shared on social platforms
 
 **Telegram Integration**
+
 - **FR-006**: System MUST display a Telegram button in the footer section
 - **FR-007**: Telegram button MUST link to the official RaceLab Telegram community
 - **FR-008**: System MUST use proper deep-linking to open Telegram app when available
 
 **Navigation Enhancement**
+
 - **FR-009**: Header navigation MUST include a link to the monitoring dashboard
 - **FR-010**: Navigation MUST maintain M3 design system consistency (established in feature 002)
 - **FR-011**: Mobile navigation MUST provide smooth open/close transitions
 - **FR-012**: Navigation active states MUST be clearly visible and accessible
 
 **Footer Enhancement**
+
 - **FR-013**: Footer MUST include social media links section (Telegram, and future platforms)
 - **FR-014**: Footer MUST maintain responsive layout across breakpoints (mobile, tablet, desktop)
 - **FR-015**: Footer MUST include updated branding (RaceLab instead of KRace)
 
 **Monitoring Dashboard**
+
 - **FR-016**: System MUST provide a dedicated dashboard page accessible via navigation
 - **FR-017**: Dashboard MUST display overall system health status
 - **FR-018**: Dashboard MUST show individual service status for each external API (KRA, KSPO)
@@ -139,7 +144,7 @@ Administrators and power users want to view system health, API status, and servi
 - **ServiceStatus**: Represents the health status of an external service (name, status indicator, last checked time, optional message)
 - **SocialLink**: Represents a social media link (platform name, URL, icon)
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

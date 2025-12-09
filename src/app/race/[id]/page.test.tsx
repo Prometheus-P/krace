@@ -22,8 +22,26 @@ describe('RaceDetailPage', () => {
     grade: '국산5등급',
     status: 'upcoming',
     entries: [
-      { no: 1, name: '말1', jockey: '기수1', trainer: '조교사1', age: 3, weight: 54, recentRecord: '1-2-3', odds: 2.5 },
-      { no: 2, name: '말2', jockey: '기수2', trainer: '조교사2', age: 4, weight: 55, recentRecord: '4-5-6', odds: 3.0 },
+      {
+        no: 1,
+        name: '말1',
+        jockey: '기수1',
+        trainer: '조교사1',
+        age: 3,
+        weight: 54,
+        recentRecord: '1-2-3',
+        odds: 2.5,
+      },
+      {
+        no: 2,
+        name: '말2',
+        jockey: '기수2',
+        trainer: '조교사2',
+        age: 4,
+        weight: 55,
+        recentRecord: '4-5-6',
+        odds: 3.0,
+      },
     ],
   };
 
@@ -97,7 +115,7 @@ describe('RaceDetailPage', () => {
       render(resolvedPage);
 
       const headers = screen.getAllByRole('columnheader');
-      headers.forEach(header => {
+      headers.forEach((header) => {
         expect(header).toHaveAttribute('scope', 'col');
       });
     });

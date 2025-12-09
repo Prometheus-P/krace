@@ -161,7 +161,13 @@ describe('ResultCard', () => {
       const raceWithMissingName: HistoricalRace = {
         ...mockRace,
         results: [
-          { rank: 1, entryNo: 3, name: null as unknown as string, jockey: '김기수', time: '1:12.5' },
+          {
+            rank: 1,
+            entryNo: 3,
+            name: null as unknown as string,
+            jockey: '김기수',
+            time: '1:12.5',
+          },
           { rank: 2, entryNo: 7, name: '천둥', jockey: '이기수', time: '1:12.8' },
           { rank: 3, entryNo: 1, name: '바람', jockey: '박기수', time: '1:13.1' },
         ],
@@ -174,7 +180,13 @@ describe('ResultCard', () => {
       const raceWithUndefinedName: HistoricalRace = {
         ...mockRace,
         results: [
-          { rank: 1, entryNo: 3, name: undefined as unknown as string, jockey: '김기수', time: '1:12.5' },
+          {
+            rank: 1,
+            entryNo: 3,
+            name: undefined as unknown as string,
+            jockey: '김기수',
+            time: '1:12.5',
+          },
           { rank: 2, entryNo: 7, name: '천둥', jockey: '이기수', time: '1:12.8' },
           { rank: 3, entryNo: 1, name: '바람', jockey: '박기수', time: '1:13.1' },
         ],
@@ -242,9 +254,7 @@ describe('ResultCard', () => {
     it('handles race with fewer than 3 results', () => {
       const raceWithFewResults: HistoricalRace = {
         ...mockRace,
-        results: [
-          { rank: 1, entryNo: 3, name: '번개', jockey: '김기수', time: '1:12.5' },
-        ],
+        results: [{ rank: 1, entryNo: 3, name: '번개', jockey: '김기수', time: '1:12.5' }],
       };
       render(<ResultCard race={raceWithFewResults} />);
       expect(screen.getByText('번개')).toBeInTheDocument();

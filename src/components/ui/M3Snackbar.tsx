@@ -38,7 +38,7 @@ const severityIcons: Record<SnackbarSeverity, React.ReactNode> = {
   info: (
     <svg
       data-testid="snackbar-icon-info"
-      className="w-5 h-5"
+      className="h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -54,23 +54,18 @@ const severityIcons: Record<SnackbarSeverity, React.ReactNode> = {
   success: (
     <svg
       data-testid="snackbar-icon-success"
-      className="w-5 h-5"
+      className="h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M5 13l4 4L19 7"
-      />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
     </svg>
   ),
   warning: (
     <svg
       data-testid="snackbar-icon-warning"
-      className="w-5 h-5"
+      className="h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -86,17 +81,12 @@ const severityIcons: Record<SnackbarSeverity, React.ReactNode> = {
   error: (
     <svg
       data-testid="snackbar-icon-error"
-      className="w-5 h-5"
+      className="h-5 w-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M6 18L18 6M6 6l12 12"
-      />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
     </svg>
   ),
 };
@@ -128,8 +118,7 @@ export function M3Snackbar({
   }
 
   const isUrgent = severity === 'error' || severity === 'warning';
-  const slideDirection =
-    position === 'bottom' ? 'slide-in-from-bottom-4' : 'slide-in-from-top-4';
+  const slideDirection = position === 'bottom' ? 'slide-in-from-bottom-4' : 'slide-in-from-top-4';
 
   const snackbarClasses = [
     // Base

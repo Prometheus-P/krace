@@ -102,9 +102,7 @@ export class ExternalServiceError extends AppError {
  * 요청 제한 에러 (429)
  */
 export class RateLimitError extends AppError {
-  constructor(
-    public readonly retryAfter?: number
-  ) {
+  constructor(public readonly retryAfter?: number) {
     super('요청 한도를 초과했습니다', 'RATE_LIMIT_ERROR', 429);
     this.name = 'RateLimitError';
   }
@@ -173,10 +171,7 @@ class ApiClient {
     this.baseUrl = baseUrl;
   }
 
-  async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
+  async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
 
     try {
@@ -205,18 +200,11 @@ class ApiClient {
         throw new ExternalServiceError('Network', error);
       }
 
-      throw new AppError(
-        '요청 처리 중 오류가 발생했습니다',
-        ErrorCodes.UNKNOWN,
-        500
-      );
+      throw new AppError('요청 처리 중 오류가 발생했습니다', ErrorCodes.UNKNOWN, 500);
     }
   }
 
-  private handleApiError(
-    status: number,
-    error?: { code: string; message: string }
-  ): AppError {
+  private handleApiError(status: number, error?: { code: string; message: string }): AppError {
     const message = error?.message || '알 수 없는 오류가 발생했습니다';
     const code = error?.code || ErrorCodes.UNKNOWN;
 
@@ -479,10 +467,7 @@ const KSPO_BASE_URL = process.env.KSPO_API_URL;
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
 
-export async function fetchKspoData<T>(
-  endpoint: string,
-  retryCount = 0
-): Promise<T> {
+export async function fetchKspoData<T>(endpoint: string, retryCount = 0): Promise<T> {
   try {
     const response = await fetch(`${KSPO_BASE_URL}${endpoint}`, {
       headers: {
@@ -503,19 +488,13 @@ export async function fetchKspoData<T>(
     return response.json();
   } catch (error) {
     // 재시도 가능한 에러
-    if (
-      retryCount < MAX_RETRIES &&
-      error instanceof Error &&
-      !error.message.includes('429')
-    ) {
+    if (retryCount < MAX_RETRIES && error instanceof Error && !error.message.includes('429')) {
       logger.warn(`KSPO API retry ${retryCount + 1}/${MAX_RETRIES}`, {
         endpoint,
         error: error.message,
       });
 
-      await new Promise((resolve) =>
-        setTimeout(resolve, RETRY_DELAY * Math.pow(2, retryCount))
-      );
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY * Math.pow(2, retryCount)));
 
       return fetchKspoData<T>(endpoint, retryCount + 1);
     }
@@ -525,10 +504,7 @@ export async function fetchKspoData<T>(
       error: error instanceof Error ? error.message : String(error),
     });
 
-    throw new ExternalServiceError(
-      'KSPO',
-      error instanceof Error ? error : undefined
-    );
+    throw new ExternalServiceError('KSPO', error instanceof Error ? error : undefined);
   }
 }
 ```
@@ -574,18 +550,18 @@ export async function fetchKspoData<T>(
 
 ### HTTP 상태 코드 가이드
 
-| 상태 코드 | 의미 | 사용 사례 |
-|-----------|------|-----------|
-| 200 | OK | 성공적인 조회 |
-| 201 | Created | 리소스 생성 성공 |
-| 400 | Bad Request | 유효성 검사 실패 |
-| 401 | Unauthorized | 인증 필요 |
-| 403 | Forbidden | 권한 없음 |
-| 404 | Not Found | 리소스 없음 |
-| 409 | Conflict | 리소스 충돌 |
-| 429 | Too Many Requests | 요청 제한 초과 |
-| 500 | Internal Server Error | 서버 내부 오류 |
-| 503 | Service Unavailable | 외부 서비스 오류 |
+| 상태 코드 | 의미                  | 사용 사례        |
+| --------- | --------------------- | ---------------- |
+| 200       | OK                    | 성공적인 조회    |
+| 201       | Created               | 리소스 생성 성공 |
+| 400       | Bad Request           | 유효성 검사 실패 |
+| 401       | Unauthorized          | 인증 필요        |
+| 403       | Forbidden             | 권한 없음        |
+| 404       | Not Found             | 리소스 없음      |
+| 409       | Conflict              | 리소스 충돌      |
+| 429       | Too Many Requests     | 요청 제한 초과   |
+| 500       | Internal Server Error | 서버 내부 오류   |
+| 503       | Service Unavailable   | 외부 서비스 오류 |
 
 ---
 
@@ -636,17 +612,13 @@ export class GlobalErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         this.props.fallback || (
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center p-8">
-              <h1 className="text-2xl font-bold mb-4">
-                문제가 발생했습니다
-              </h1>
-              <p className="text-gray-600 mb-6">
-                페이지를 불러오는 중 오류가 발생했습니다.
-              </p>
+          <div className="flex min-h-screen items-center justify-center">
+            <div className="p-8 text-center">
+              <h1 className="mb-4 text-2xl font-bold">문제가 발생했습니다</h1>
+              <p className="mb-6 text-gray-600">페이지를 불러오는 중 오류가 발생했습니다.</p>
               <button
                 onClick={this.handleReset}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
               >
                 다시 시도
               </button>
@@ -684,14 +656,12 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   }, [error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full p-8 bg-white rounded-lg shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
         <div className="text-center">
-          <div className="text-6xl mb-4">⚠️</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            오류가 발생했습니다
-          </h1>
-          <p className="text-gray-600 mb-6">
+          <div className="mb-4 text-6xl">⚠️</div>
+          <h1 className="mb-2 text-2xl font-bold text-gray-900">오류가 발생했습니다</h1>
+          <p className="mb-6 text-gray-600">
             {process.env.NODE_ENV === 'development'
               ? error.message
               : '요청을 처리하는 중 문제가 발생했습니다.'}
@@ -699,14 +669,11 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           <div className="space-x-4">
             <button
               onClick={reset}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
             >
               다시 시도
             </button>
-            <a
-              href="/"
-              className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
-            >
+            <a href="/" className="rounded border border-gray-300 px-4 py-2 hover:bg-gray-50">
               홈으로
             </a>
           </div>
@@ -726,19 +693,12 @@ import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <div className="text-center">
         <h1 className="text-9xl font-bold text-gray-200">404</h1>
-        <h2 className="text-2xl font-semibold text-gray-900 mt-4">
-          페이지를 찾을 수 없습니다
-        </h2>
-        <p className="text-gray-600 mt-2 mb-8">
-          요청하신 페이지가 존재하지 않거나 이동되었습니다.
-        </p>
-        <Link
-          href="/"
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
+        <h2 className="mt-4 text-2xl font-semibold text-gray-900">페이지를 찾을 수 없습니다</h2>
+        <p className="mb-8 mt-2 text-gray-600">요청하신 페이지가 존재하지 않거나 이동되었습니다.</p>
+        <Link href="/" className="rounded-lg bg-blue-600 px-6 py-3 text-white hover:bg-blue-700">
           홈으로 돌아가기
         </Link>
       </div>
@@ -809,27 +769,24 @@ export function ErrorMessage({
 }: ErrorMessageProps) {
   if (variant === 'toast') {
     return (
-      <div className="fixed bottom-4 right-4 bg-red-50 border border-red-200 rounded-lg p-4 shadow-lg max-w-md">
+      <div className="fixed bottom-4 right-4 max-w-md rounded-lg border border-red-200 bg-red-50 p-4 shadow-lg">
         <div className="flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-500" />
           <div className="flex-1">
             <p className="text-red-800">{message}</p>
             {onRetry && (
               <button
                 onClick={onRetry}
-                className="mt-2 text-sm text-red-600 hover:text-red-800 flex items-center gap-1"
+                className="mt-2 flex items-center gap-1 text-sm text-red-600 hover:text-red-800"
               >
-                <RefreshCw className="w-4 h-4" />
+                <RefreshCw className="h-4 w-4" />
                 다시 시도
               </button>
             )}
           </div>
           {onDismiss && (
-            <button
-              onClick={onDismiss}
-              className="text-red-400 hover:text-red-600"
-            >
-              <X className="w-5 h-5" />
+            <button onClick={onDismiss} className="text-red-400 hover:text-red-600">
+              <X className="h-5 w-5" />
             </button>
           )}
         </div>
@@ -839,24 +796,21 @@ export function ErrorMessage({
 
   if (variant === 'banner') {
     return (
-      <div className="bg-red-50 border-b border-red-200 px-4 py-3">
+      <div className="border-b border-red-200 bg-red-50 px-4 py-3">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-5 h-5 text-red-500" />
+            <AlertCircle className="h-5 w-5 text-red-500" />
             <span className="text-red-800">{message}</span>
           </div>
           <div className="flex items-center gap-4">
             {onRetry && (
-              <button
-                onClick={onRetry}
-                className="text-sm text-red-600 hover:text-red-800"
-              >
+              <button onClick={onRetry} className="text-sm text-red-600 hover:text-red-800">
                 다시 시도
               </button>
             )}
             {onDismiss && (
               <button onClick={onDismiss} className="text-red-400 hover:text-red-600">
-                <X className="w-5 h-5" />
+                <X className="h-5 w-5" />
               </button>
             )}
           </div>
@@ -867,17 +821,17 @@ export function ErrorMessage({
 
   // inline (default)
   return (
-    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+    <div className="rounded-lg border border-red-200 bg-red-50 p-4">
       <div className="flex items-start gap-3">
-        <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+        <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-500" />
         <div className="flex-1">
           <p className="text-red-800">{message}</p>
           {onRetry && (
             <button
               onClick={onRetry}
-              className="mt-2 text-sm text-red-600 hover:text-red-800 flex items-center gap-1"
+              className="mt-2 flex items-center gap-1 text-sm text-red-600 hover:text-red-800"
             >
-              <RefreshCw className="w-4 h-4" />
+              <RefreshCw className="h-4 w-4" />
               다시 시도
             </button>
           )}
@@ -937,8 +891,8 @@ class Logger {
   private getColoredLevel(level: LogLevel): string {
     const colors = {
       debug: '\x1b[36m', // cyan
-      info: '\x1b[32m',  // green
-      warn: '\x1b[33m',  // yellow
+      info: '\x1b[32m', // green
+      warn: '\x1b[33m', // yellow
       error: '\x1b[31m', // red
     };
     return `${colors[level]}${level.toUpperCase()}\x1b[0m`;
@@ -1051,10 +1005,7 @@ export async function withRetry<T>(
         throw error;
       }
 
-      const delay = Math.min(
-        opts.baseDelay * Math.pow(2, attempt),
-        opts.maxDelay
-      );
+      const delay = Math.min(opts.baseDelay * Math.pow(2, attempt), opts.maxDelay);
 
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
@@ -1064,16 +1015,13 @@ export async function withRetry<T>(
 }
 
 // 사용 예시
-const data = await withRetry(
-  () => fetchKspoData('/races'),
-  {
-    maxRetries: 3,
-    shouldRetry: (error) => {
-      // 4xx 에러는 재시도하지 않음
-      return !(error instanceof AppError && error.statusCode < 500);
-    },
-  }
-);
+const data = await withRetry(() => fetchKspoData('/races'), {
+  maxRetries: 3,
+  shouldRetry: (error) => {
+    // 4xx 에러는 재시도하지 않음
+    return !(error instanceof AppError && error.statusCode < 500);
+  },
+});
 ```
 
 ### Fallback 데이터
@@ -1106,13 +1054,10 @@ export async function withFallback<T>(
 }
 
 // 사용 예시
-const races = await withFallback(
-  () => fetchTodayRaces(),
-  {
-    fallbackData: [], // 빈 배열 반환
-    shouldUseFallback: (error) => error instanceof ExternalServiceError,
-  }
-);
+const races = await withFallback(() => fetchTodayRaces(), {
+  fallbackData: [], // 빈 배열 반환
+  shouldUseFallback: (error) => error instanceof ExternalServiceError,
+});
 ```
 
 ### 캐시 기반 복구

@@ -32,7 +32,7 @@ describe('apiResponse utilities', () => {
       const mockFetchFn = jest.fn().mockResolvedValue(mockData);
 
       const response = await handleApiRequest(mockFetchFn, 'test');
-      const body = await response.json() as ApiResponse<typeof mockData>;
+      const body = (await response.json()) as ApiResponse<typeof mockData>;
 
       expect(body.success).toBe(true);
       expect(body.data).toEqual(mockData);
@@ -53,7 +53,7 @@ describe('apiResponse utilities', () => {
       const mockFetchFn = jest.fn().mockRejectedValue(mockError);
 
       const response = await handleApiRequest(mockFetchFn, 'test');
-      const body = await response.json() as ApiResponse<unknown[]>;
+      const body = (await response.json()) as ApiResponse<unknown[]>;
 
       expect(body.success).toBe(false);
       expect(body.error?.code).toBe('SERVER_ERROR');
@@ -65,7 +65,7 @@ describe('apiResponse utilities', () => {
       const mockFetchFn = jest.fn().mockRejectedValue('string error');
 
       const response = await handleApiRequest(mockFetchFn, 'customApi');
-      const body = await response.json() as ApiResponse<unknown[]>;
+      const body = (await response.json()) as ApiResponse<unknown[]>;
 
       expect(body.success).toBe(false);
       expect(body.error?.message).toBe('Failed to fetch customApi schedules');
@@ -75,7 +75,7 @@ describe('apiResponse utilities', () => {
       const mockFetchFn = jest.fn().mockResolvedValue([]);
 
       const response = await handleApiRequest(mockFetchFn, 'test');
-      const body = await response.json() as ApiResponse<unknown[]>;
+      const body = (await response.json()) as ApiResponse<unknown[]>;
 
       expect(body.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
     });
@@ -87,10 +87,7 @@ describe('apiResponse utilities', () => {
 
       await handleApiRequest(mockFetchFn, 'testApi');
 
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Error fetching testApi schedules:',
-        mockError
-      );
+      expect(consoleSpy).toHaveBeenCalledWith('Error fetching testApi schedules:', mockError);
     });
   });
 

@@ -65,11 +65,11 @@ const Header: React.FC = () => {
   const isResultsPage = pathname === '/results';
 
   return (
-    <header className="bg-white shadow-rl-1 border-b border-neutral-divider">
+    <header className="border-b border-neutral-divider bg-white shadow-rl-1">
       {/* Skip to main content link - Accessibility */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-cycle focus:text-white focus:rounded-rl-md focus:outline-none"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded-rl-md focus:bg-cycle focus:px-4 focus:py-2 focus:text-white focus:outline-none"
       >
         본문으로 건너뛰기
       </a>
@@ -82,33 +82,27 @@ const Header: React.FC = () => {
             size="md"
             onClick={() => router.push('/')}
             aria-label="RaceLab 홈으로 이동"
-            className="focus:outline-none focus:ring-2 focus:ring-cycle focus:ring-offset-2 rounded-rl-sm"
+            className="rounded-rl-sm focus:outline-none focus:ring-2 focus:ring-cycle focus:ring-offset-2"
           />
 
           {/* Desktop Navigation */}
-          <nav aria-label="주요 네비게이션" className="hidden md:flex space-x-2">
+          <nav aria-label="주요 네비게이션" className="hidden space-x-2 md:flex">
             {navItems.map((item) => (
               <Link
                 key={item.tab}
                 href={item.href}
                 aria-current={isActive(item.tab) ? 'page' : undefined}
                 title={`${item.label} 경기 보기`}
-                className={`
-                  relative min-h-touch min-w-touch px-5 py-3
-                  font-semibold text-body-medium rounded-rl-md
-                  transition-all duration-rl-fast ease-rl-standard
-                  focus:outline-none focus:ring-2 focus:ring-offset-2
-                  ${isActive(item.tab)
+                className={`relative min-h-touch min-w-touch rounded-rl-md px-5 py-3 text-body-medium font-semibold transition-all duration-rl-fast ease-rl-standard focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  isActive(item.tab)
                     ? `${item.activeColor} ${item.activeBackground} ${item.focusRing}`
                     : `${item.color} ${item.hoverColor} hover:bg-surface-dim focus:ring-outline`
-                  }
-                `}
+                } `}
               >
-                <span aria-hidden="true">{item.icon}</span>{' '}
-                <span>{item.label}</span>
+                <span aria-hidden="true">{item.icon}</span> <span>{item.label}</span>
                 {/* Active indicator */}
                 {isActive(item.tab) && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-current rounded-full" />
+                  <span className="absolute bottom-0 left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-current" />
                 )}
               </Link>
             ))}
@@ -117,21 +111,15 @@ const Header: React.FC = () => {
               href="/results"
               aria-current={isResultsPage ? 'page' : undefined}
               title="경기 결과 보기"
-              className={`
-                relative min-h-touch min-w-touch px-5 py-3
-                font-semibold text-body-medium rounded-rl-md
-                transition-all duration-rl-fast ease-rl-standard
-                focus:outline-none focus:ring-2 focus:ring-offset-2
-                ${isResultsPage
-                  ? 'text-boat-on-container bg-boat-container focus:ring-boat'
-                  : 'text-on-surface hover:text-boat hover:bg-surface-dim focus:ring-outline'
-                }
-              `}
+              className={`relative min-h-touch min-w-touch rounded-rl-md px-5 py-3 text-body-medium font-semibold transition-all duration-rl-fast ease-rl-standard focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                isResultsPage
+                  ? 'bg-boat-container text-boat-on-container focus:ring-boat'
+                  : 'text-on-surface hover:bg-surface-dim hover:text-boat focus:ring-outline'
+              } `}
             >
-              <span aria-hidden="true">📊</span>{' '}
-              <span>결과</span>
+              <span aria-hidden="true">📊</span> <span>결과</span>
               {isResultsPage && (
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-current rounded-full" />
+                <span className="absolute bottom-0 left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-current" />
               )}
             </Link>
           </nav>
@@ -143,11 +131,11 @@ const Header: React.FC = () => {
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden min-h-touch min-w-touch p-3 rounded-rl-md text-on-surface hover:bg-surface-dim focus:outline-none focus:ring-2 focus:ring-cycle focus:ring-offset-2 transition-colors duration-rl-fast"
+            className="min-h-touch min-w-touch rounded-rl-md p-3 text-on-surface transition-colors duration-rl-fast hover:bg-surface-dim focus:outline-none focus:ring-2 focus:ring-cycle focus:ring-offset-2 md:hidden"
           >
             {isMobileMenuOpen ? (
               <svg
-                className="w-6 h-6"
+                className="h-6 w-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -162,7 +150,7 @@ const Header: React.FC = () => {
               </svg>
             ) : (
               <svg
-                className="w-6 h-6"
+                className="h-6 w-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -184,7 +172,7 @@ const Header: React.FC = () => {
           <nav
             id="mobile-menu"
             aria-label="모바일 네비게이션"
-            className="md:hidden mt-4 pt-4 border-t border-neutral-divider"
+            className="mt-4 border-t border-neutral-divider pt-4 md:hidden"
           >
             <ul className="space-y-2">
               {navItems.map((item) => (
@@ -193,18 +181,15 @@ const Header: React.FC = () => {
                     href={item.href}
                     aria-current={isActive(item.tab) ? 'page' : undefined}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`
-                      flex items-center min-h-touch px-5 py-4
-                      font-semibold text-body-medium rounded-rl-md
-                      transition-all duration-rl-fast ease-rl-standard
-                      focus:outline-none focus:ring-2 focus:ring-offset-2
-                      ${isActive(item.tab)
+                    className={`flex min-h-touch items-center rounded-rl-md px-5 py-4 text-body-medium font-semibold transition-all duration-rl-fast ease-rl-standard focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                      isActive(item.tab)
                         ? `${item.activeColor} ${item.activeBackground} ${item.focusRing}`
                         : `${item.color} ${item.hoverColor} hover:bg-surface-dim focus:ring-outline`
-                      }
-                    `}
+                    } `}
                   >
-                    <span aria-hidden="true" className="mr-3 text-xl">{item.icon}</span>
+                    <span aria-hidden="true" className="mr-3 text-xl">
+                      {item.icon}
+                    </span>
                     <span>{item.label}</span>
                     {isActive(item.tab) && (
                       <span className="ml-auto text-label-small">현재 페이지</span>
@@ -218,22 +203,17 @@ const Header: React.FC = () => {
                   href="/results"
                   aria-current={isResultsPage ? 'page' : undefined}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`
-                    flex items-center min-h-touch px-5 py-4
-                    font-semibold text-body-medium rounded-rl-md
-                    transition-all duration-rl-fast ease-rl-standard
-                    focus:outline-none focus:ring-2 focus:ring-offset-2
-                    ${isResultsPage
-                      ? 'text-boat-on-container bg-boat-container focus:ring-boat'
-                      : 'text-on-surface hover:text-boat hover:bg-surface-dim focus:ring-outline'
-                    }
-                  `}
+                  className={`flex min-h-touch items-center rounded-rl-md px-5 py-4 text-body-medium font-semibold transition-all duration-rl-fast ease-rl-standard focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                    isResultsPage
+                      ? 'bg-boat-container text-boat-on-container focus:ring-boat'
+                      : 'text-on-surface hover:bg-surface-dim hover:text-boat focus:ring-outline'
+                  } `}
                 >
-                  <span aria-hidden="true" className="mr-3 text-xl">📊</span>
+                  <span aria-hidden="true" className="mr-3 text-xl">
+                    📊
+                  </span>
                   <span>결과</span>
-                  {isResultsPage && (
-                    <span className="ml-auto text-label-small">현재 페이지</span>
-                  )}
+                  {isResultsPage && <span className="ml-auto text-label-small">현재 페이지</span>}
                 </Link>
               </li>
             </ul>

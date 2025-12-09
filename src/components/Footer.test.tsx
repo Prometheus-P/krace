@@ -42,7 +42,9 @@ describe('Footer Component', () => {
 
     it('should_display_copyright_and_data_source', () => {
       const currentYear = new Date().getFullYear();
-      expect(screen.getByText(new RegExp(`© ${currentYear} KRace. 공공데이터포털 API 활용.`, 'i'))).toBeInTheDocument();
+      expect(
+        screen.getByText(new RegExp(`© ${currentYear} KRace. 공공데이터포털 API 활용.`, 'i'))
+      ).toBeInTheDocument();
     });
   });
 

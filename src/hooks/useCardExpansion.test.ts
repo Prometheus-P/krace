@@ -90,10 +90,9 @@ describe('useCardExpansion', () => {
   });
 
   it('supports controlled mode with expanded prop', () => {
-    const { result, rerender } = renderHook(
-      ({ expanded }) => useCardExpansion({ expanded }),
-      { initialProps: { expanded: false } }
-    );
+    const { result, rerender } = renderHook(({ expanded }) => useCardExpansion({ expanded }), {
+      initialProps: { expanded: false },
+    });
 
     expect(result.current.isExpanded).toBe(false);
 

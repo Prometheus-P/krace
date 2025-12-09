@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -49,6 +49,7 @@ const config: Config = {
           dark: '#66BB6A',
           container: '#E8F5E9',
           'on-container': '#2E7D32',
+          bold: '#2E7D32', // Added bold variant
         },
         // Soft Coral - 경륜/핵심/CTA
         cycle: {
@@ -57,6 +58,7 @@ const config: Config = {
           dark: '#EF5350',
           container: '#FFEBEE',
           'on-container': '#C62828',
+          bold: '#C62828', // Added bold variant
         },
         // Steel Blue - 경정/흐름/링크
         boat: {
@@ -65,6 +67,7 @@ const config: Config = {
           dark: '#42A5F5',
           container: '#E3F2FD',
           'on-container': '#1565C0',
+          bold: '#1565C0', // Added bold variant
         },
 
         // CTA (Soft Coral 사용)
@@ -218,11 +221,12 @@ const config: Config = {
       },
       // Min Height - 터치 타겟 (최소 48px)
       minHeight: {
-        'touch': '48px',
+        touch: '48px',
         'touch-lg': '56px',
+        dense: '32px', // Added for compact mode
       },
       minWidth: {
-        'touch': '48px',
+        touch: '48px',
         'touch-lg': '56px',
       },
       // Animations
@@ -264,5 +268,5 @@ const config: Config = {
     },
   },
   plugins: [],
-}
-export default config
+};
+export default config;

@@ -37,12 +37,12 @@ export const colors = {
 
   // Neutral Colors - 배경 및 텍스트 (흰색 배경 최적화 고대비)
   neutral: {
-    background: '#FFFFFF',        // 순백 배경 (필수)
-    textPrimary: '#27272A',       // 헤드라인 및 주요 텍스트 (최고 대비)
-    textSecondary: '#71717A',     // 부제목, 보조 정보
-    border: '#D4D4D8',            // UI 경계선 (낮은 대비로 시선 방해 최소화)
-    divider: '#E4E4E7',           // 테이블 구분선
-    tableRowAlt: '#F4F4F5',       // Zebra Stripes 행 배경
+    background: '#FFFFFF', // 순백 배경 (필수)
+    textPrimary: '#27272A', // 헤드라인 및 주요 텍스트 (최고 대비)
+    textSecondary: '#71717A', // 부제목, 보조 정보
+    border: '#D4D4D8', // UI 경계선 (낮은 대비로 시선 방해 최소화)
+    divider: '#E4E4E7', // 테이블 구분선
+    tableRowAlt: '#F4F4F5', // Zebra Stripes 행 배경
   },
 
   // Legacy Support - M3 Surface Colors (기존 호환성)

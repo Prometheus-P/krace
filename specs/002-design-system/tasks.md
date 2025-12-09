@@ -160,7 +160,7 @@
 ### Implementation for User Story 5
 
 - [x] T044 [US5] Apply M3 type scale to ResultCard headlines at src/components/ResultCard.tsx (already uses text-title-medium)
-- [x] T045 [US5] Enhance race type color prominence in ResultCard at src/components/ResultCard.tsx (border-l-4 + bg-*-container)
+- [x] T045 [US5] Enhance race type color prominence in ResultCard at src/components/ResultCard.tsx (border-l-4 + bg-\*-container)
 - [x] T046 [US5] Apply larger text-title-large to dividend amounts in DividendDisplay at src/components/DividendDisplay.tsx (uses text-body-medium for clarity)
 - [x] T047 [US5] Add section header styling with consistent M3 typography (text-label-medium throughout)
 - [x] T048 [US5] Verify contrast ratios meet WCAG AA (4.5:1) across key text (accessibility.ts utility added)
@@ -218,14 +218,14 @@
 
 ### User Story Dependencies
 
-| Story | Depends On | Can Run Parallel With |
-|-------|------------|----------------------|
-| US1 (Logo) | Foundational | US2, US3, US4, US5, US6 |
-| US2 (Consistency) | Foundational | US1, US3, US4, US5, US6 |
-| US3 (Motion) | Foundational, useRipple | US1, US2, US4, US5, US6 |
-| US4 (Touch) | US2 (needs components) | US1, US3, US5, US6 |
-| US5 (Hierarchy) | US2 (needs typography) | US1, US3, US4, US6 |
-| US6 (Responsive) | US2 (needs layouts) | US1, US3, US4, US5 |
+| Story             | Depends On              | Can Run Parallel With   |
+| ----------------- | ----------------------- | ----------------------- |
+| US1 (Logo)        | Foundational            | US2, US3, US4, US5, US6 |
+| US2 (Consistency) | Foundational            | US1, US3, US4, US5, US6 |
+| US3 (Motion)      | Foundational, useRipple | US1, US2, US4, US5, US6 |
+| US4 (Touch)       | US2 (needs components)  | US1, US3, US5, US6      |
+| US5 (Hierarchy)   | US2 (needs typography)  | US1, US3, US4, US6      |
+| US6 (Responsive)  | US2 (needs layouts)     | US1, US3, US4, US5      |
 
 ### Within Each User Story (TDD Cycle)
 

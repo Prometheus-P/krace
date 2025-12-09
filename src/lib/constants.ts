@@ -26,16 +26,14 @@ export function getTracksByType(types?: RaceType[]): Track[] {
   if (!types || types.length === 0) {
     return TRACKS;
   }
-  return TRACKS.filter(track => types.includes(track.raceType));
+  return TRACKS.filter((track) => types.includes(track.raceType));
 }
 
 /**
  * Get track names for a specific race type
  */
 export function getTrackNamesByType(type: RaceType): string[] {
-  return TRACKS
-    .filter(track => track.raceType === type)
-    .map(track => track.name);
+  return TRACKS.filter((track) => track.raceType === type).map((track) => track.name);
 }
 
 /**

@@ -16,7 +16,7 @@
 - [x] CHK002 - Are skeleton/placeholder requirements specified during data loading? [Gap, related to SC-002]
   - ✓ Implemented: Skeleton.tsx component with shimmer animation; Skeletons.tsx for results
 - [x] CHK003 - Are keyboard navigation requirements defined for filter controls and result cards? [Gap, Accessibility]
-  - ✓ Implemented: 21 components include aria-*/tabIndex/onKeyDown support
+  - ✓ Implemented: 21 components include aria-\*/tabIndex/onKeyDown support
 - [x] CHK004 - Are screen reader announcements specified for dynamic content updates (filter results, pagination)? [Gap, Accessibility]
   - ✓ Implemented: aria-live regions in filter components; role="status" for updates
 - [x] CHK005 - Are focus management requirements defined when expanding/collapsing result cards? [Gap, Accessibility]
@@ -146,18 +146,18 @@
 
 ## Summary
 
-| Category | Items | Completed | Status |
-|----------|-------|-----------|--------|
-| Requirement Completeness | CHK001-008 | 8/8 | ✅ PASS |
-| Requirement Clarity | CHK009-016 | 8/8 | ✅ PASS |
-| Requirement Consistency | CHK017-021 | 5/5 | ✅ PASS |
-| Acceptance Criteria | CHK022-026 | 5/5 | ✅ PASS |
-| Scenario Coverage | CHK027-032 | 6/6 | ✅ PASS |
-| Edge Case Coverage | CHK033-038 | 6/6 | ✅ PASS |
-| API/Data Requirements | CHK039-044 | 6/6 | ✅ PASS |
-| Non-Functional | CHK045-049 | 5/5 | ✅ PASS |
-| Dependencies | CHK050-053 | 4/4 | ✅ PASS |
-| **Total** | **53 items** | **53/53** | **✅ ALL PASS** |
+| Category                 | Items        | Completed | Status          |
+| ------------------------ | ------------ | --------- | --------------- |
+| Requirement Completeness | CHK001-008   | 8/8       | ✅ PASS         |
+| Requirement Clarity      | CHK009-016   | 8/8       | ✅ PASS         |
+| Requirement Consistency  | CHK017-021   | 5/5       | ✅ PASS         |
+| Acceptance Criteria      | CHK022-026   | 5/5       | ✅ PASS         |
+| Scenario Coverage        | CHK027-032   | 6/6       | ✅ PASS         |
+| Edge Case Coverage       | CHK033-038   | 6/6       | ✅ PASS         |
+| API/Data Requirements    | CHK039-044   | 6/6       | ✅ PASS         |
+| Non-Functional           | CHK045-049   | 5/5       | ✅ PASS         |
+| Dependencies             | CHK050-053   | 4/4       | ✅ PASS         |
+| **Total**                | **53 items** | **53/53** | **✅ ALL PASS** |
 
 ## Notes
 

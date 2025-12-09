@@ -6,7 +6,7 @@ import Header from './Header';
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: jest.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -141,16 +141,23 @@ describe('Header Component', () => {
       const menuButton = screen.getByRole('button', { name: '메뉴 열기' });
 
       // Menu should be closed initially
-      expect(screen.queryByRole('navigation', { name: '모바일 네비게이션' })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('navigation', { name: '모바일 네비게이션' })
+      ).not.toBeInTheDocument();
 
       // Open menu
       fireEvent.click(menuButton);
       expect(screen.getByRole('navigation', { name: '모바일 네비게이션' })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: '메뉴 닫기' })).toHaveAttribute('aria-expanded', 'true');
+      expect(screen.getByRole('button', { name: '메뉴 닫기' })).toHaveAttribute(
+        'aria-expanded',
+        'true'
+      );
 
       // Close menu
       fireEvent.click(screen.getByRole('button', { name: '메뉴 닫기' }));
-      expect(screen.queryByRole('navigation', { name: '모바일 네비게이션' })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('navigation', { name: '모바일 네비게이션' })
+      ).not.toBeInTheDocument();
     });
 
     it('should_close_mobile_menu_when_link_is_clicked', () => {
@@ -162,7 +169,9 @@ describe('Header Component', () => {
       const horseLink = mobileNav.querySelector('a[href="/?tab=horse"]');
 
       fireEvent.click(horseLink!);
-      expect(screen.queryByRole('navigation', { name: '모바일 네비게이션' })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('navigation', { name: '모바일 네비게이션' })
+      ).not.toBeInTheDocument();
     });
 
     it('should_show_current_page_indicator_in_mobile_menu', () => {

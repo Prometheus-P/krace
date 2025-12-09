@@ -2,7 +2,7 @@
 title: KRace 클린 코드 가이드
 version: 1.0.0
 status: Approved
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -18,8 +18,8 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
+| 버전  | 날짜       | 작성자        | 변경 내용 |
+| ----- | ---------- | ------------- | --------- |
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
 
 ## 관련 문서 (Related Documents)
@@ -77,14 +77,14 @@ language: Korean (한국어)
 
 ### 1.2 코드 품질 기준
 
-| 항목 | 기준 | 이유 |
-|------|------|------|
-| 함수 길이 | 20줄 이하 | 가독성, 단일 책임 |
-| 클래스 길이 | 200줄 이하 | 응집도 유지 |
-| 파일 길이 | 400줄 이하 | 관리 용이성 |
-| 중첩 깊이 | 3단계 이하 | 복잡도 제어 |
-| 매개변수 수 | 4개 이하 | 인터페이스 단순화 |
-| 사이클로매틱 복잡도 | 10 이하 | 테스트 용이성 |
+| 항목                | 기준       | 이유              |
+| ------------------- | ---------- | ----------------- |
+| 함수 길이           | 20줄 이하  | 가독성, 단일 책임 |
+| 클래스 길이         | 200줄 이하 | 응집도 유지       |
+| 파일 길이           | 400줄 이하 | 관리 용이성       |
+| 중첩 깊이           | 3단계 이하 | 복잡도 제어       |
+| 매개변수 수         | 4개 이하   | 인터페이스 단순화 |
+| 사이클로매틱 복잡도 | 10 이하    | 테스트 용이성     |
 
 ---
 
@@ -106,16 +106,16 @@ const n = 16;
 
 ### 2.2 네이밍 컨벤션
 
-| 대상 | 컨벤션 | 예시 |
-|------|--------|------|
-| 변수 | camelCase | `raceData`, `userToken` |
-| 상수 | UPPER_SNAKE_CASE | `MAX_ENTRIES`, `API_URL` |
-| 함수 | camelCase (동사) | `getRaces`, `validateInput` |
-| 클래스/타입 | PascalCase | `RaceService`, `EntryOdds` |
-| 인터페이스 | PascalCase | `RaceProps`, `ApiResponse` |
-| 파일 (컴포넌트) | PascalCase | `RaceCard.tsx` |
-| 파일 (유틸리티) | camelCase | `formatDate.ts` |
-| 훅 | camelCase (use-) | `useOdds`, `useInterval` |
+| 대상            | 컨벤션           | 예시                        |
+| --------------- | ---------------- | --------------------------- |
+| 변수            | camelCase        | `raceData`, `userToken`     |
+| 상수            | UPPER_SNAKE_CASE | `MAX_ENTRIES`, `API_URL`    |
+| 함수            | camelCase (동사) | `getRaces`, `validateInput` |
+| 클래스/타입     | PascalCase       | `RaceService`, `EntryOdds`  |
+| 인터페이스      | PascalCase       | `RaceProps`, `ApiResponse`  |
+| 파일 (컴포넌트) | PascalCase       | `RaceCard.tsx`              |
+| 파일 (유틸리티) | camelCase        | `formatDate.ts`             |
+| 훅              | camelCase (use-) | `useOdds`, `useInterval`    |
 
 ### 2.3 의미 있는 이름 짓기
 
@@ -123,9 +123,9 @@ const n = 16;
 // ✅ 좋은 예시
 
 // 동사로 시작하는 함수명
-function calculateWinRate(wins: number, total: number): number { }
-function fetchRaceData(raceId: string): Promise<Race> { }
-function isValidDate(dateString: string): boolean { }
+function calculateWinRate(wins: number, total: number): number {}
+function fetchRaceData(raceId: string): Promise<Race> {}
+function isValidDate(dateString: string): boolean {}
 
 // 명확한 불린 이름
 const isLoading = true;
@@ -138,28 +138,28 @@ const oddsMap: Map<string, Odds> = new Map();
 const entryIds: string[] = [];
 
 // ❌ 나쁜 예시
-function process(data: any): any { }        // 무엇을 처리?
-function doIt(): void { }                    // 무엇을?
-const data = [];                             // 무슨 데이터?
-const temp = calculateSomething();           // 임시?
+function process(data: any): any {} // 무엇을 처리?
+function doIt(): void {} // 무엇을?
+const data = []; // 무슨 데이터?
+const temp = calculateSomething(); // 임시?
 ```
 
 ### 2.4 약어 사용 규칙
 
 ```typescript
 // ✅ 허용되는 약어
-const id = '123';           // identifier
-const url = 'https://...';  // Uniform Resource Locator
+const id = '123'; // identifier
+const url = 'https://...'; // Uniform Resource Locator
 const api = new ApiClient(); // Application Programming Interface
 
 // ✅ 프로젝트 도메인 약어 (용어집 정의됨)
-const kra = 'Korean Racing Authority';  // 한국마사회
-const kspo = 'Korea Sports Promotion Foundation';  // 국민체육진흥공단
+const kra = 'Korean Racing Authority'; // 한국마사회
+const kspo = 'Korea Sports Promotion Foundation'; // 국민체육진흥공단
 
 // ❌ 피해야 할 약어
-const rc = getRace();       // race
-const usr = getUser();      // user
-const btn = document.getElementById('button');  // button
+const rc = getRace(); // race
+const usr = getUser(); // user
+const btn = document.getElementById('button'); // button
 ```
 
 ---
@@ -229,8 +229,8 @@ function mapToRace(raw: RawRaceData): Race {
 // ✅ 좋은 예시: 명확한 인자
 
 // 인자 0-2개가 이상적
-function getOdds(raceId: string): Promise<Odds> { }
-function formatTime(date: Date, locale: string): string { }
+function getOdds(raceId: string): Promise<Odds> {}
+function formatTime(date: Date, locale: string): string {}
 
 // 3개 이상이면 객체로 그룹화
 interface CreateRaceOptions {
@@ -241,7 +241,7 @@ interface CreateRaceOptions {
   class: string;
 }
 
-function createRace(options: CreateRaceOptions): Race { }
+function createRace(options: CreateRaceOptions): Race {}
 
 // ❌ 나쁜 예시: 너무 많은 인자
 function createRace(
@@ -253,7 +253,7 @@ function createRace(
   entries: number,
   prize: string,
   weather: string
-): Race { }
+): Race {}
 ```
 
 ### 3.3 부작용 피하기
@@ -264,19 +264,19 @@ let cachedRaces: Race[] = [];
 
 function getRaces(): Race[] {
   if (cachedRaces.length === 0) {
-    cachedRaces = fetchRacesSync();  // 부작용: 전역 상태 변경
+    cachedRaces = fetchRacesSync(); // 부작용: 전역 상태 변경
   }
   return cachedRaces;
 }
 
 // ✅ 좋은 예시: 순수 함수
 function filterFinishedRaces(races: Race[]): Race[] {
-  return races.filter(race => race.status === 'finished');
+  return races.filter((race) => race.status === 'finished');
 }
 
 function sortByStartTime(races: Race[]): Race[] {
-  return [...races].sort((a, b) =>
-    new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+  return [...races].sort(
+    (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
   );
 }
 
@@ -545,9 +545,11 @@ interface ApiResponse<T> {
 }
 
 // ❌ 피해야 할 패턴
-type Data = any;                    // any 금지
-type Response = object;             // 너무 광범위
-interface Props { [key: string]: any; }  // 타입 안전성 없음
+type Data = any; // any 금지
+type Response = object; // 너무 광범위
+interface Props {
+  [key: string]: any;
+} // 타입 안전성 없음
 ```
 
 ### 6.2 타입 가드
@@ -593,12 +595,12 @@ function getWinnerName(race: Race): string {
   if (!race.results || race.results.length === 0) {
     return 'No winner';
   }
-  return race.results[0].name;  // 여기서 results[0]은 안전
+  return race.results[0].name; // 여기서 results[0]은 안전
 }
 
 // ❌ 피해야 할 패턴
-const name = race.results![0].name;  // Non-null assertion 남용
-const value = data as Race;           // 검증 없는 타입 단언
+const name = race.results![0].name; // Non-null assertion 남용
+const value = data as Race; // 검증 없는 타입 단언
 ```
 
 ### 6.4 Strict Mode 활용
@@ -769,10 +771,7 @@ interface UseOddsReturn {
 /**
  * 배당률 조회 훅
  */
-export function useOdds(
-  raceId: string,
-  options: UseOddsOptions = {}
-): UseOddsReturn {
+export function useOdds(raceId: string, options: UseOddsOptions = {}): UseOddsReturn {
   const { refreshInterval = 30000, enabled = true } = options;
 
   const [state, setState] = useState<{
@@ -815,32 +814,38 @@ export function useOdds(
 ## 코드 품질 체크리스트
 
 ### 네이밍
+
 - [ ] 변수/함수명이 의도를 명확히 표현하는가?
 - [ ] 약어 없이 전체 단어를 사용했는가?
 - [ ] 네이밍 컨벤션을 따르는가?
 
 ### 함수
+
 - [ ] 함수가 20줄 이하인가?
 - [ ] 함수가 한 가지 일만 하는가?
 - [ ] 매개변수가 4개 이하인가?
 - [ ] 부작용이 최소화되었는가?
 
 ### 타입
+
 - [ ] any 타입을 사용하지 않았는가?
 - [ ] null/undefined를 명시적으로 처리했는가?
 - [ ] 타입 가드를 적절히 사용했는가?
 
 ### 구조
+
 - [ ] 중복 코드가 없는가?
 - [ ] 중첩이 3단계 이하인가?
 - [ ] 파일이 400줄 이하인가?
 
 ### React
+
 - [ ] Server/Client Component를 적절히 분리했는가?
 - [ ] 불필요한 리렌더링이 없는가?
 - [ ] 훅 규칙을 따르는가?
 
 ### 가독성
+
 - [ ] 주석 없이도 코드가 이해되는가?
 - [ ] Early return을 활용했는가?
 - [ ] 매직 넘버/문자열을 상수로 추출했는가?
@@ -900,4 +905,4 @@ export function useOdds(
 
 ---
 
-*좋은 코드는 읽는 사람을 위한 코드입니다.* 📖
+_좋은 코드는 읽는 사람을 위한 코드입니다._ 📖

@@ -2,7 +2,7 @@
 title: KRace TDD 개발 계획
 version: 1.0.0
 status: Active
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -18,16 +18,16 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
-| 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
-| 1.1.0 | 2025-11-27 | AI | OddsDisplay, ResultsTable 컴포넌트 추가, 리팩토링 |
-| 1.2.0 | 2025-11-27 | AI | UI 컴포넌트 통합 완료, E2E 테스트 추가 |
-| 1.2.3 | 2025-12-01 | AI | API-007, API-008, E2E-004, TEST-001 완료 상태 반영 |
-| 1.2.4 | 2025-12-01 | AI | TEST-002~004, PERF-001 완료, ISR 캐싱 적용 |
-| 1.2.5 | 2025-12-01 | AI | E2E 테스트 안정화, 295개 테스트 통과 |
-| 1.2.6 | 2025-12-01 | AI | 도메인 통일 (racelab.kr), API 폴백 메커니즘 추가 |
-| 1.2.7 | 2025-12-01 | AI | KRA API299 마이그레이션, StatusBadge 타입 정렬 |
+| 버전  | 날짜       | 작성자        | 변경 내용                                          |
+| ----- | ---------- | ------------- | -------------------------------------------------- |
+| 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성                                          |
+| 1.1.0 | 2025-11-27 | AI            | OddsDisplay, ResultsTable 컴포넌트 추가, 리팩토링  |
+| 1.2.0 | 2025-11-27 | AI            | UI 컴포넌트 통합 완료, E2E 테스트 추가             |
+| 1.2.3 | 2025-12-01 | AI            | API-007, API-008, E2E-004, TEST-001 완료 상태 반영 |
+| 1.2.4 | 2025-12-01 | AI            | TEST-002~004, PERF-001 완료, ISR 캐싱 적용         |
+| 1.2.5 | 2025-12-01 | AI            | E2E 테스트 안정화, 295개 테스트 통과               |
+| 1.2.6 | 2025-12-01 | AI            | 도메인 통일 (racelab.kr), API 폴백 메커니즘 추가   |
+| 1.2.7 | 2025-12-01 | AI            | KRA API299 마이그레이션, StatusBadge 타입 정렬     |
 
 ## 관련 문서 (Related Documents)
 
@@ -71,15 +71,15 @@ language: Korean (한국어)
 
 ### Legend
 
-| 상태 | 아이콘 | 설명 |
-|------|--------|------|
-| 대기 | ⏳ | 아직 시작하지 않음 |
-| 진행중 | 🔄 | 현재 작업 중 |
-| RED | 🔴 | 실패하는 테스트 작성 완료 |
-| GREEN | 🟢 | 테스트 통과 코드 작성 완료 |
-| REFACTOR | 🔵 | 리팩토링 진행 중 |
-| 완료 | ✅ | 사이클 완료 |
-| 차단됨 | 🚫 | 의존성으로 인해 차단 |
+| 상태     | 아이콘 | 설명                       |
+| -------- | ------ | -------------------------- |
+| 대기     | ⏳     | 아직 시작하지 않음         |
+| 진행중   | 🔄     | 현재 작업 중               |
+| RED      | 🔴     | 실패하는 테스트 작성 완료  |
+| GREEN    | 🟢     | 테스트 통과 코드 작성 완료 |
+| REFACTOR | 🔵     | 리팩토링 진행 중           |
+| 완료     | ✅     | 사이클 완료                |
+| 차단됨   | 🚫     | 의존성으로 인해 차단       |
 
 ---
 
@@ -87,21 +87,21 @@ language: Korean (한국어)
 
 ### 1.1 프로젝트 문서화 ✅
 
-| ID | 태스크 | 상태 | TDD Phase | 담당 |
-|----|--------|------|-----------|------|
-| DOC-001 | CONTEXT.md 생성 | ✅ 완료 | N/A | AI |
-| DOC-002 | README.md 개선 | ✅ 완료 | N/A | AI |
-| DOC-003 | ENVIRONMENT.md 생성 | ✅ 완료 | N/A | AI |
-| DOC-004 | plan.md 생성 | ✅ 완료 | N/A | AI |
+| ID      | 태스크              | 상태    | TDD Phase | 담당 |
+| ------- | ------------------- | ------- | --------- | ---- |
+| DOC-001 | CONTEXT.md 생성     | ✅ 완료 | N/A       | AI   |
+| DOC-002 | README.md 개선      | ✅ 완료 | N/A       | AI   |
+| DOC-003 | ENVIRONMENT.md 생성 | ✅ 완료 | N/A       | AI   |
+| DOC-004 | plan.md 생성        | ✅ 완료 | N/A       | AI   |
 
 ### 1.2 Public 에셋 생성 ✅
 
-| ID | 태스크 | 상태 | TDD Phase | 담당 |
-|----|--------|------|-----------|------|
-| ASSET-001 | /public 디렉토리 생성 | ✅ 완료 | N/A | AI |
-| ASSET-002 | favicon.svg 추가 | ✅ 완료 | N/A | AI |
-| ASSET-003 | opengraph-image.svg 추가 | ✅ 완료 | N/A | AI |
-| ASSET-004 | icon.svg 추가 | ✅ 완료 | N/A | AI |
+| ID        | 태스크                   | 상태    | TDD Phase | 담당 |
+| --------- | ------------------------ | ------- | --------- | ---- |
+| ASSET-001 | /public 디렉토리 생성    | ✅ 완료 | N/A       | AI   |
+| ASSET-002 | favicon.svg 추가         | ✅ 완료 | N/A       | AI   |
+| ASSET-003 | opengraph-image.svg 추가 | ✅ 완료 | N/A       | AI   |
+| ASSET-004 | icon.svg 추가            | ✅ 완료 | N/A       | AI   |
 
 ---
 
@@ -109,26 +109,26 @@ language: Korean (한국어)
 
 ### 2.1 경주 목록 API ✅
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| API-001 | 경마 목록 API | ✅ 완료 | GREEN | `src/app/api/races/horse/route.ts` |
-| API-002 | 경륜 목록 API | ✅ 완료 | GREEN | `src/app/api/races/cycle/route.ts` |
-| API-003 | 경정 목록 API | ✅ 완료 | GREEN | `src/app/api/races/boat/route.ts` |
+| ID      | 태스크        | 상태    | TDD Phase | 파일                               |
+| ------- | ------------- | ------- | --------- | ---------------------------------- |
+| API-001 | 경마 목록 API | ✅ 완료 | GREEN     | `src/app/api/races/horse/route.ts` |
+| API-002 | 경륜 목록 API | ✅ 완료 | GREEN     | `src/app/api/races/cycle/route.ts` |
+| API-003 | 경정 목록 API | ✅ 완료 | GREEN     | `src/app/api/races/boat/route.ts`  |
 
 ### 2.2 출주표 API ✅
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| API-004 | 출주표 엔드포인트 | ✅ 완료 | GREEN | `src/app/api/races/[type]/[id]/entries/route.ts` |
-| API-005 | 출주 데이터 매퍼 | ✅ 완료 | GREEN | `src/lib/api-helpers/mappers.ts` |
+| ID      | 태스크            | 상태    | TDD Phase | 파일                                             |
+| ------- | ----------------- | ------- | --------- | ------------------------------------------------ |
+| API-004 | 출주표 엔드포인트 | ✅ 완료 | GREEN     | `src/app/api/races/[type]/[id]/entries/route.ts` |
+| API-005 | 출주 데이터 매퍼  | ✅ 완료 | GREEN     | `src/lib/api-helpers/mappers.ts`                 |
 
 ### 2.3 배당률 API ✅
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| API-006 | 배당률 엔드포인트 | ✅ 완료 | GREEN | `src/app/api/races/[type]/[id]/odds/route.ts` |
-| API-007 | 배당률 데이터 매퍼 | ✅ 완료 | GREEN | `src/lib/api-helpers/mappers.ts` |
-| API-008 | 배당률 타입 정의 | ✅ 완료 | GREEN | `src/types/index.ts` |
+| ID      | 태스크             | 상태    | TDD Phase | 파일                                          |
+| ------- | ------------------ | ------- | --------- | --------------------------------------------- |
+| API-006 | 배당률 엔드포인트  | ✅ 완료 | GREEN     | `src/app/api/races/[type]/[id]/odds/route.ts` |
+| API-007 | 배당률 데이터 매퍼 | ✅ 완료 | GREEN     | `src/lib/api-helpers/mappers.ts`              |
+| API-008 | 배당률 타입 정의   | ✅ 완료 | GREEN     | `src/types/index.ts`                          |
 
 **다음 TDD 사이클 (API-007):**
 
@@ -139,9 +139,9 @@ language: Korean (한국어)
 describe('mapOddsResponse', () => {
   it('should map KSPO odds response to Odds type', () => {
     const kspoResponse = {
-      oddsDansng: '2.5',    // 단승 배당
-      oddsBoksng: '1.8',    // 복승 배당
-      oddsSsangsng: '5.2',  // 쌍승 배당
+      oddsDansng: '2.5', // 단승 배당
+      oddsBoksng: '1.8', // 복승 배당
+      oddsSsangsng: '5.2', // 쌍승 배당
     };
 
     const result = mapOddsResponse(kspoResponse);
@@ -173,11 +173,11 @@ describe('mapOddsResponse', () => {
 
 ### 2.4 결과 API ⏳
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| API-009 | 결과 엔드포인트 | ⏳ 대기 | - | `src/app/api/races/[type]/[id]/results/route.ts` |
-| API-010 | 결과 데이터 매퍼 | ⏳ 대기 | - | `src/lib/api-helpers/mappers.ts` |
-| API-011 | 결과 타입 정의 | ⏳ 대기 | - | `src/types/index.ts` |
+| ID      | 태스크           | 상태    | TDD Phase | 파일                                             |
+| ------- | ---------------- | ------- | --------- | ------------------------------------------------ |
+| API-009 | 결과 엔드포인트  | ⏳ 대기 | -         | `src/app/api/races/[type]/[id]/results/route.ts` |
+| API-010 | 결과 데이터 매퍼 | ⏳ 대기 | -         | `src/lib/api-helpers/mappers.ts`                 |
+| API-011 | 결과 타입 정의   | ⏳ 대기 | -         | `src/types/index.ts`                             |
 
 ---
 
@@ -185,29 +185,29 @@ describe('mapOddsResponse', () => {
 
 ### 3.1 공통 컴포넌트 ✅
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| UI-001 | Header 컴포넌트 | ✅ 완료 | GREEN | `src/components/Header.tsx` |
-| UI-002 | Footer 컴포넌트 | ✅ 완료 | GREEN | `src/components/Footer.tsx` |
-| UI-003 | TodayRaces 컴포넌트 | ✅ 완료 | GREEN | `src/components/TodayRaces.tsx` |
-| UI-004 | QuickStats 컴포넌트 | ✅ 완료 | GREEN | `src/components/QuickStats.tsx` |
+| ID     | 태스크              | 상태    | TDD Phase | 파일                            |
+| ------ | ------------------- | ------- | --------- | ------------------------------- |
+| UI-001 | Header 컴포넌트     | ✅ 완료 | GREEN     | `src/components/Header.tsx`     |
+| UI-002 | Footer 컴포넌트     | ✅ 완료 | GREEN     | `src/components/Footer.tsx`     |
+| UI-003 | TodayRaces 컴포넌트 | ✅ 완료 | GREEN     | `src/components/TodayRaces.tsx` |
+| UI-004 | QuickStats 컴포넌트 | ✅ 완료 | GREEN     | `src/components/QuickStats.tsx` |
 
 ### 3.2 경주 상세 컴포넌트 ✅
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| UI-005 | RaceDetail 페이지 | ✅ 완료 | GREEN | `src/app/race/[id]/page.tsx` |
-| UI-006 | EntryList 컴포넌트 | ✅ 완료 | GREEN | `src/components/EntryList.tsx` |
-| UI-007 | OddsDisplay 컴포넌트 | ✅ 완료 | GREEN | `src/components/OddsDisplay.tsx` |
-| UI-008 | ResultsTable 컴포넌트 | ✅ 완료 | GREEN | `src/components/ResultsTable.tsx` |
-| UI-009 | Skeletons 컴포넌트 | ✅ 완료 | GREEN | `src/components/Skeletons.tsx` |
+| ID     | 태스크                | 상태    | TDD Phase | 파일                              |
+| ------ | --------------------- | ------- | --------- | --------------------------------- |
+| UI-005 | RaceDetail 페이지     | ✅ 완료 | GREEN     | `src/app/race/[id]/page.tsx`      |
+| UI-006 | EntryList 컴포넌트    | ✅ 완료 | GREEN     | `src/components/EntryList.tsx`    |
+| UI-007 | OddsDisplay 컴포넌트  | ✅ 완료 | GREEN     | `src/components/OddsDisplay.tsx`  |
+| UI-008 | ResultsTable 컴포넌트 | ✅ 완료 | GREEN     | `src/components/ResultsTable.tsx` |
+| UI-009 | Skeletons 컴포넌트    | ✅ 완료 | GREEN     | `src/components/Skeletons.tsx`    |
 
 ### 3.3 UI 컴포넌트 통합 ✅
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| UI-010 | OddsDisplay를 RaceDetail에 통합 | ✅ 완료 | GREEN | `src/app/race/[id]/page.tsx` |
-| UI-011 | ResultsTable을 RaceDetail에 통합 | ✅ 완료 | GREEN | `src/app/race/[id]/page.tsx` |
+| ID     | 태스크                           | 상태    | TDD Phase | 파일                         |
+| ------ | -------------------------------- | ------- | --------- | ---------------------------- |
+| UI-010 | OddsDisplay를 RaceDetail에 통합  | ✅ 완료 | GREEN     | `src/app/race/[id]/page.tsx` |
+| UI-011 | ResultsTable을 RaceDetail에 통합 | ✅ 완료 | GREEN     | `src/app/race/[id]/page.tsx` |
 
 ---
 
@@ -215,11 +215,11 @@ describe('mapOddsResponse', () => {
 
 ### 4.1 유틸리티 테스트 ✅
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| TEST-001 | date.ts 유틸 테스트 | ✅ 완료 | GREEN | `src/lib/utils/date.test.ts` |
-| TEST-002 | ui.ts 유틸 테스트 | ✅ 완료 | GREEN | `src/lib/utils/ui.test.ts` |
-| TEST-003 | apiResponse.ts 테스트 | ✅ 완료 | GREEN | `src/lib/utils/apiResponse.test.ts` |
+| ID       | 태스크                | 상태    | TDD Phase | 파일                                |
+| -------- | --------------------- | ------- | --------- | ----------------------------------- |
+| TEST-001 | date.ts 유틸 테스트   | ✅ 완료 | GREEN     | `src/lib/utils/date.test.ts`        |
+| TEST-002 | ui.ts 유틸 테스트     | ✅ 완료 | GREEN     | `src/lib/utils/ui.test.ts`          |
+| TEST-003 | apiResponse.ts 테스트 | ✅ 완료 | GREEN     | `src/lib/utils/apiResponse.test.ts` |
 
 **다음 TDD 사이클 (TEST-001):**
 
@@ -261,19 +261,19 @@ describe('date utilities', () => {
 
 ### 4.2 API 매퍼 테스트 🔄
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| TEST-004 | KSPO 매퍼 테스트 | ✅ 완료 | GREEN | `src/lib/api-helpers/mappers.test.ts` |
-| TEST-005 | 더미 데이터 테스트 | ⏳ 대기 | - | `src/lib/api-helpers/dummy.test.ts` |
+| ID       | 태스크             | 상태    | TDD Phase | 파일                                  |
+| -------- | ------------------ | ------- | --------- | ------------------------------------- |
+| TEST-004 | KSPO 매퍼 테스트   | ✅ 완료 | GREEN     | `src/lib/api-helpers/mappers.test.ts` |
+| TEST-005 | 더미 데이터 테스트 | ⏳ 대기 | -         | `src/lib/api-helpers/dummy.test.ts`   |
 
 ### 4.3 E2E 테스트 확장 🔄
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| E2E-001 | 경주 상세 E2E 테스트 | ✅ 완료 | GREEN | `e2e/tests/race-detail.spec.ts` |
-| E2E-002 | 배당률 표시 E2E 테스트 | ✅ 완료 | GREEN | `e2e/tests/race-detail.spec.ts` |
-| E2E-003 | 결과 표시 E2E 테스트 | ✅ 완료 | GREEN | `e2e/tests/race-detail.spec.ts` |
-| E2E-004 | 탭 전환 E2E 테스트 | ✅ 완료 | GREEN | `e2e/tests/home.spec.ts` |
+| ID      | 태스크                 | 상태    | TDD Phase | 파일                            |
+| ------- | ---------------------- | ------- | --------- | ------------------------------- |
+| E2E-001 | 경주 상세 E2E 테스트   | ✅ 완료 | GREEN     | `e2e/tests/race-detail.spec.ts` |
+| E2E-002 | 배당률 표시 E2E 테스트 | ✅ 완료 | GREEN     | `e2e/tests/race-detail.spec.ts` |
+| E2E-003 | 결과 표시 E2E 테스트   | ✅ 완료 | GREEN     | `e2e/tests/race-detail.spec.ts` |
+| E2E-004 | 탭 전환 E2E 테스트     | ✅ 완료 | GREEN     | `e2e/tests/home.spec.ts`        |
 
 ---
 
@@ -281,19 +281,19 @@ describe('date utilities', () => {
 
 ### 5.1 SEO 최적화 ✅
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| SEO-001 | sitemap.ts 구현 | ✅ 완료 | N/A | `src/app/sitemap.ts` |
-| SEO-002 | robots.ts 구현 | ✅ 완료 | N/A | `src/app/robots.ts` |
-| SEO-003 | 메타 태그 설정 | ✅ 완료 | N/A | `src/app/layout.tsx` |
+| ID      | 태스크          | 상태    | TDD Phase | 파일                 |
+| ------- | --------------- | ------- | --------- | -------------------- |
+| SEO-001 | sitemap.ts 구현 | ✅ 완료 | N/A       | `src/app/sitemap.ts` |
+| SEO-002 | robots.ts 구현  | ✅ 완료 | N/A       | `src/app/robots.ts`  |
+| SEO-003 | 메타 태그 설정  | ✅ 완료 | N/A       | `src/app/layout.tsx` |
 
 ### 5.2 성능 최적화 🔄
 
-| ID | 태스크 | 상태 | TDD Phase | 파일 |
-|----|--------|------|-----------|------|
-| PERF-001 | ISR 캐싱 전략 구현 | ✅ 완료 | N/A | API routes (30-60s revalidation) |
-| PERF-002 | 이미지 최적화 | ⏳ 대기 | N/A | - |
-| PERF-003 | 번들 사이즈 분석 | ⏳ 대기 | N/A | - |
+| ID       | 태스크             | 상태    | TDD Phase | 파일                             |
+| -------- | ------------------ | ------- | --------- | -------------------------------- |
+| PERF-001 | ISR 캐싱 전략 구현 | ✅ 완료 | N/A       | API routes (30-60s revalidation) |
+| PERF-002 | 이미지 최적화      | ⏳ 대기 | N/A       | -                                |
+| PERF-003 | 번들 사이즈 분석   | ⏳ 대기 | N/A       | -                                |
 
 ---
 
@@ -378,23 +378,23 @@ describe('date utilities', () => {
 
 ### 최근 완료된 사이클
 
-| 날짜 | ID | 태스크 | 결과 |
-|------|-----|--------|------|
-| 2025-12-01 | E2E-FIX | E2E 테스트 안정화 (295개 통과) | ✅ 성공 |
-| 2025-12-01 | PERF-001 | ISR 캐싱 적용 | ✅ 성공 |
-| 2025-12-01 | TEST-002~004 | 유틸 함수 테스트 추가 | ✅ 성공 |
-| 2025-11-27 | UI-010 | OddsDisplay 통합 | ✅ 성공 |
-| 2025-11-27 | UI-011 | ResultsTable 통합 | ✅ 성공 |
-| 2025-11-27 | E2E-002 | 배당률 E2E 테스트 | ✅ 성공 |
-| 2025-11-27 | E2E-003 | 결과 E2E 테스트 | ✅ 성공 |
-| 2025-11-27 | UI-007 | OddsDisplay 컴포넌트 | ✅ 성공 |
-| 2025-11-27 | UI-008 | ResultsTable 컴포넌트 | ✅ 성공 |
-| 2025-11-27 | UI-009 | Skeletons 컴포넌트 | ✅ 성공 |
-| 2025-11-27 | REFACTOR | page.tsx/layout.tsx 리팩토링 | ✅ 성공 |
-| 2025-11-24 | UI-005 | RaceDetail 페이지 | ✅ 성공 |
-| 2025-11-24 | E2E-001 | 경주 상세 E2E 테스트 | ✅ 성공 |
-| 2025-11-23 | UI-001~004 | 공통 컴포넌트 | ✅ 성공 |
-| 2025-11-22 | API-001~005 | 경주/출주표 API | ✅ 성공 |
+| 날짜       | ID           | 태스크                         | 결과    |
+| ---------- | ------------ | ------------------------------ | ------- |
+| 2025-12-01 | E2E-FIX      | E2E 테스트 안정화 (295개 통과) | ✅ 성공 |
+| 2025-12-01 | PERF-001     | ISR 캐싱 적용                  | ✅ 성공 |
+| 2025-12-01 | TEST-002~004 | 유틸 함수 테스트 추가          | ✅ 성공 |
+| 2025-11-27 | UI-010       | OddsDisplay 통합               | ✅ 성공 |
+| 2025-11-27 | UI-011       | ResultsTable 통합              | ✅ 성공 |
+| 2025-11-27 | E2E-002      | 배당률 E2E 테스트              | ✅ 성공 |
+| 2025-11-27 | E2E-003      | 결과 E2E 테스트                | ✅ 성공 |
+| 2025-11-27 | UI-007       | OddsDisplay 컴포넌트           | ✅ 성공 |
+| 2025-11-27 | UI-008       | ResultsTable 컴포넌트          | ✅ 성공 |
+| 2025-11-27 | UI-009       | Skeletons 컴포넌트             | ✅ 성공 |
+| 2025-11-27 | REFACTOR     | page.tsx/layout.tsx 리팩토링   | ✅ 성공 |
+| 2025-11-24 | UI-005       | RaceDetail 페이지              | ✅ 성공 |
+| 2025-11-24 | E2E-001      | 경주 상세 E2E 테스트           | ✅ 성공 |
+| 2025-11-23 | UI-001~004   | 공통 컴포넌트                  | ✅ 성공 |
+| 2025-11-22 | API-001~005  | 경주/출주표 API                | ✅ 성공 |
 
 ---
 
@@ -419,5 +419,5 @@ describe('date utilities', () => {
 
 ---
 
-*이 문서는 TDD 사이클 진행에 따라 실시간으로 업데이트됩니다.*
-*마지막 업데이트: 2025-11-27*
+_이 문서는 TDD 사이클 진행에 따라 실시간으로 업데이트됩니다._
+_마지막 업데이트: 2025-11-27_

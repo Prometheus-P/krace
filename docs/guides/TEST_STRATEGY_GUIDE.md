@@ -33,11 +33,11 @@
 
 ### 비율 근거
 
-| 레벨 | 비율 | 실행 시간 | 유지보수 비용 |
-|------|------|-----------|---------------|
-| Unit | 70% | 빠름 (~1ms) | 낮음 |
-| Integration | 20% | 중간 (~100ms) | 중간 |
-| E2E | 10% | 느림 (~1s+) | 높음 |
+| 레벨        | 비율 | 실행 시간     | 유지보수 비용 |
+| ----------- | ---- | ------------- | ------------- |
+| Unit        | 70%  | 빠름 (~1ms)   | 낮음          |
+| Integration | 20%  | 중간 (~100ms) | 중간          |
+| E2E         | 10%  | 느림 (~1s+)   | 높음          |
 
 ---
 
@@ -48,6 +48,7 @@
 **목적**: 개별 함수/모듈의 독립적인 동작 검증
 
 **범위**:
+
 - 유틸리티 함수
 - 비즈니스 로직
 - 커스텀 훅 (React)
@@ -65,8 +66,9 @@ describe('calculateOdds', () => {
   });
 
   it('should throw for invalid input', () => {
-    expect(() => calculateOdds({ numerator: -1, denominator: 2 }))
-      .toThrow('Invalid odds: numerator must be positive');
+    expect(() => calculateOdds({ numerator: -1, denominator: 2 })).toThrow(
+      'Invalid odds: numerator must be positive'
+    );
   });
 });
 ```
@@ -78,6 +80,7 @@ describe('calculateOdds', () => {
 **목적**: 여러 모듈이 함께 동작하는지 검증
 
 **범위**:
+
 - API 라우트 핸들러
 - 데이터베이스 연동 (필요시)
 - 외부 API 연동
@@ -145,6 +148,7 @@ describe('RaceCard with data fetching', () => {
 **목적**: 실제 사용자 시나리오 전체 흐름 검증
 
 **범위**:
+
 - 크리티컬 사용자 경로
 - 페이지 네비게이션
 - 폼 제출 흐름
@@ -203,12 +207,12 @@ test.describe('Race Information Flow', () => {
 
 ### 전체 목표
 
-| 메트릭 | 최소 | 목표 | 이상적 |
-|--------|------|------|--------|
-| Line Coverage | 70% | 80% | 90%+ |
-| Branch Coverage | 65% | 75% | 85%+ |
-| Function Coverage | 80% | 90% | 95%+ |
-| Statement Coverage | 70% | 80% | 90%+ |
+| 메트릭             | 최소 | 목표 | 이상적 |
+| ------------------ | ---- | ---- | ------ |
+| Line Coverage      | 70%  | 80%  | 90%+   |
+| Branch Coverage    | 65%  | 75%  | 85%+   |
+| Function Coverage  | 80%  | 90%  | 95%+   |
+| Statement Coverage | 70%  | 80%  | 90%+   |
 
 ### 모듈별 목표
 
@@ -269,12 +273,12 @@ module.exports = {
 
 ### 테스트 프레임워크
 
-| 도구 | 용도 | 버전 |
-|------|------|------|
-| Jest | Unit/Integration 테스트 러너 | 30.x |
-| @testing-library/react | React 컴포넌트 테스트 | 16.x |
-| Playwright | E2E 테스트 | 1.56.x |
-| MSW | API 모킹 | 2.x |
+| 도구                   | 용도                         | 버전   |
+| ---------------------- | ---------------------------- | ------ |
+| Jest                   | Unit/Integration 테스트 러너 | 30.x   |
+| @testing-library/react | React 컴포넌트 테스트        | 16.x   |
+| Playwright             | E2E 테스트                   | 1.56.x |
+| MSW                    | API 모킹                     | 2.x    |
 
 ### 설정 파일 구조
 
@@ -308,15 +312,8 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  testMatch: [
-    '**/__tests__/**/*.(test|spec).(ts|tsx)',
-    '**/*.(test|spec).(ts|tsx)',
-  ],
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.stories.tsx',
-  ],
+  testMatch: ['**/__tests__/**/*.(test|spec).(ts|tsx)', '**/*.(test|spec).(ts|tsx)'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.stories.tsx'],
 };
 
 module.exports = createJestConfig(customJestConfig);
@@ -334,10 +331,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [
-    ['html'],
-    ['json', { outputFile: 'test-results/results.json' }],
-  ],
+  reporter: [['html'], ['json', { outputFile: 'test-results/results.json' }]],
   use: {
     baseURL: 'https://racelab.kr',
     trace: 'on-first-retry',
@@ -401,10 +395,7 @@ export const handlers = [
   http.get('/api/races/:id', ({ params }) => {
     const race = mockRaces.find((r) => r.id === params.id);
     if (!race) {
-      return HttpResponse.json(
-        { success: false, error: 'Race not found' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ success: false, error: 'Race not found' }, { status: 404 });
     }
     return HttpResponse.json({ success: true, data: race });
   }),

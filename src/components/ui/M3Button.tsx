@@ -25,10 +25,13 @@ export interface M3ButtonProps {
 
 const variantClasses: Record<M3ButtonVariant, string> = {
   filled: 'bg-primary text-on-primary hover:bg-primary/90 active:bg-primary/80',
-  outlined: 'bg-transparent border border-outline text-primary hover:bg-primary/8 active:bg-primary/12',
+  outlined:
+    'bg-transparent border border-outline text-primary hover:bg-primary/8 active:bg-primary/12',
   text: 'bg-transparent text-primary hover:bg-primary/8 active:bg-primary/12',
-  elevated: 'bg-surface-container-low text-primary shadow-m3-1 hover:shadow-m3-2 active:shadow-m3-1',
-  tonal: 'bg-secondary-container text-on-secondary-container hover:bg-secondary-container/90 active:bg-secondary-container/80',
+  elevated:
+    'bg-surface-container-low text-primary shadow-m3-1 hover:shadow-m3-2 active:shadow-m3-1',
+  tonal:
+    'bg-secondary-container text-on-secondary-container hover:bg-secondary-container/90 active:bg-secondary-container/80',
 };
 
 const sizeClasses: Record<M3ButtonSize, string> = {
@@ -41,7 +44,7 @@ const LoadingSpinner = () => (
   <span
     role="status"
     aria-label="Loading"
-    className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"
+    className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
   />
 );
 
@@ -83,7 +86,9 @@ export function M3Button({
     isDisabled ? 'opacity-38 cursor-not-allowed' : 'cursor-pointer',
     fullWidth ? 'w-full' : '',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <button

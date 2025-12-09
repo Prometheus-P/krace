@@ -281,13 +281,14 @@ describe('useRipple', () => {
         height: 50,
       } as DOMRect;
 
-      const createMockEvent = (x: number, y: number) => ({
-        clientX: x,
-        clientY: y,
-        currentTarget: {
-          getBoundingClientRect: () => mockRect,
-        },
-      } as unknown as React.MouseEvent<HTMLElement>);
+      const createMockEvent = (x: number, y: number) =>
+        ({
+          clientX: x,
+          clientY: y,
+          currentTarget: {
+            getBoundingClientRect: () => mockRect,
+          },
+        }) as unknown as React.MouseEvent<HTMLElement>;
 
       act(() => {
         result.current.rippleProps.onMouseDown(createMockEvent(25, 25));

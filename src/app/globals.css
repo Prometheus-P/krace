@@ -9,17 +9,17 @@
 
 :root {
   /* Neutral Colors */
-  --rl-background: #FFFFFF;
-  --rl-text-primary: #27272A;
-  --rl-text-secondary: #71717A;
-  --rl-border: #D4D4D8;
-  --rl-divider: #E4E4E7;
-  --rl-table-row-alt: #F4F4F5;
+  --rl-background: #ffffff;
+  --rl-text-primary: #27272a;
+  --rl-text-secondary: #71717a;
+  --rl-border: #d4d4d8;
+  --rl-divider: #e4e4e7;
+  --rl-table-row-alt: #f4f4f5;
 
   /* Primary Colors - 로고 기반 */
-  --rl-horse: #81C784;      /* Sage Green - 경마 */
-  --rl-cycle: #E57373;      /* Soft Coral - 경륜 */
-  --rl-boat: #64B5F6;       /* Steel Blue - 경정 */
+  --rl-horse: #81c784; /* Sage Green - 경마 */
+  --rl-cycle: #e57373; /* Soft Coral - 경륜 */
+  --rl-boat: #64b5f6; /* Steel Blue - 경정 */
 
   /* Legacy support */
   --foreground-rgb: 39, 39, 42;
@@ -29,7 +29,12 @@
 body {
   color: var(--rl-text-primary);
   background: var(--rl-background);
-  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family:
+    'Noto Sans KR',
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
   font-size: 16px;
   line-height: 1.5;
 }
@@ -39,21 +44,21 @@ body {
    ============================================================================= */
 
 .theme-horse {
-  --theme-color: #81C784;
-  --theme-container: #E8F5E9;
-  --theme-on-container: #2E7D32;
+  --theme-color: #81c784;
+  --theme-container: #e8f5e9;
+  --theme-on-container: #2e7d32;
 }
 
 .theme-cycle {
-  --theme-color: #E57373;
-  --theme-container: #FFEBEE;
-  --theme-on-container: #C62828;
+  --theme-color: #e57373;
+  --theme-container: #ffebee;
+  --theme-on-container: #c62828;
 }
 
 .theme-boat {
-  --theme-color: #64B5F6;
-  --theme-container: #E3F2FD;
-  --theme-on-container: #1565C0;
+  --theme-color: #64b5f6;
+  --theme-container: #e3f2fd;
+  --theme-on-container: #1565c0;
 }
 
 /* =============================================================================
@@ -68,11 +73,11 @@ body {
 }
 
 .odds-up {
-  color: #E57373;
+  color: #e57373;
 }
 
 .odds-down {
-  color: #64B5F6;
+  color: #64b5f6;
 }
 
 /* =============================================================================
@@ -80,7 +85,7 @@ body {
    ============================================================================= */
 
 .card {
-  @apply bg-white rounded-rl-lg border border-neutral-border p-6;
+  @apply rounded-rl-lg border border-neutral-border bg-white p-6;
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.08);
 }
 
@@ -97,22 +102,22 @@ body {
    ============================================================================= */
 
 .badge {
-  @apply inline-flex items-center px-3 py-1 rounded-full text-label-medium font-medium;
+  @apply inline-flex items-center rounded-full px-3 py-1 text-label-medium font-medium;
 }
 
 .badge-horse {
-  background-color: #E8F5E9;
-  color: #2E7D32;
+  background-color: #e8f5e9;
+  color: #2e7d32;
 }
 
 .badge-cycle {
-  background-color: #FFEBEE;
-  color: #C62828;
+  background-color: #ffebee;
+  color: #c62828;
 }
 
 .badge-boat {
-  background-color: #E3F2FD;
-  color: #1565C0;
+  background-color: #e3f2fd;
+  color: #1565c0;
 }
 
 /* =============================================================================
@@ -120,37 +125,37 @@ body {
    ============================================================================= */
 
 .status-badge {
-  @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-label-medium font-semibold min-h-touch;
+  @apply inline-flex min-h-touch items-center gap-2 rounded-full px-4 py-2 text-label-medium font-semibold;
 }
 
 .status-live {
-  background-color: #FFF8E1;
-  color: #F57C00;
-  border: 1px solid #FFB74D;
+  background-color: #fff8e1;
+  color: #f57c00;
+  border: 1px solid #ffb74d;
 }
 
 .status-live::before {
   content: '';
-  @apply w-2 h-2 rounded-full animate-pulse;
-  background-color: #FFB74D;
+  @apply h-2 w-2 animate-pulse rounded-full;
+  background-color: #ffb74d;
 }
 
 .status-upcoming {
-  background-color: #E3F2FD;
-  color: #1565C0;
-  border: 1px solid #64B5F6;
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #64b5f6;
 }
 
 .status-completed {
-  background-color: #F4F4F5;
-  color: #71717A;
-  border: 1px solid #D4D4D8;
+  background-color: #f4f4f5;
+  color: #71717a;
+  border: 1px solid #d4d4d8;
 }
 
 .status-cancelled {
-  background-color: #FFEBEE;
-  color: #C62828;
-  border: 1px solid #E57373;
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #e57373;
 }
 
 /* =============================================================================
@@ -160,7 +165,7 @@ body {
 .btn {
   @apply inline-flex items-center justify-center gap-2;
   @apply min-h-touch px-6 py-3;
-  @apply font-semibold text-body-medium;
+  @apply text-body-medium font-semibold;
   @apply rounded-rl-md;
   @apply transition-all duration-rl-fast ease-rl-standard;
   @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
@@ -182,7 +187,7 @@ body {
 
 /* Outlined Button */
 .btn-outlined {
-  @apply bg-transparent border-2;
+  @apply border-2 bg-transparent;
   @apply border-neutral-border text-on-surface;
   @apply hover:bg-surface-dim;
   @apply focus:ring-neutral-border;
@@ -197,12 +202,12 @@ body {
 }
 
 .table-race thead {
-  background-color: #F4F4F5;
+  background-color: #f4f4f5;
 }
 
 .table-race th {
   @apply px-4 py-3 text-left font-semibold;
-  color: #27272A;
+  color: #27272a;
 }
 
 .table-race th.numeric {
@@ -215,16 +220,16 @@ body {
 
 /* Zebra Stripes */
 .table-race tbody tr:nth-child(even) {
-  background-color: #F4F4F5;
+  background-color: #f4f4f5;
 }
 
 .table-race tbody tr:nth-child(odd) {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .table-race td {
   @apply px-4 py-3;
-  border-bottom: 1px solid #E4E4E7;
+  border-bottom: 1px solid #e4e4e7;
 }
 
 /* 숫자 데이터 우측 정렬 */
@@ -239,9 +244,9 @@ body {
    ============================================================================= */
 
 .spinner {
-  @apply animate-spin h-6 w-6 rounded-full;
-  border: 3px solid #E4E4E7;
-  border-top-color: #E57373;
+  @apply h-6 w-6 animate-spin rounded-full;
+  border: 3px solid #e4e4e7;
+  border-top-color: #e57373;
 }
 
 /* =============================================================================
@@ -283,7 +288,7 @@ body {
    ============================================================================= */
 
 .focus-ring:focus-visible {
-  outline: 2px solid var(--theme-color, #E57373);
+  outline: 2px solid var(--theme-color, #e57373);
   outline-offset: 2px;
 }
 
@@ -326,18 +331,18 @@ body {
    ============================================================================= */
 
 a {
-  color: #1565C0;
+  color: #1565c0;
   text-decoration: none;
   transition: color 150ms ease;
 }
 
 a:hover {
-  color: #0D47A1;
+  color: #0d47a1;
   text-decoration: underline;
 }
 
 a:focus-visible {
-  outline: 2px solid #64B5F6;
+  outline: 2px solid #64b5f6;
   outline-offset: 2px;
   border-radius: 2px;
 }

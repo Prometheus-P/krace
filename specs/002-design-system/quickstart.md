@@ -58,9 +58,7 @@ Use animation tokens in Tailwind:
 
 ```tsx
 // Transition timing
-<button className="transition-all duration-m3-medium ease-m3-standard">
-  Hover me
-</button>
+<button className="transition-all duration-m3-medium ease-m3-standard">Hover me</button>
 
 // Reduced motion support is automatic
 // Animations respect prefers-reduced-motion
@@ -169,7 +167,7 @@ import { M3SearchBar } from '@/components/ui';
   onChange={setSearchQuery}
   onSearch={handleSearch}
   placeholder="Search races..."
-/>
+/>;
 ```
 
 ### Dialog
@@ -321,10 +319,7 @@ function AnimatedComponent() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <motion.div
-      animate={{ opacity: 1 }}
-      transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
-    >
+    <motion.div animate={{ opacity: 1 }} transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}>
       Content
     </motion.div>
   );
@@ -337,46 +332,46 @@ function AnimatedComponent() {
 
 ### Colors
 
-| Token | Tailwind Class | Value |
-|-------|----------------|-------|
-| Primary | `text-primary`, `bg-primary` | #1d4ed8 |
-| Horse | `text-horse`, `bg-horse` | #2d5a27 |
-| Cycle | `text-cycle`, `bg-cycle` | #dc2626 |
-| Boat | `text-boat`, `bg-boat` | #0369a1 |
-| Surface | `bg-surface` | #ffffff |
-| On-Surface | `text-on-surface` | #1e293b |
-| Outline | `border-outline` | #94a3b8 |
+| Token      | Tailwind Class               | Value   |
+| ---------- | ---------------------------- | ------- |
+| Primary    | `text-primary`, `bg-primary` | #1d4ed8 |
+| Horse      | `text-horse`, `bg-horse`     | #2d5a27 |
+| Cycle      | `text-cycle`, `bg-cycle`     | #dc2626 |
+| Boat       | `text-boat`, `bg-boat`       | #0369a1 |
+| Surface    | `bg-surface`                 | #ffffff |
+| On-Surface | `text-on-surface`            | #1e293b |
+| Outline    | `border-outline`             | #94a3b8 |
 
 ### Typography
 
-| Scale | Tailwind Class | Size/Line Height |
-|-------|----------------|------------------|
-| Display Large | `text-display-large` | 57px/64px |
-| Headline Large | `text-headline-large` | 32px/40px |
-| Title Large | `text-title-large` | 22px/28px |
-| Body Large | `text-body-large` | 16px/24px |
-| Body Medium | `text-body-medium` | 14px/20px |
-| Label Large | `text-label-large` | 14px/20px |
+| Scale          | Tailwind Class        | Size/Line Height |
+| -------------- | --------------------- | ---------------- |
+| Display Large  | `text-display-large`  | 57px/64px        |
+| Headline Large | `text-headline-large` | 32px/40px        |
+| Title Large    | `text-title-large`    | 22px/28px        |
+| Body Large     | `text-body-large`     | 16px/24px        |
+| Body Medium    | `text-body-medium`    | 14px/20px        |
+| Label Large    | `text-label-large`    | 14px/20px        |
 
 ### Elevation
 
-| Level | Tailwind Class | Usage |
-|-------|----------------|-------|
-| 0 | - | Flat surfaces |
-| 1 | `shadow-m3-1` | Cards at rest |
-| 2 | `shadow-m3-2` | Cards on hover |
-| 3 | `shadow-m3-3` | Dialogs |
-| 4 | `shadow-m3-4` | Navigation drawers |
-| 5 | `shadow-m3-5` | Modal overlays |
+| Level | Tailwind Class | Usage              |
+| ----- | -------------- | ------------------ |
+| 0     | -              | Flat surfaces      |
+| 1     | `shadow-m3-1`  | Cards at rest      |
+| 2     | `shadow-m3-2`  | Cards on hover     |
+| 3     | `shadow-m3-3`  | Dialogs            |
+| 4     | `shadow-m3-4`  | Navigation drawers |
+| 5     | `shadow-m3-5`  | Modal overlays     |
 
 ### Motion
 
-| Token | Tailwind Class | Value |
-|-------|----------------|-------|
-| Duration Short | `duration-m3-short` | 150ms |
-| Duration Medium | `duration-m3-medium` | 300ms |
-| Duration Long | `duration-m3-long` | 500ms |
-| Ease Standard | `ease-m3-standard` | cubic-bezier(0.2, 0, 0, 1) |
+| Token           | Tailwind Class       | Value                      |
+| --------------- | -------------------- | -------------------------- |
+| Duration Short  | `duration-m3-short`  | 150ms                      |
+| Duration Medium | `duration-m3-medium` | 300ms                      |
+| Duration Long   | `duration-m3-long`   | 500ms                      |
+| Ease Standard   | `ease-m3-standard`   | cubic-bezier(0.2, 0, 0, 1) |
 | Ease Emphasized | `ease-m3-emphasized` | cubic-bezier(0.2, 0, 0, 1) |
 
 ---
@@ -416,7 +411,7 @@ Always respect user preferences:
 
 ```tsx
 // ✅ Automatic - components handle this
-<M3Button>Ripple respects prefers-reduced-motion</M3Button>
+<M3Button>Ripple respects prefers-reduced-motion</M3Button>;
 
 // ✅ Manual check when needed
 const prefersReducedMotion = useReducedMotion();
@@ -447,7 +442,7 @@ Components include test IDs for automated testing:
 
 ```tsx
 // In component
-<M3Button data-testid="submit-button">Submit</M3Button>
+<M3Button data-testid="submit-button">Submit</M3Button>;
 
 // In test
 const button = screen.getByTestId('submit-button');

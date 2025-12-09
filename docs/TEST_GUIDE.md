@@ -10,26 +10,26 @@
 ```yaml
 tech_stack:
   frontend:
-    framework: "Next.js 14"
-    language: "TypeScript"
-    test_runner: "Jest"
-    component_test: "React Testing Library"
-    e2e: "Playwright"
+    framework: 'Next.js 14'
+    language: 'TypeScript'
+    test_runner: 'Jest'
+    component_test: 'React Testing Library'
+    e2e: 'Playwright'
 
   backend:
-    type: "Next.js API Routes"
-    language: "TypeScript"
-    test_runner: "Jest (jest.config.api.js)"
+    type: 'Next.js API Routes'
+    language: 'TypeScript'
+    test_runner: 'Jest (jest.config.api.js)'
 
   external_apis:
-    - name: "KRA API"
-      description: "Korea Horse Racing Association"
-      env_key: "KRA_API_KEY"
-    - name: "KSPO API"
-      description: "National Sports Promotion Foundation (cycle & boat)"
-      env_key: "KSPO_API_KEY"
+    - name: 'KRA API'
+      description: 'Korea Horse Racing Association'
+      env_key: 'KRA_API_KEY'
+    - name: 'KSPO API'
+      description: 'National Sports Promotion Foundation (cycle & boat)'
+      env_key: 'KSPO_API_KEY'
 
-  ci_cd: "GitHub Actions"
+  ci_cd: 'GitHub Actions'
 
   coverage:
     unit: 80
@@ -209,9 +209,18 @@ describe('API Client', () => {
   it('should_return_races_when_api_succeeds', async () => {
     (fetch as jest.Mock).mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({
-        response: { body: { items: { item: [/* mock data */] } } }
-      })
+      json: () =>
+        Promise.resolve({
+          response: {
+            body: {
+              items: {
+                item: [
+                  /* mock data */
+                ],
+              },
+            },
+          },
+        }),
     });
 
     const result = await fetchHorseRaceSchedules('20240101');
@@ -250,7 +259,7 @@ describe('GET /api/races/{type}', () => {
 
   it('should_return_200_with_races', async () => {
     (fetchHorseRaceSchedules as jest.Mock).mockResolvedValue([
-      { id: 'horse-1', type: 'horse', track: '서울' }
+      { id: 'horse-1', type: 'horse', track: '서울' },
     ]);
 
     const request = new NextRequest('https://racelab.kr/api/races/horse');
@@ -350,32 +359,32 @@ const mockHorseRace: Race = {
   id: 'horse-1-1-20240101',
   type: 'horse',
   raceNo: 1,
-  track: '서울',           // 서울, 부산경남, 제주
+  track: '서울', // 서울, 부산경남, 제주
   startTime: '11:30',
   distance: 1200,
   status: 'upcoming',
-  entries: []
+  entries: [],
 };
 
 const mockCycleRace: Race = {
   id: 'cycle-1-1-20240101',
   type: 'cycle',
   raceNo: 1,
-  track: '광명',           // 광명
+  track: '광명', // 광명
   startTime: '11:00',
   distance: 1000,
   status: 'upcoming',
-  entries: []
+  entries: [],
 };
 
 const mockBoatRace: Race = {
   id: 'boat-1-1-20240101',
   type: 'boat',
   raceNo: 1,
-  track: '미사리',         // 미사리
+  track: '미사리', // 미사리
   startTime: '10:30',
   status: 'upcoming',
-  entries: []
+  entries: [],
 };
 ```
 
@@ -383,13 +392,13 @@ const mockBoatRace: Race = {
 
 ## 커버리지 목표
 
-| 영역 | Line | 필수 테스트 |
-|------|------|-------------|
-| `src/lib/api.ts` | 90%+ | API 호출, 에러 처리, 더미 데이터 폴백 |
-| `src/lib/api-helpers/mappers.ts` | 95%+ | 모든 매핑 함수, 엣지 케이스 |
-| `src/components/*` | 80%+ | 렌더링, 인터랙션, 빈 상태 |
-| `src/app/api/*` | 80%+ | 성공/실패 응답, 파라미터 검증 |
-| E2E Critical Paths | 100% | 홈 → 경주 상세 → 정보 표시 |
+| 영역                             | Line | 필수 테스트                           |
+| -------------------------------- | ---- | ------------------------------------- |
+| `src/lib/api.ts`                 | 90%+ | API 호출, 에러 처리, 더미 데이터 폴백 |
+| `src/lib/api-helpers/mappers.ts` | 95%+ | 모든 매핑 함수, 엣지 케이스           |
+| `src/components/*`               | 80%+ | 렌더링, 인터랙션, 빈 상태             |
+| `src/app/api/*`                  | 80%+ | 성공/실패 응답, 파라미터 검증         |
+| E2E Critical Paths               | 100% | 홈 → 경주 상세 → 정보 표시            |
 
 ---
 

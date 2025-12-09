@@ -12,12 +12,7 @@ describe('DateRangeFilter', () => {
   });
 
   it('displays provided date values', () => {
-    render(
-      <DateRangeFilter
-        dateFrom="2023-12-01"
-        dateTo="2023-12-31"
-      />
-    );
+    render(<DateRangeFilter dateFrom="2023-12-01" dateTo="2023-12-31" />);
     expect(screen.getByLabelText(/시작일/)).toHaveValue('2023-12-01');
     expect(screen.getByLabelText(/종료일/)).toHaveValue('2023-12-31');
   });
@@ -26,11 +21,7 @@ describe('DateRangeFilter', () => {
     const handleDateFromChange = jest.fn();
     const user = userEvent.setup();
 
-    render(
-      <DateRangeFilter
-        onDateFromChange={handleDateFromChange}
-      />
-    );
+    render(<DateRangeFilter onDateFromChange={handleDateFromChange} />);
 
     const startDateInput = screen.getByLabelText(/시작일/);
     await user.clear(startDateInput);
@@ -43,11 +34,7 @@ describe('DateRangeFilter', () => {
     const handleDateToChange = jest.fn();
     const user = userEvent.setup();
 
-    render(
-      <DateRangeFilter
-        onDateToChange={handleDateToChange}
-      />
-    );
+    render(<DateRangeFilter onDateToChange={handleDateToChange} />);
 
     const endDateInput = screen.getByLabelText(/종료일/);
     await user.clear(endDateInput);
@@ -57,22 +44,14 @@ describe('DateRangeFilter', () => {
   });
 
   it('prevents selecting end date before start date', () => {
-    render(
-      <DateRangeFilter
-        dateFrom="2023-12-15"
-      />
-    );
+    render(<DateRangeFilter dateFrom="2023-12-15" />);
 
     const endDateInput = screen.getByLabelText(/종료일/);
     expect(endDateInput).toHaveAttribute('min', '2023-12-15');
   });
 
   it('prevents selecting start date after end date', () => {
-    render(
-      <DateRangeFilter
-        dateTo="2023-12-15"
-      />
-    );
+    render(<DateRangeFilter dateTo="2023-12-15" />);
 
     const startDateInput = screen.getByLabelText(/시작일/);
     expect(startDateInput).toHaveAttribute('max', '2023-12-15');

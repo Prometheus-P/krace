@@ -1,7 +1,11 @@
 // src/components/TodayRaces.test.tsx
 import { render, screen, within } from '@testing-library/react';
 import TodayRaces from './TodayRaces';
-import { fetchHorseRaceSchedules, fetchCycleRaceSchedules, fetchBoatRaceSchedules } from '@/lib/api';
+import {
+  fetchHorseRaceSchedules,
+  fetchCycleRaceSchedules,
+  fetchBoatRaceSchedules,
+} from '@/lib/api';
 import { Race } from '@/types';
 
 // Mock the API client dependency
@@ -13,13 +17,39 @@ jest.mock('@/lib/api', () => ({
 
 describe('TodayRaces Component', () => {
   const mockHorseRaces: Race[] = [
-    { id: 'horse-1', type: 'horse', raceNo: 1, track: '서울', startTime: '11:30', distance: 1200, status: 'upcoming', entries: [] },
+    {
+      id: 'horse-1',
+      type: 'horse',
+      raceNo: 1,
+      track: '서울',
+      startTime: '11:30',
+      distance: 1200,
+      status: 'upcoming',
+      entries: [],
+    },
   ];
   const mockCycleRaces: Race[] = [
-    { id: 'cycle-1', type: 'cycle', raceNo: 1, track: '광명', startTime: '11:00', distance: 1000, status: 'upcoming', entries: [] },
+    {
+      id: 'cycle-1',
+      type: 'cycle',
+      raceNo: 1,
+      track: '광명',
+      startTime: '11:00',
+      distance: 1000,
+      status: 'upcoming',
+      entries: [],
+    },
   ];
   const mockBoatRaces: Race[] = [
-    { id: 'boat-1', type: 'boat', raceNo: 1, track: '미사리', startTime: '10:30', status: 'upcoming', entries: [] },
+    {
+      id: 'boat-1',
+      type: 'boat',
+      raceNo: 1,
+      track: '미사리',
+      startTime: '10:30',
+      status: 'upcoming',
+      entries: [],
+    },
   ];
 
   beforeEach(() => {
@@ -94,14 +124,8 @@ describe('TodayRaces Component', () => {
       render(resolvedComponent);
 
       const raceCard = screen.getAllByTestId('race-card')[0];
-      expect(raceCard).toHaveAttribute(
-        'aria-label',
-        expect.stringContaining('서울 제1경주')
-      );
-      expect(raceCard).toHaveAttribute(
-        'aria-label',
-        expect.stringContaining('상세 정보 보기')
-      );
+      expect(raceCard).toHaveAttribute('aria-label', expect.stringContaining('서울 제1경주'));
+      expect(raceCard).toHaveAttribute('aria-label', expect.stringContaining('상세 정보 보기'));
     });
 
     it('should use semantic time element for start times', async () => {
@@ -167,7 +191,16 @@ describe('TodayRaces Component', () => {
 
     it('should display live status badge with aria-live for live races', async () => {
       const liveRace: Race[] = [
-        { id: 'horse-live', type: 'horse', raceNo: 1, track: '서울', startTime: '11:30', distance: 1200, status: 'live', entries: [] },
+        {
+          id: 'horse-live',
+          type: 'horse',
+          raceNo: 1,
+          track: '서울',
+          startTime: '11:30',
+          distance: 1200,
+          status: 'live',
+          entries: [],
+        },
       ];
       (fetchHorseRaceSchedules as jest.Mock).mockResolvedValue(liveRace);
       (fetchCycleRaceSchedules as jest.Mock).mockResolvedValue([]);
@@ -183,7 +216,16 @@ describe('TodayRaces Component', () => {
 
     it('should display finished status badge for finished races', async () => {
       const finishedRace: Race[] = [
-        { id: 'horse-done', type: 'horse', raceNo: 1, track: '서울', startTime: '11:30', distance: 1200, status: 'finished', entries: [] },
+        {
+          id: 'horse-done',
+          type: 'horse',
+          raceNo: 1,
+          track: '서울',
+          startTime: '11:30',
+          distance: 1200,
+          status: 'finished',
+          entries: [],
+        },
       ];
       (fetchHorseRaceSchedules as jest.Mock).mockResolvedValue(finishedRace);
       (fetchCycleRaceSchedules as jest.Mock).mockResolvedValue([]);

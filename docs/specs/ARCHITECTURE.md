@@ -2,7 +2,7 @@
 title: KRace 시스템 아키텍처
 version: 1.0.0
 status: Approved
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -18,8 +18,8 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
+| 버전  | 날짜       | 작성자        | 변경 내용 |
+| ----- | ---------- | ------------- | --------- |
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
 
 ## 관련 문서 (Related Documents)
@@ -82,11 +82,11 @@ language: Korean (한국어)
 
 **선택: 모놀리식 + 서버리스 하이브리드**
 
-| 스타일 | 적용 | 이유 |
-|--------|------|------|
-| 모놀리식 | Next.js 앱 | 초기 개발 속도, 단순성 |
-| 서버리스 | Vercel Edge | 자동 스케일링, 비용 효율 |
-| JAMstack | 정적 생성 + ISR | 성능, SEO |
+| 스타일   | 적용            | 이유                     |
+| -------- | --------------- | ------------------------ |
+| 모놀리식 | Next.js 앱      | 초기 개발 속도, 단순성   |
+| 서버리스 | Vercel Edge     | 자동 스케일링, 비용 효율 |
+| JAMstack | 정적 생성 + ISR | 성능, SEO                |
 
 ---
 
@@ -123,14 +123,14 @@ graph TB
 
 ### 2.2 시스템 경계
 
-| 경계 내부 | 경계 외부 |
-|----------|----------|
-| Next.js 웹 애플리케이션 | KSPO 공공 API |
-| API Routes | 한국마사회 API |
-| 정적 자산 | Google Analytics |
-| ISR 캐시 | Google AdSense |
-| | Vercel 인프라 |
-| | Cloudflare CDN |
+| 경계 내부               | 경계 외부        |
+| ----------------------- | ---------------- |
+| Next.js 웹 애플리케이션 | KSPO 공공 API    |
+| API Routes              | 한국마사회 API   |
+| 정적 자산               | Google Analytics |
+| ISR 캐시                | Google AdSense   |
+|                         | Vercel 인프라    |
+|                         | Cloudflare CDN   |
 
 ---
 
@@ -174,13 +174,13 @@ graph TB
 
 ### 3.2 컨테이너 설명
 
-| 컨테이너 | 기술 | 역할 |
-|----------|------|------|
-| **Pages** | React Server Components | UI 렌더링, SEO |
-| **API Routes** | Next.js API Routes | 데이터 프록시, 변환 |
-| **ISR Cache** | Vercel Cache | 페이지 캐싱 |
-| **Edge Network** | Vercel Edge | 전역 배포, 라우팅 |
-| **Static Assets** | CDN | 정적 파일 서빙 |
+| 컨테이너          | 기술                    | 역할                |
+| ----------------- | ----------------------- | ------------------- |
+| **Pages**         | React Server Components | UI 렌더링, SEO      |
+| **API Routes**    | Next.js API Routes      | 데이터 프록시, 변환 |
+| **ISR Cache**     | Vercel Cache            | 페이지 캐싱         |
+| **Edge Network**  | Vercel Edge             | 전역 배포, 라우팅   |
+| **Static Assets** | CDN                     | 정적 파일 서빙      |
 
 ---
 
@@ -424,15 +424,15 @@ sequenceDiagram
 
 ### 6.2 기술 선택 근거
 
-| 기술 | 선택 이유 | 대안 |
-|------|----------|------|
-| **Next.js** | SSR/ISR/SSG 통합, App Router | Remix, Nuxt |
-| **React** | 생태계, 커뮤니티, Server Components | Vue, Svelte |
-| **TypeScript** | 타입 안전성, DX | JavaScript |
-| **Tailwind** | 빠른 개발, 번들 최적화 | CSS Modules, Styled |
-| **Vercel** | Next.js 최적화, 서버리스 | AWS, Netlify |
-| **Jest** | React 생태계 표준 | Vitest |
-| **Playwright** | 크로스 브라우저, 안정성 | Cypress |
+| 기술           | 선택 이유                           | 대안                |
+| -------------- | ----------------------------------- | ------------------- |
+| **Next.js**    | SSR/ISR/SSG 통합, App Router        | Remix, Nuxt         |
+| **React**      | 생태계, 커뮤니티, Server Components | Vue, Svelte         |
+| **TypeScript** | 타입 안전성, DX                     | JavaScript          |
+| **Tailwind**   | 빠른 개발, 번들 최적화              | CSS Modules, Styled |
+| **Vercel**     | Next.js 최적화, 서버리스            | AWS, Netlify        |
+| **Jest**       | React 생태계 표준                   | Vitest              |
+| **Playwright** | 크로스 브라우저, 안정성             | Cypress             |
 
 ---
 
@@ -471,33 +471,33 @@ graph LR
 
 ### 7.2 환경별 설정
 
-| 환경 | URL | 용도 | 캐시 TTL |
-|------|-----|------|----------|
-| Production | racelab.kr | 운영 | 없음 |
-| Preview | *.vercel.app | PR 리뷰 | 30초 |
-| Production | racelab.kr | 운영 | 5분 |
+| 환경       | URL           | 용도    | 캐시 TTL |
+| ---------- | ------------- | ------- | -------- |
+| Production | racelab.kr    | 운영    | 없음     |
+| Preview    | \*.vercel.app | PR 리뷰 | 30초     |
+| Production | racelab.kr    | 운영    | 5분      |
 
 ### 7.3 배포 파이프라인
 
 ```yaml
 # 배포 흐름
 1. PR 생성
-   └─> GitHub Actions
-       ├─> Lint
-       ├─> Type Check
-       ├─> Unit Tests
-       └─> Build
-   └─> Vercel Preview 배포
-   └─> E2E Tests
+└─> GitHub Actions
+├─> Lint
+├─> Type Check
+├─> Unit Tests
+└─> Build
+└─> Vercel Preview 배포
+└─> E2E Tests
 
 2. PR Merge (main)
-   └─> Vercel Production 자동 배포
-   └─> Lighthouse CI
-   └─> Slack 알림
+└─> Vercel Production 자동 배포
+└─> Lighthouse CI
+└─> Slack 알림
 
 3. 롤백 (필요시)
-   └─> Vercel Dashboard
-       └─> 이전 배포로 Promote
+└─> Vercel Dashboard
+└─> 이전 배포로 Promote
 ```
 
 ---
@@ -544,28 +544,29 @@ graph LR
 const securityHeaders = [
   {
     key: 'X-DNS-Prefetch-Control',
-    value: 'on'
+    value: 'on',
   },
   {
     key: 'Strict-Transport-Security',
-    value: 'max-age=63072000; includeSubDomains; preload'
+    value: 'max-age=63072000; includeSubDomains; preload',
   },
   {
     key: 'X-Frame-Options',
-    value: 'SAMEORIGIN'
+    value: 'SAMEORIGIN',
   },
   {
     key: 'X-Content-Type-Options',
-    value: 'nosniff'
+    value: 'nosniff',
   },
   {
     key: 'Referrer-Policy',
-    value: 'origin-when-cross-origin'
+    value: 'origin-when-cross-origin',
   },
   {
     key: 'Content-Security-Policy',
-    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline';"
-  }
+    value:
+      "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline';",
+  },
 ];
 ```
 
@@ -600,14 +601,17 @@ const securityHeaders = [
 **상태**: Accepted
 
 **컨텍스트**:
+
 - React 기반 프레임워크 선택 필요
 - SSR, SSG, ISR 지원 필요
 - SEO 최적화 중요
 
 **결정**:
+
 - Next.js 14 App Router 사용
 
 **결과**:
+
 - ✅ Server Components로 성능 향상
 - ✅ ISR로 캐싱 최적화
 - ✅ Vercel 배포 최적화
@@ -618,15 +622,18 @@ const securityHeaders = [
 **상태**: Accepted
 
 **컨텍스트**:
+
 - 초기 트래픽 불확실
 - 비용 효율 중요
 - 운영 부담 최소화 필요
 
 **결정**:
+
 - Vercel 서버리스 플랫폼 사용
 - API Routes로 백엔드 구현
 
 **결과**:
+
 - ✅ 자동 스케일링
 - ✅ 운영 부담 최소화
 - ✅ 비용 효율 (사용량 기반)
@@ -637,15 +644,18 @@ const securityHeaders = [
 **상태**: Accepted
 
 **컨텍스트**:
+
 - MVP 단계에서 자체 데이터 저장 불필요
 - 모든 데이터는 외부 API에서 제공
 - 비용 및 복잡성 최소화
 
 **결정**:
+
 - 별도 데이터베이스 없이 외부 API + 캐싱으로 구현
 - Phase 2에서 필요시 데이터베이스 도입 검토
 
 **결과**:
+
 - ✅ 인프라 단순화
 - ✅ 비용 절감
 - ✅ 운영 부담 감소
@@ -684,4 +694,4 @@ const securityHeaders = [
 
 ---
 
-*이 문서는 시스템 아키텍처 변경 시 업데이트됩니다.*
+_이 문서는 시스템 아키텍처 변경 시 업데이트됩니다._

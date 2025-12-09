@@ -18,12 +18,12 @@
 
 ### 심각도 정의
 
-| 심각도 | 이름 | 영향 | 대응 시간 | 예시 |
-|--------|------|------|-----------|------|
-| **SEV1** | Critical | 서비스 전면 장애, 데이터 손실 위험 | 15분 이내 | 사이트 다운, DB 장애 |
-| **SEV2** | High | 핵심 기능 장애, 다수 사용자 영향 | 1시간 이내 | 결제 불가, API 장애 |
-| **SEV3** | Medium | 일부 기능 장애, 우회 가능 | 4시간 이내 | 느린 응답, 일부 페이지 오류 |
-| **SEV4** | Low | 사소한 문제, 사용자 영향 최소 | 24시간 이내 | UI 버그, 오타 |
+| 심각도   | 이름     | 영향                               | 대응 시간   | 예시                        |
+| -------- | -------- | ---------------------------------- | ----------- | --------------------------- |
+| **SEV1** | Critical | 서비스 전면 장애, 데이터 손실 위험 | 15분 이내   | 사이트 다운, DB 장애        |
+| **SEV2** | High     | 핵심 기능 장애, 다수 사용자 영향   | 1시간 이내  | 결제 불가, API 장애         |
+| **SEV3** | Medium   | 일부 기능 장애, 우회 가능          | 4시간 이내  | 느린 응답, 일부 페이지 오류 |
+| **SEV4** | Low      | 사소한 문제, 사용자 영향 최소      | 24시간 이내 | UI 버그, 오타               |
 
 ### 심각도 판단 기준
 
@@ -60,13 +60,13 @@
 
 ### 장애 유형
 
-| 유형 | 설명 | 일반적인 심각도 |
-|------|------|-----------------|
-| 전면 장애 (Outage) | 서비스 완전 불가 | SEV1 |
-| 부분 장애 (Partial) | 일부 기능 불가 | SEV2-3 |
-| 성능 저하 (Degradation) | 응답 시간 증가 | SEV2-3 |
-| 데이터 이슈 | 잘못된 데이터 표시 | SEV2-3 |
-| 보안 이슈 | 취약점, 데이터 유출 | SEV1-2 |
+| 유형                    | 설명                | 일반적인 심각도 |
+| ----------------------- | ------------------- | --------------- |
+| 전면 장애 (Outage)      | 서비스 완전 불가    | SEV1            |
+| 부분 장애 (Partial)     | 일부 기능 불가      | SEV2-3          |
+| 성능 저하 (Degradation) | 응답 시간 증가      | SEV2-3          |
+| 데이터 이슈             | 잘못된 데이터 표시  | SEV2-3          |
+| 보안 이슈               | 취약점, 데이터 유출 | SEV1-2          |
 
 ---
 
@@ -99,57 +99,61 @@
 ```markdown
 □ 알림 확인 (Slack/PagerDuty)
 □ 장애 현상 직접 확인
-  - 영향받는 URL/기능 확인
-  - 에러 메시지/로그 확인
-□ 심각도 판단
-□ 장애 채널 생성 (#incident-YYYYMMDD-001)
-□ 온콜 담당자 호출 (SEV1/2)
+
+- 영향받는 URL/기능 확인
+- 에러 메시지/로그 확인
+  □ 심각도 판단
+  □ 장애 채널 생성 (#incident-YYYYMMDD-001)
+  □ 온콜 담당자 호출 (SEV1/2)
 ```
 
 #### 2단계: 초기 대응 (Triage)
 
 ```markdown
 □ 영향 범위 파악
-  - 영향받는 사용자 수
-  - 영향받는 기능 목록
-□ 최근 변경사항 확인
-  - 배포 이력
-  - 설정 변경
-□ 임시 조치 검토
-  - 롤백 필요 여부
-  - 트래픽 우회 가능 여부
-□ 외부 의존성 확인
-  - KSPO/KRA API 상태
-  - CDN/Vercel 상태
+
+- 영향받는 사용자 수
+- 영향받는 기능 목록
+  □ 최근 변경사항 확인
+- 배포 이력
+- 설정 변경
+  □ 임시 조치 검토
+- 롤백 필요 여부
+- 트래픽 우회 가능 여부
+  □ 외부 의존성 확인
+- KSPO/KRA API 상태
+- CDN/Vercel 상태
 ```
 
 #### 3단계: 조사 (Investigation)
 
 ```markdown
 □ 로그 분석
-  - Vercel Logs
-  - Sentry 에러
-□ 메트릭 분석
-  - 에러율 추이
-  - 응답 시간 추이
-□ 최근 변경사항 상세 검토
-□ 근본 원인 가설 수립
-□ 가설 검증
+
+- Vercel Logs
+- Sentry 에러
+  □ 메트릭 분석
+- 에러율 추이
+- 응답 시간 추이
+  □ 최근 변경사항 상세 검토
+  □ 근본 원인 가설 수립
+  □ 가설 검증
 ```
 
 #### 4단계: 완화/복구 (Mitigation)
 
 ```markdown
 □ 복구 방안 결정
-  - 롤백
-  - 핫픽스
-  - 설정 변경
-  - 외부 서비스 대기
-□ 복구 작업 실행
-□ 복구 확인
-  - 서비스 정상 동작 확인
-  - 에러율 정상화 확인
-□ 모니터링 강화
+
+- 롤백
+- 핫픽스
+- 설정 변경
+- 외부 서비스 대기
+  □ 복구 작업 실행
+  □ 복구 확인
+- 서비스 정상 동작 확인
+- 에러율 정상화 확인
+  □ 모니터링 강화
 ```
 
 #### 5단계: 사후 처리 (Post-incident)
@@ -167,12 +171,12 @@
 
 ### 장애 대응 역할
 
-| 역할 | 책임 | 누가 |
-|------|------|------|
-| **Incident Commander (IC)** | 전체 대응 조율, 의사결정 | 온콜 리드 |
-| **Tech Lead** | 기술적 조사 및 복구 주도 | 시니어 개발자 |
-| **Communications Lead** | 내/외부 커뮤니케이션 | PM/EM |
-| **Scribe** | 타임라인 기록, 문서화 | 지정된 팀원 |
+| 역할                        | 책임                     | 누가          |
+| --------------------------- | ------------------------ | ------------- |
+| **Incident Commander (IC)** | 전체 대응 조율, 의사결정 | 온콜 리드     |
+| **Tech Lead**               | 기술적 조사 및 복구 주도 | 시니어 개발자 |
+| **Communications Lead**     | 내/외부 커뮤니케이션     | PM/EM         |
+| **Scribe**                  | 타임라인 기록, 문서화    | 지정된 팀원   |
 
 ### 온콜 로테이션
 
@@ -181,25 +185,25 @@
 oncall:
   primary:
     - week: 1
-      engineer: "김철수"
-      contact: "@cheolsu"
+      engineer: '김철수'
+      contact: '@cheolsu'
     - week: 2
-      engineer: "이영희"
-      contact: "@younghee"
+      engineer: '이영희'
+      contact: '@younghee'
 
   secondary:
     - week: 1
-      engineer: "박민수"
-      contact: "@minsu"
+      engineer: '박민수'
+      contact: '@minsu'
     - week: 2
-      engineer: "정수진"
-      contact: "@sujin"
+      engineer: '정수진'
+      contact: '@sujin'
 
   escalation:
-    - name: "Tech Lead"
-      contact: "@techlead"
-    - name: "Engineering Manager"
-      contact: "@em"
+    - name: 'Tech Lead'
+      contact: '@techlead'
+    - name: 'Engineering Manager'
+      contact: '@em'
 ```
 
 ---
@@ -208,17 +212,18 @@ oncall:
 
 ### 에스컬레이션 매트릭스
 
-| 시간 | SEV1 | SEV2 | SEV3 |
-|------|------|------|------|
-| 0-15분 | Primary 온콜 + Secondary | Primary 온콜 | Primary 온콜 |
-| 15-30분 | + Tech Lead | + Secondary | - |
-| 30분-1시간 | + EM | + Tech Lead | - |
-| 1시간+ | + CTO | + EM | + Tech Lead |
+| 시간       | SEV1                     | SEV2         | SEV3         |
+| ---------- | ------------------------ | ------------ | ------------ |
+| 0-15분     | Primary 온콜 + Secondary | Primary 온콜 | Primary 온콜 |
+| 15-30분    | + Tech Lead              | + Secondary  | -            |
+| 30분-1시간 | + EM                     | + Tech Lead  | -            |
+| 1시간+     | + CTO                    | + EM         | + Tech Lead  |
 
 ### 에스컬레이션 트리거
 
 ```markdown
 자동 에스컬레이션 조건:
+
 1. SEV1/SEV2에서 15분 내 응답 없음
 2. 30분 내 진전 없음
 3. 복구 예상 시간 > 1시간
@@ -231,29 +236,29 @@ oncall:
 ```yaml
 contacts:
   engineering:
-    - role: "Primary Oncall"
-      slack: "@oncall-primary"
-      phone: "010-xxxx-xxxx"
+    - role: 'Primary Oncall'
+      slack: '@oncall-primary'
+      phone: '010-xxxx-xxxx'
 
-    - role: "Secondary Oncall"
-      slack: "@oncall-secondary"
+    - role: 'Secondary Oncall'
+      slack: '@oncall-secondary'
 
-    - role: "Tech Lead"
-      slack: "@techlead"
-      phone: "010-xxxx-xxxx"
+    - role: 'Tech Lead'
+      slack: '@techlead'
+      phone: '010-xxxx-xxxx'
 
-    - role: "Engineering Manager"
-      slack: "@em"
-      phone: "010-xxxx-xxxx"
+    - role: 'Engineering Manager'
+      slack: '@em'
+      phone: '010-xxxx-xxxx'
 
   external:
-    - service: "Vercel Support"
-      url: "https://vercel.com/support"
-      priority: "Enterprise"
+    - service: 'Vercel Support'
+      url: 'https://vercel.com/support'
+      priority: 'Enterprise'
 
-    - service: "KSPO 기술지원"
-      phone: "02-xxxx-xxxx"
-      hours: "09:00-18:00"
+    - service: 'KSPO 기술지원'
+      phone: '02-xxxx-xxxx'
+      hours: '09:00-18:00'
 ```
 
 ---
@@ -264,9 +269,11 @@ contacts:
 
 ```markdown
 # 채널명: #incident-YYYYMMDD-NNN
+
 # 예: #incident-20240115-001
 
 ## 채널 설명
+
 - 장애: [간단한 설명]
 - 심각도: SEV1/SEV2/SEV3
 - IC: @담당자
@@ -281,13 +288,14 @@ contacts:
 **현재 상태**: 조사중 / 복구중 / 모니터링 / 종료
 
 **영향**:
+
 - 영향받는 기능:
 - 영향받는 사용자 비율:
 
-**원인 (알려진 경우)**:
--
+## **원인 (알려진 경우)**:
 
 **조치 사항**:
+
 - [완료] 조치 내용
 - [진행중] 조치 내용
 - [예정] 조치 내용
@@ -297,11 +305,11 @@ contacts:
 
 ### 내부 커뮤니케이션
 
-| 대상 | 타이밍 | 채널 | 내용 |
-|------|--------|------|------|
-| 개발팀 | 즉시 | Slack #incident | 실시간 상태 |
-| 경영진 | SEV1: 15분, SEV2: 1시간 | Slack DM/Email | 요약 보고 |
-| 전사 | SEV1/2 종료 시 | Slack #general | 사후 요약 |
+| 대상   | 타이밍                  | 채널            | 내용        |
+| ------ | ----------------------- | --------------- | ----------- |
+| 개발팀 | 즉시                    | Slack #incident | 실시간 상태 |
+| 경영진 | SEV1: 15분, SEV2: 1시간 | Slack DM/Email  | 요약 보고   |
+| 전사   | SEV1/2 종료 시          | Slack #general  | 사후 요약   |
 
 ### 외부 커뮤니케이션 (필요시)
 
@@ -309,6 +317,7 @@ contacts:
 # 상태 페이지 업데이트
 
 ## [조사중] 서비스 접속 장애 발생
+
 게시: 2024-01-15 14:30 KST
 
 현재 일부 사용자분들께서 서비스 접속에 어려움을 겪고 계십니다.
@@ -317,6 +326,7 @@ contacts:
 ---
 
 ## [확인됨] 서비스 접속 장애 - 원인 확인
+
 업데이트: 2024-01-15 14:45 KST
 
 외부 데이터 제공 서비스의 일시적 장애로 인한 문제임을 확인했습니다.
@@ -325,6 +335,7 @@ contacts:
 ---
 
 ## [복구됨] 서비스 정상화
+
 업데이트: 2024-01-15 15:00 KST
 
 서비스가 정상화되었습니다.
@@ -400,11 +411,11 @@ git branch -d hotfix/critical-fix
 
 ### Postmortem 일정
 
-| 심각도 | Postmortem 작성 | 리뷰 미팅 |
-|--------|-----------------|-----------|
-| SEV1 | 필수, 24시간 이내 | 필수, 48시간 이내 |
-| SEV2 | 필수, 3일 이내 | 권장 |
-| SEV3 | 선택적 | 선택적 |
+| 심각도 | Postmortem 작성   | 리뷰 미팅         |
+| ------ | ----------------- | ----------------- |
+| SEV1   | 필수, 24시간 이내 | 필수, 48시간 이내 |
+| SEV2   | 필수, 3일 이내    | 권장              |
+| SEV3   | 선택적            | 선택적            |
 
 ### Postmortem 템플릿
 
@@ -430,14 +441,14 @@ git branch -d hotfix/critical-fix
 
 ## 타임라인
 
-| 시간 (KST) | 이벤트 |
-|------------|--------|
-| HH:MM | 알림 수신 |
-| HH:MM | 조사 시작 |
-| HH:MM | 원인 파악 |
-| HH:MM | 복구 조치 시작 |
-| HH:MM | 서비스 정상화 |
-| HH:MM | 장애 종료 선언 |
+| 시간 (KST) | 이벤트         |
+| ---------- | -------------- |
+| HH:MM      | 알림 수신      |
+| HH:MM      | 조사 시작      |
+| HH:MM      | 원인 파악      |
+| HH:MM      | 복구 조치 시작 |
+| HH:MM      | 서비스 정상화  |
+| HH:MM      | 장애 종료 선언 |
 
 ## 근본 원인 (Root Cause)
 
@@ -456,18 +467,16 @@ git branch -d hotfix/critical-fix
 
 ## 대응
 
-- **잘된 점**:
-  -
-- **개선이 필요한 점**:
-  -
+- ## **잘된 점**:
+- ## **개선이 필요한 점**:
 
 ## 조치 항목 (Action Items)
 
-| 우선순위 | 항목 | 담당자 | 기한 | 상태 |
-|----------|------|--------|------|------|
-| P1 | [긴급 조치] | @담당자 | YYYY-MM-DD | 완료/진행중/예정 |
-| P2 | [예방 조치] | @담당자 | YYYY-MM-DD | |
-| P3 | [개선 조치] | @담당자 | YYYY-MM-DD | |
+| 우선순위 | 항목        | 담당자  | 기한       | 상태             |
+| -------- | ----------- | ------- | ---------- | ---------------- |
+| P1       | [긴급 조치] | @담당자 | YYYY-MM-DD | 완료/진행중/예정 |
+| P2       | [예방 조치] | @담당자 | YYYY-MM-DD |                  |
+| P3       | [개선 조치] | @담당자 | YYYY-MM-DD |                  |
 
 ## 교훈 (Lessons Learned)
 
@@ -512,17 +521,20 @@ git branch -d hotfix/critical-fix
 ## 분기별 장애 대응 훈련
 
 ### 목적
+
 - 대응 프로세스 검증
 - 팀 역량 강화
 - 도구 및 런북 검증
 
 ### 시나리오 예시
+
 1. 외부 API 전면 장애
 2. 급격한 트래픽 증가
 3. 배포 후 서비스 장애
 4. 보안 취약점 발견
 
 ### 훈련 후 검토
+
 - 대응 시간 측정
 - 프로세스 개선점 식별
 - 문서 업데이트
