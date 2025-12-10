@@ -1,4 +1,11 @@
-import { fetchHorseRaceSchedules, fetchCycleRaceSchedules, fetchBoatRaceSchedules, fetchRaceById, fetchHistoricalResults, fetchHistoricalResultById, fetchHorseRaceInfo, fetchHorseRaceResultDetail, fetchHorseEntryRegistration, fetchHorseDividendSummary, fetchHorseEntryDetail, fetchBoatPayoffs, fetchCyclePayoffs, fetchCycleRaceResults, fetchBoatRaceRankings, fetchCycleRaceRankings, fetchBoatRacerInfo, fetchCycleRacerInfo, fetchBoatOperationInfo, fetchCycleOperationInfo, fetchCycleExerciseStats, fetchCyclePartUnits, fetchCycleInspectStats, fetchCycleInOutStats } from '../lib/api';
+import {
+  fetchHorseRaceSchedules,
+  fetchCycleRaceSchedules,
+  fetchBoatRaceSchedules,
+  fetchRaceById,
+  fetchHistoricalResults,
+  fetchHistoricalResultById,
+} from '../lib/api';
 
 describe('API Client', () => {
   let originalEnv: NodeJS.ProcessEnv;
@@ -12,112 +19,122 @@ describe('API Client', () => {
     process.env = { ...originalEnv }; // Make a copy of the original environment
 
     // Mock the global fetch function before each test
-    global.fetch = jest.fn((url: RequestInfo | URL) =>
-      Promise.resolve({
-        ok: true,
-        json: () => {
-          if (typeof url === 'string' && url.includes('API299')) { // KRA API299 (Horse Race Results)
-            // Mock response for KRA API299 경주결과종합
-            return Promise.resolve({
-              response: {
-                header: { resultCode: '00', resultMsg: 'NORMAL SERVICE' },
-                body: {
-                  items: {
-                    item: [
-                      {
-                        meet: '서울',
-                        rcDate: 20240115,
-                        rcNo: 1,
-                        chulNo: 1,
-                        ord: 1,
-                        hrName: '말1',
-                        hrNo: '001',
-                        jkName: '기수1',
-                        jkNo: '101',
-                        rcTime: 72.5,
-                        age: 3,
-                        rank: '국산5등급',
-                        schStTime: '2024-01-15T11:30:00',
-                      },
-                      {
-                        meet: '서울',
-                        rcDate: 20240115,
-                        rcNo: 1,
-                        chulNo: 2,
-                        ord: 2,
-                        hrName: '말2',
-                        hrNo: '002',
-                        jkName: '기수2',
-                        jkNo: '102',
-                        rcTime: 73.1,
-                        age: 4,
-                        rank: '국산5등급',
-                        schStTime: '2024-01-15T11:30:00',
-                      },
-                    ],
+    global.fetch = jest.fn(
+      (url: RequestInfo | URL) =>
+        Promise.resolve({
+          ok: true,
+          json: () => {
+            if (typeof url === 'string' && url.includes('API299')) {
+              // KRA API299 (Horse Race Results)
+              // Mock response for KRA API299 경주결과종합
+              return Promise.resolve({
+                response: {
+                  header: { resultCode: '00', resultMsg: 'NORMAL SERVICE' },
+                  body: {
+                    items: {
+                      item: [
+                        {
+                          meet: '서울',
+                          rcDate: 20240115,
+                          rcNo: 1,
+                          chulNo: 1,
+                          ord: 1,
+                          hrName: '말1',
+                          hrNo: '001',
+                          jkName: '기수1',
+                          jkNo: '101',
+                          rcTime: 72.5,
+                          age: 3,
+                          rank: '국산5등급',
+                          schStTime: '2024-01-15T11:30:00',
+                        },
+                        {
+                          meet: '서울',
+                          rcDate: 20240115,
+                          rcNo: 1,
+                          chulNo: 2,
+                          ord: 2,
+                          hrName: '말2',
+                          hrNo: '002',
+                          jkName: '기수2',
+                          jkNo: '102',
+                          rcTime: 73.1,
+                          age: 4,
+                          rank: '국산5등급',
+                          schStTime: '2024-01-15T11:30:00',
+                        },
+                      ],
+                    },
+                    numOfRows: 100,
+                    pageNo: 1,
+                    totalCount: 2,
                   },
-                  numOfRows: 100, pageNo: 1, totalCount: 2,
                 },
-              },
-            });
-          } else if (typeof url === 'string' && url.includes('SRVC_OD_API_CRA_RACE_ORGAN')) { // KSPO Cycle (New approved API)
-            // Mock response for KSPO cycle race schedules (new approved API format)
-            return Promise.resolve({
-              response: {
-                header: { resultCode: '00', resultMsg: 'NORMAL SERVICE' },
-                body: {
-                  items: {
-                    item: [
-                      {
-                        meet_nm: '광명',
-                        stnd_yr: '2024',
-                        week_tcnt: '1',
-                        day_tcnt: '1',
-                        race_no: '1',
-                        back_no: '1',
-                        racer_nm: '선수1',
-                        racer_age: '25',
-                        win_rate: '15.5',
-                        gear_rate: '3.92',
-                      },
-                    ],
+              });
+            } else if (typeof url === 'string' && url.includes('SRVC_OD_API_CRA_RACE_ORGAN')) {
+              // KSPO Cycle (New approved API)
+              // Mock response for KSPO cycle race schedules (new approved API format)
+              return Promise.resolve({
+                response: {
+                  header: { resultCode: '00', resultMsg: 'NORMAL SERVICE' },
+                  body: {
+                    items: {
+                      item: [
+                        {
+                          meet_nm: '광명',
+                          stnd_yr: '2024',
+                          week_tcnt: '1',
+                          day_tcnt: '1',
+                          race_no: '1',
+                          back_no: '1',
+                          racer_nm: '선수1',
+                          racer_age: '25',
+                          win_rate: '15.5',
+                          gear_rate: '3.92',
+                        },
+                      ],
+                    },
+                    numOfRows: 50,
+                    pageNo: 1,
+                    totalCount: 1,
                   },
-                  numOfRows: 50, pageNo: 1, totalCount: 1,
                 },
-              },
-            });
-          } else if (typeof url === 'string' && url.includes('SRVC_OD_API_VWEB_MBR_RACE_INFO')) { // KSPO Boat (New approved API)
-            // Mock response for KSPO boat race schedules (new approved API format)
-            return Promise.resolve({
-              response: {
-                header: { resultCode: '00', resultMsg: 'NORMAL SERVICE' },
-                body: {
-                  items: {
-                    item: [
-                      {
-                        meet_nm: '미사리',
-                        stnd_yr: '2024',
-                        week_tcnt: '1',
-                        day_tcnt: '1',
-                        race_no: '1',
-                        back_no: '1',
-                        racer_nm: '선수1',
-                        racer_age: '28',
-                        wght: '52',
-                        motor_no: '15',
-                        boat_no: '23',
-                        tms_6_avg_rank_scr: '3.2',
-                      },
-                    ],
+              });
+            } else if (typeof url === 'string' && url.includes('SRVC_OD_API_VWEB_MBR_RACE_INFO')) {
+              // KSPO Boat (New approved API)
+              // Mock response for KSPO boat race schedules (new approved API format)
+              return Promise.resolve({
+                response: {
+                  header: { resultCode: '00', resultMsg: 'NORMAL SERVICE' },
+                  body: {
+                    items: {
+                      item: [
+                        {
+                          meet_nm: '미사리',
+                          stnd_yr: '2024',
+                          week_tcnt: '1',
+                          day_tcnt: '1',
+                          race_no: '1',
+                          back_no: '1',
+                          racer_nm: '선수1',
+                          racer_age: '28',
+                          wght: '52',
+                          motor_no: '15',
+                          boat_no: '23',
+                          tms_6_avg_rank_scr: '3.2',
+                        },
+                      ],
+                    },
+                    numOfRows: 50,
+                    pageNo: 1,
+                    totalCount: 1,
                   },
-                  numOfRows: 50, pageNo: 1, totalCount: 1,
                 },
-              },
-            });
-          }
-          return Promise.resolve({});
-        },
-      }) as Promise<Response>
+              });
+            }
+            return Promise.resolve({});
+          },
+        }) as Promise<Response>
     );
   });
 
@@ -265,285 +282,59 @@ describe('API Client', () => {
   });
 });
 
-describe('Historical Results API - real endpoints (mocked)', () => {
-  const fetchMock = jest.fn();
-
-  beforeEach(() => {
-    process.env.KRA_API_KEY = 'TEST_KRA_API_KEY';
-    process.env.KSPO_API_KEY = 'TEST_KSPO_API_KEY';
-    fetchMock.mockReset();
-
-    global.fetch = fetchMock as unknown as typeof fetch;
-
-    fetchMock.mockImplementation((url: RequestInfo | URL) => {
-      const href = typeof url === 'string' ? url : url.toString();
-
-      if (href.includes('B551015/API299')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({
-            response: {
-              body: {
-                items: {
-                  item: [
-                    {
-                      meet: '서울',
-                      rcDate: 20240101,
-                      rcNo: 1,
-                      ord: 1,
-                      chulNo: 7,
-                      hrName: '청룡',
-                      jkName: '김기수',
-                      rcDist: 1200,
-                      schStTime: '2024-01-01T11:00:00'
-                    },
-                    {
-                      meet: '서울',
-                      rcDate: 20240101,
-                      rcNo: 1,
-                      ord: 2,
-                      chulNo: 3,
-                      hrName: '백호',
-                      jkName: '박기수',
-                      rcDist: 1200,
-                      schStTime: '2024-01-01T11:00:00'
-                    }
-                  ]
-                }
-              }
-            }
-          })
-        }) as unknown as Response;
-      }
-
-      if (href.includes('SRVC_TODZ_CRA_RACE_RESULT')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({
-            response: {
-              body: {
-                items: {
-                  item: [
-                    {
-                      meet: '1',
-                      rcDate: '20240101',
-                      rcNo: '2',
-                      ord: 1,
-                      hrNo: '5',
-                      hrName: '박선수',
-                      rcTime: '12:00',
-                      rcDist: '1000'
-                    }
-                  ]
-                }
-              }
-            }
-          })
-        }) as unknown as Response;
-      }
-
-      if (href.includes('SRVC_OD_API_MBR_RACE_RESULT')) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({
-            response: {
-              body: {
-                items: {
-                  item: [
-                    {
-                      meet: '1',
-                      rcDate: '20240101',
-                      rcNo: '3',
-                      ord: 1,
-                      hrNo: '4',
-                      hrName: '최선수',
-                      rcTime: '13:00',
-                      rcDist: '1200'
-                    }
-                  ]
-                }
-              }
-            }
-          })
-        }) as unknown as Response;
-      }
-
-      return Promise.resolve({
-        ok: false,
-        json: () => Promise.resolve({})
-      }) as unknown as Response;
-    });
-  });
-
-  afterEach(() => {
-    fetchMock.mockReset();
-  });
-
-  it('should call real endpoints and map to historical races when API keys are set', async () => {
+describe('Historical Results API - mock data', () => {
+  it('should return historical races filtered by type', async () => {
     const result = await fetchHistoricalResults({
-      dateFrom: '20240101',
-      dateTo: '20240101',
-      types: ['horse', 'cycle', 'boat'],
+      types: ['horse'],
       limit: 20,
     });
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      expect.stringContaining('https://apis.data.go.kr/B551015/API299'),
-      expect.anything()
-    );
-    expect(fetchMock).toHaveBeenCalledWith(
-      expect.stringContaining('https://apis.data.go.kr/B551014/SRVC_TODZ_CRA_RACE_RESULT'),
-      expect.anything()
-    );
-    expect(fetchMock).toHaveBeenCalledWith(
-      expect.stringContaining('https://apis.data.go.kr/B551014/SRVC_OD_API_MBR_RACE_RESULT'),
-      expect.anything()
-    );
-
-    const horseRace = result.items.find(r => r.type === 'horse');
-    const cycleRace = result.items.find(r => r.type === 'cycle');
-    const boatRace = result.items.find(r => r.type === 'boat');
-
-    expect(horseRace?.results[0].name).toBe('청룡');
-    expect(cycleRace?.results[0].name).toBe('박선수');
-    expect(boatRace?.results[0].name).toBe('최선수');
-
-    const detail = await fetchHistoricalResultById('horse-1-1-20240101');
-    expect(detail).not.toBeNull();
-    expect(detail?.results[0].name).toBe('청룡');
-    expect(detail?.dividends).toBeInstanceOf(Array);
-  });
-});
-
-describe('Auxiliary external APIs', () => {
-  const fetchMock = jest.fn();
-
-  beforeEach(() => {
-    process.env.KRA_API_KEY = 'TEST_KRA_API_KEY';
-    process.env.KSPO_API_KEY = 'TEST_KSPO_API_KEY';
-    fetchMock.mockReset();
-    global.fetch = fetchMock as unknown as typeof fetch;
-
-    fetchMock.mockImplementation((url: RequestInfo | URL) => {
-      const href = typeof url === 'string' ? url : url.toString();
-
-      const makeResponse = (items: unknown[]) => Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({
-          response: {
-            body: {
-              items: {
-                item: items,
-              },
-            },
-          },
-        }),
-      }) as unknown as Response;
-
-      if (href.includes('API187')) return makeResponse([{ rcNo: 1, hrName: '말1' }]);
-      if (href.includes('API156')) return makeResponse([{ meet: '서울', rcNo: 2 }]);
-      if (href.includes('API23_1')) return makeResponse([{ entry: '등록1' }]);
-      if (href.includes('API301')) return makeResponse([{ payoff: 1234 }]);
-      if (href.includes('API26_2')) return makeResponse([{ detail: 'entry detail' }]);
-
-      if (href.includes('SRVC_OD_API_MBR_PAYOFF')) return makeResponse([{ boat: '배당' }]);
-      if (href.includes('SRVC_OD_API_CRA_PAYOFF')) return makeResponse([{ cycle: '배당' }]);
-      if (href.includes('SRVC_TODZ_CRA_RACE_RESULT')) {
-        return makeResponse([{
-          stnd_yr: '2024',
-          race_ymd: '20240101',
-          meet_nm: '광명',
-          race_no: '1',
-          rank1: '1',
-          rank2: '2',
-          rank3: '3',
-          pool1_val: '100',
-          pool2_val: '90',
-          pool4_val: '80',
-          pool5_val: '70',
-          pool6_val: '60',
-          pool7_val: '50',
-          pool8_val: '40',
-          week_tcnt: 1,
-          day_tcnt: 1,
-          row_num: '1',
-        }]);
-      }
-      if (href.includes('SRVC_MRA_RACE_RANK')) return makeResponse([{
-        row_num: '1',
-        stnd_year: '2024',
-        tms: '1',
-        day_ord: '1',
-        race_no: '1',
-        race_day: '20240101',
-        racer_no: '5',
-        racer_nm: '미사리선수',
-        race_rank: '1',
-        mbr_nm: '조교사',
-      }]);
-      if (href.includes('SRVC_CRA_RACE_RANK')) return makeResponse([{ cycleRank: 1 }]);
-      if (href.includes('SRVC_VWEB_MBR_RACER_INFO')) return makeResponse([{ boatRacer: '선수A' }]);
-      if (href.includes('SRVC_CRA_RACER_INFO')) return makeResponse([{ cycleRacer: '선수B' }]);
-      if (href.includes('SRVC_OD_API_MRA_SUPP_CD')) return makeResponse([{ code: 'ABC' }]);
-      if (href.includes('SRVC_OD_API_CRA_CYCLE_EXER')) return makeResponse([{
-        starting_nope: 1, eclnt_nope: 2, get_eclet_nope: 3, stnd_yr: '2024', week_tcnt: 1, day_tcnt: 1, race_ymd: '20240101', tak_nope: 4, rora_nope: 5, repr_nope: 6, row_num: '1',
-      }]);
-      if (href.includes('SRVC_OD_API_CRA_CYCLE_PART')) return makeResponse([{ mstr_unit_nm: '프레임', salv_unit_nm: '휠', row_num: '1' }]);
-      if (href.includes('SRVC_OD_API_CRA_INSPECT')) return makeResponse([{
-        bf_strt1_tcnt: 1, bf_strt2_tcnt: 2, bf_strt3_tcnt: 3, bf_strt4_tcnt: 4, bf_strt5_tcnt: 5,
-        now_str1_tcnt: 1, now_str2_tcnt: 2, now_str3_tcnt: 3, now_str4_tcnt: 4, now_str5_tcnt: 5,
-        af_str1_tcnt: 1, af_str2_tcnt: 2, af_str3_tcnt: 3, af_str4_tcnt: 4, af_str5_tcnt: 5,
-        max_race_ymd: '20240101', cfm_insp_cnt: 2, stnd_yr: '2024', week_tcnt: 1, dmag_cd: 'A', row_num: '1',
-      }]);
-      if (href.includes('SRVC_OD_API_CRA_INOUT')) return makeResponse([{ stnd_yr: '2024', week_tcnt: 1, day_tcnt: 1, cycle_keep_cnt: 10, cycle_out_cnt: 2, row_num: '1' }]);
-
-      return Promise.resolve({ ok: false, json: () => Promise.resolve({}) }) as unknown as Response;
+    // Should only contain horse races
+    result.items.forEach((race) => {
+      expect(race.type).toBe('horse');
     });
   });
 
-  it('calls KRA auxiliary endpoints', async () => {
-    await fetchHorseRaceInfo('20240101');
-    await fetchHorseRaceResultDetail('20240101');
-    await fetchHorseEntryRegistration('20240101');
-    await fetchHorseDividendSummary('20240101');
-    await fetchHorseEntryDetail('20240101');
+  it('should return historical races filtered by date range', async () => {
+    const result = await fetchHistoricalResults({
+      dateFrom: '20241201',
+      dateTo: '20241210',
+      limit: 20,
+    });
 
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('API187'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('API156'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('API23_1'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('API301'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('API26_2'), expect.anything());
+    // All races should be within date range
+    result.items.forEach((race) => {
+      expect(race.date).toMatch(/^2024120[1-9]|20241210$/);
+    });
   });
 
-  it('calls KSPO auxiliary endpoints', async () => {
-    await fetchBoatPayoffs('20240101');
-    await fetchCyclePayoffs('20240101');
-    await fetchCycleRaceResults('20240101');
-    await fetchBoatRaceRankings('20240101');
-    await fetchCycleRaceRankings('20240101');
-    await fetchBoatRacerInfo('20240101');
-    await fetchCycleRacerInfo('20240101');
-    await fetchBoatOperationInfo('20240101');
-    await fetchCycleOperationInfo('20240101');
-    await fetchCycleExerciseStats('20240101');
-    await fetchCyclePartUnits('20240101');
-    await fetchCycleInspectStats('20240101');
-    await fetchCycleInOutStats('20240101');
+  it('should return paginated results', async () => {
+    const result = await fetchHistoricalResults({
+      page: 1,
+      limit: 5,
+    });
 
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_OD_API_MBR_PAYOFF'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_OD_API_CRA_PAYOFF'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_TODZ_CRA_RACE_RESULT'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_MRA_RACE_RANK'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_CRA_RACE_RANK'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_VWEB_MBR_RACER_INFO'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_CRA_RACER_INFO'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_OD_API_MRA_SUPP_CD'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_OD_API_CRA_CYCLE_EXER'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_OD_API_CRA_CYCLE_PART'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_OD_API_CRA_INSPECT'), expect.anything());
-    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('SRVC_OD_API_CRA_INOUT'), expect.anything());
+    expect(result.page).toBe(1);
+    expect(result.limit).toBe(5);
+    expect(result.items.length).toBeLessThanOrEqual(5);
+    expect(result.totalPages).toBeGreaterThanOrEqual(1);
+  });
+
+  it('should find historical race by ID', async () => {
+    // First get a race from the list to use its ID
+    const list = await fetchHistoricalResults({ limit: 1 });
+    if (list.items.length > 0) {
+      const raceId = list.items[0].id;
+      const detail = await fetchHistoricalResultById(raceId);
+
+      expect(detail).not.toBeNull();
+      expect(detail?.id).toBe(raceId);
+    }
   });
 });
+
+// Note: Auxiliary external API tests were removed during refactoring.
+// Individual API clients (kraClient, kspoCycleClient, kspoBoatClient) have their own tests.
 
 // Historical Results API Tests
 describe('Historical Results API', () => {

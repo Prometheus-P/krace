@@ -2,7 +2,7 @@
 title: KRace 기여 가이드
 version: 1.0.0
 status: Approved
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -18,8 +18,8 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
+| 버전  | 날짜       | 작성자        | 변경 내용 |
+| ----- | ---------- | ------------- | --------- |
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
 
 ## 관련 문서 (Related Documents)
@@ -50,14 +50,14 @@ language: Korean (한국어)
 
 ### 1.1 기여 유형
 
-| 유형 | 설명 | 난이도 |
-|------|------|--------|
-| 🐛 **버그 리포트** | 버그 발견 시 이슈 생성 | 쉬움 |
-| 📝 **문서 개선** | 오타 수정, 설명 보완 | 쉬움 |
-| ✨ **기능 제안** | 새로운 기능 아이디어 | 보통 |
-| 🔧 **버그 수정** | 이슈에 등록된 버그 수정 | 보통 |
-| 🚀 **기능 구현** | 새로운 기능 개발 | 어려움 |
-| ♻️ **리팩토링** | 코드 품질 개선 | 어려움 |
+| 유형               | 설명                    | 난이도 |
+| ------------------ | ----------------------- | ------ |
+| 🐛 **버그 리포트** | 버그 발견 시 이슈 생성  | 쉬움   |
+| 📝 **문서 개선**   | 오타 수정, 설명 보완    | 쉬움   |
+| ✨ **기능 제안**   | 새로운 기능 아이디어    | 보통   |
+| 🔧 **버그 수정**   | 이슈에 등록된 버그 수정 | 보통   |
+| 🚀 **기능 구현**   | 새로운 기능 개발        | 어려움 |
+| ♻️ **리팩토링**    | 코드 품질 개선          | 어려움 |
 
 ### 1.2 기여 프로세스
 
@@ -91,11 +91,11 @@ https://github.com/Prometheus-P/racelab/labels/good%20first%20issue
 
 ### 2.1 필수 도구
 
-| 도구 | 최소 버전 | 확인 명령어 |
-|------|----------|------------|
-| Node.js | 18.17.0 | `node --version` |
-| npm | 9.0.0 | `npm --version` |
-| Git | 2.30.0 | `git --version` |
+| 도구    | 최소 버전 | 확인 명령어      |
+| ------- | --------- | ---------------- |
+| Node.js | 18.17.0   | `node --version` |
+| npm     | 9.0.0     | `npm --version`  |
+| Git     | 2.30.0    | `git --version`  |
 
 ### 2.2 환경 설정
 
@@ -140,29 +140,36 @@ git merge upstream/main
 
 ```markdown
 ## 버그 설명
+
 [버그에 대한 명확하고 간결한 설명]
 
 ## 재현 단계
+
 1. '...'로 이동
 2. '...'를 클릭
 3. '...'까지 스크롤
 4. 에러 발생
 
 ## 예상 동작
+
 [정상적으로 동작해야 하는 방식]
 
 ## 실제 동작
+
 [실제로 발생한 현상]
 
 ## 스크린샷
+
 [해당되는 경우 스크린샷 첨부]
 
 ## 환경
+
 - OS: [예: macOS 14.0]
 - 브라우저: [예: Chrome 120]
 - Node.js: [예: 20.10.0]
 
 ## 추가 정보
+
 [문제에 대한 추가 컨텍스트]
 ```
 
@@ -170,32 +177,37 @@ git merge upstream/main
 
 ```markdown
 ## 기능 설명
+
 [제안하는 기능에 대한 명확한 설명]
 
 ## 해결하려는 문제
+
 [이 기능이 해결하는 문제나 불편함]
 
 ## 제안 솔루션
+
 [원하는 해결 방법에 대한 설명]
 
 ## 대안
+
 [고려한 대안이 있다면 설명]
 
 ## 추가 정보
+
 [기능에 대한 추가 컨텍스트나 스크린샷]
 ```
 
 ### 3.3 이슈 라벨
 
-| 라벨 | 설명 |
-|------|------|
-| `bug` | 버그 리포트 |
-| `enhancement` | 기능 개선/추가 |
-| `documentation` | 문서 관련 |
+| 라벨               | 설명               |
+| ------------------ | ------------------ |
+| `bug`              | 버그 리포트        |
+| `enhancement`      | 기능 개선/추가     |
+| `documentation`    | 문서 관련          |
 | `good first issue` | 첫 기여자에게 적합 |
-| `help wanted` | 도움 필요 |
-| `priority: high` | 높은 우선순위 |
-| `priority: low` | 낮은 우선순위 |
+| `help wanted`      | 도움 필요          |
+| `priority: high`   | 높은 우선순위      |
+| `priority: low`    | 낮은 우선순위      |
 
 ---
 
@@ -219,6 +231,7 @@ main                    # 프로덕션 브랜치
 ```
 
 **예시:**
+
 ```bash
 feature/123-add-odds-display
 fix/456-api-null-response
@@ -251,29 +264,29 @@ git checkout -b feature/123-add-odds-display
 
 ### 5.2 Type 목록
 
-| Type | 설명 | 예시 |
-|------|------|------|
-| `feat` | 새로운 기능 | `feat(race): add odds display component` |
-| `fix` | 버그 수정 | `fix(api): handle null response from KSPO` |
-| `refactor` | 리팩토링 (동작 변경 없음) | `refactor(lib): extract validation logic` |
-| `test` | 테스트 추가/수정 | `test(api): add horse races endpoint test` |
-| `docs` | 문서 변경 | `docs(readme): update installation guide` |
-| `style` | 코드 스타일 변경 | `style(components): fix indentation` |
-| `chore` | 빌드/설정 변경 | `chore(deps): upgrade next.js to 14.2.33` |
-| `perf` | 성능 개선 | `perf(api): add response caching` |
-| `ci` | CI 설정 변경 | `ci(github): add lint workflow` |
+| Type       | 설명                      | 예시                                       |
+| ---------- | ------------------------- | ------------------------------------------ |
+| `feat`     | 새로운 기능               | `feat(race): add odds display component`   |
+| `fix`      | 버그 수정                 | `fix(api): handle null response from KSPO` |
+| `refactor` | 리팩토링 (동작 변경 없음) | `refactor(lib): extract validation logic`  |
+| `test`     | 테스트 추가/수정          | `test(api): add horse races endpoint test` |
+| `docs`     | 문서 변경                 | `docs(readme): update installation guide`  |
+| `style`    | 코드 스타일 변경          | `style(components): fix indentation`       |
+| `chore`    | 빌드/설정 변경            | `chore(deps): upgrade next.js to 14.2.33`  |
+| `perf`     | 성능 개선                 | `perf(api): add response caching`          |
+| `ci`       | CI 설정 변경              | `ci(github): add lint workflow`            |
 
 ### 5.3 Scope 목록
 
-| Scope | 설명 |
-|-------|------|
-| `api` | API 라우트 |
-| `ui` | UI 컴포넌트 |
-| `lib` | 유틸리티/헬퍼 |
-| `types` | 타입 정의 |
-| `e2e` | E2E 테스트 |
-| `deps` | 의존성 |
-| `config` | 설정 파일 |
+| Scope    | 설명          |
+| -------- | ------------- |
+| `api`    | API 라우트    |
+| `ui`     | UI 컴포넌트   |
+| `lib`    | 유틸리티/헬퍼 |
+| `types`  | 타입 정의     |
+| `e2e`    | E2E 테스트    |
+| `deps`   | 의존성        |
+| `config` | 설정 파일     |
 
 ### 5.4 커밋 규칙
 
@@ -332,31 +345,38 @@ EOF
 
 ```markdown
 ## 요약
+
 [변경 사항에 대한 간략한 설명]
 
 ## 변경 유형
+
 - [ ] 버그 수정 (기존 기능을 망가뜨리지 않는 수정)
 - [ ] 새 기능 (기존 기능을 망가뜨리지 않는 추가)
 - [ ] 파괴적 변경 (기존 기능에 영향을 주는 수정)
 - [ ] 문서 변경
 
 ## 관련 이슈
+
 Closes #[이슈 번호]
 
 ## 변경 내용
+
 - 변경 사항 1
 - 변경 사항 2
 - 변경 사항 3
 
 ## 테스트 방법
+
 1. [테스트 단계 1]
 2. [테스트 단계 2]
 3. [예상 결과]
 
 ## 스크린샷 (UI 변경시)
+
 [변경 전/후 스크린샷]
 
 ## 체크리스트
+
 - [ ] 테스트 추가/업데이트
 - [ ] 문서 업데이트 (필요시)
 - [ ] 셀프 리뷰 완료
@@ -364,13 +384,13 @@ Closes #[이슈 번호]
 
 ### 6.3 PR 크기 가이드
 
-| 크기 | 라인 수 | 권장 |
-|------|---------|------|
-| XS | 1-10 | ✅ 이상적 |
-| S | 11-50 | ✅ 좋음 |
-| M | 51-200 | ⚠️ 허용 |
-| L | 201-500 | ⚠️ 분할 고려 |
-| XL | 500+ | ❌ 분할 필요 |
+| 크기 | 라인 수 | 권장         |
+| ---- | ------- | ------------ |
+| XS   | 1-10    | ✅ 이상적    |
+| S    | 11-50   | ✅ 좋음      |
+| M    | 51-200  | ⚠️ 허용      |
+| L    | 201-500 | ⚠️ 분할 고려 |
+| XL   | 500+    | ❌ 분할 필요 |
 
 ### 6.4 리뷰어 지정
 
@@ -387,14 +407,14 @@ PR 생성 시 최소 1명의 리뷰어를 지정해 주세요.
 
 ### 7.1 언어 규칙
 
-| 요소 | 언어 | 예시 |
-|------|------|------|
-| 문서 내용 | 한국어 | `사용자 인증을 처리합니다` |
-| 코드 주석 | 한국어 | `// 토큰 검증 로직` |
-| 변수명 | 영어 | `userToken`, `raceData` |
-| 함수명 | 영어 | `validateToken()` |
-| 클래스명 | 영어 | `RaceService` |
-| 커밋 메시지 | 영어 | `feat(api): add endpoint` |
+| 요소        | 언어   | 예시                       |
+| ----------- | ------ | -------------------------- |
+| 문서 내용   | 한국어 | `사용자 인증을 처리합니다` |
+| 코드 주석   | 한국어 | `// 토큰 검증 로직`        |
+| 변수명      | 영어   | `userToken`, `raceData`    |
+| 함수명      | 영어   | `validateToken()`          |
+| 클래스명    | 영어   | `RaceService`              |
+| 커밋 메시지 | 영어   | `feat(api): add endpoint`  |
 
 ### 7.2 TypeScript 규칙
 
@@ -450,13 +470,13 @@ function doEverything() {
 
 ### 7.3 품질 기준
 
-| 항목 | 기준 |
-|------|------|
-| 함수 길이 | 20줄 이하 |
-| 파일 길이 | 400줄 이하 |
-| 중첩 깊이 | 3단계 이하 |
-| 매개변수 수 | 4개 이하 |
-| 사이클로매틱 복잡도 | 10 이하 |
+| 항목                | 기준       |
+| ------------------- | ---------- |
+| 함수 길이           | 20줄 이하  |
+| 파일 길이           | 400줄 이하 |
+| 중첩 깊이           | 3단계 이하 |
+| 매개변수 수         | 4개 이하   |
+| 사이클로매틱 복잡도 | 10 이하    |
 
 ---
 
@@ -512,11 +532,11 @@ npm run test:e2e:ui
 
 ### 8.4 커버리지 목표
 
-| 유형 | 목표 |
-|------|------|
-| Unit Test | 80% 이상 |
-| Integration Test | 60% 이상 |
-| E2E Test | Critical Path 100% |
+| 유형             | 목표               |
+| ---------------- | ------------------ |
+| Unit Test        | 80% 이상           |
+| Integration Test | 60% 이상           |
+| E2E Test         | Critical Path 100% |
 
 ---
 
@@ -562,10 +582,10 @@ async function getRaces(type: RaceType, date: string): Promise<Race[]> {
 ```markdown
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
-| 1.1.0 | 2025-11-26 | @username | 배당률 기능 추가 |
-| 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
+| 버전  | 날짜       | 작성자        | 변경 내용        |
+| ----- | ---------- | ------------- | ---------------- |
+| 1.1.0 | 2025-11-26 | @username     | 배당률 기능 추가 |
+| 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성        |
 ```
 
 ---
@@ -581,6 +601,7 @@ async function getRaces(type: RaceType, date: string): Promise<Race[]> {
 ### 10.2 우리의 기준
 
 **긍정적인 환경에 기여하는 행동:**
+
 - 환영하고 포용적인 언어 사용
 - 다양한 관점과 경험 존중
 - 건설적인 비판 우아하게 수용
@@ -588,6 +609,7 @@ async function getRaces(type: RaceType, date: string): Promise<Race[]> {
 - 다른 커뮤니티 구성원에 대한 공감 표시
 
 **용납되지 않는 행동:**
+
 - 성적 언어나 이미지 사용
 - 트롤링, 모욕적/경멸적 댓글, 개인적/정치적 공격
 - 공개적 또는 사적인 괴롭힘
@@ -597,6 +619,7 @@ async function getRaces(type: RaceType, date: string): Promise<Race[]> {
 ### 10.3 문제 보고
 
 행동 강령 위반을 목격하거나 경험한 경우:
+
 - GitHub Issues로 비공개 보고
 - 프로젝트 관리자에게 직접 연락
 
@@ -639,4 +662,4 @@ git rebase upstream/main  # 리베이스
 
 ---
 
-*기여해 주셔서 감사합니다! 🙏*
+_기여해 주셔서 감사합니다! 🙏_

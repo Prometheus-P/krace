@@ -1,6 +1,14 @@
 'use client';
 
-import { useState, useCallback, useRef, ReactNode, MouseEvent, KeyboardEvent, createElement } from 'react';
+import {
+  useState,
+  useCallback,
+  useRef,
+  ReactNode,
+  MouseEvent,
+  KeyboardEvent,
+  createElement,
+} from 'react';
 import { useReducedMotion } from './useReducedMotion';
 
 interface RippleConfig {

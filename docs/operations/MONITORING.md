@@ -37,12 +37,12 @@
 
 ### 모니터링 레벨
 
-| 레벨 | 대상 | 도구 |
-|------|------|------|
-| Application | 에러, 성능, 사용자 경험 | Sentry, Vercel Analytics |
-| Infrastructure | 서버 리소스, 네트워크 | Vercel Monitoring |
-| Business | KPI, 사용자 행동 | Custom Metrics, Analytics |
-| External | KSPO/KRA API 상태 | Custom Health Checks |
+| 레벨           | 대상                    | 도구                      |
+| -------------- | ----------------------- | ------------------------- |
+| Application    | 에러, 성능, 사용자 경험 | Sentry, Vercel Analytics  |
+| Infrastructure | 서버 리소스, 네트워크   | Vercel Monitoring         |
+| Business       | KPI, 사용자 행동        | Custom Metrics, Analytics |
+| External       | KSPO/KRA API 상태       | Custom Health Checks      |
 
 ---
 
@@ -69,11 +69,7 @@ interface AvailabilityMetrics {
 ```typescript
 // src/lib/monitoring/availability.ts
 
-export async function trackAvailability(
-  endpoint: string,
-  success: boolean,
-  duration: number
-) {
+export async function trackAvailability(endpoint: string, success: boolean, duration: number) {
   const metric = {
     name: 'api.availability',
     tags: {
@@ -109,9 +105,9 @@ export async function GET(request: NextRequest) {
 ```typescript
 interface LatencyMetrics {
   // 응답 시간 백분위수
-  p50: number;  // 목표: < 200ms
-  p95: number;  // 목표: < 500ms
-  p99: number;  // 목표: < 1000ms
+  p50: number; // 목표: < 200ms
+  p95: number; // 목표: < 500ms
+  p99: number; // 목표: < 1000ms
 
   // TTFB (Time To First Byte)
   ttfb: number; // 목표: < 100ms
@@ -120,12 +116,12 @@ interface LatencyMetrics {
 
 **Core Web Vitals:**
 
-| 메트릭 | 설명 | 목표 |
-|--------|------|------|
-| LCP (Largest Contentful Paint) | 최대 콘텐츠 렌더링 | < 2.5s |
-| FID (First Input Delay) | 첫 입력 지연 | < 100ms |
-| CLS (Cumulative Layout Shift) | 레이아웃 변화 | < 0.1 |
-| INP (Interaction to Next Paint) | 상호작용 응답 | < 200ms |
+| 메트릭                          | 설명               | 목표    |
+| ------------------------------- | ------------------ | ------- |
+| LCP (Largest Contentful Paint)  | 최대 콘텐츠 렌더링 | < 2.5s  |
+| FID (First Input Delay)         | 첫 입력 지연       | < 100ms |
+| CLS (Cumulative Layout Shift)   | 레이아웃 변화      | < 0.1   |
+| INP (Interaction to Next Paint) | 상호작용 응답      | < 200ms |
 
 ```typescript
 // src/lib/monitoring/web-vitals.ts
@@ -185,8 +181,8 @@ interface TrafficMetrics {
 ```typescript
 interface ErrorMetrics {
   // HTTP 에러
-  http4xxRate: number;  // 클라이언트 에러율
-  http5xxRate: number;  // 서버 에러율
+  http4xxRate: number; // 클라이언트 에러율
+  http5xxRate: number; // 서버 에러율
 
   // 애플리케이션 에러
   unhandledExceptions: number;
@@ -202,12 +198,12 @@ interface ErrorMetrics {
 ```typescript
 interface SaturationMetrics {
   // Vercel 함수 리소스
-  functionMemoryUsage: number;   // 목표: < 80%
-  functionCpuUsage: number;      // 목표: < 70%
-  functionConcurrency: number;   // 목표: < 동시 실행 제한의 80%
+  functionMemoryUsage: number; // 목표: < 80%
+  functionCpuUsage: number; // 목표: < 70%
+  functionConcurrency: number; // 목표: < 동시 실행 제한의 80%
 
   // 캐시
-  cacheHitRate: number;          // 목표: > 80%
+  cacheHitRate: number; // 목표: > 80%
   cacheMissRate: number;
 }
 ```
@@ -218,12 +214,12 @@ interface SaturationMetrics {
 
 ### 로그 레벨
 
-| 레벨 | 용도 | 예시 |
-|------|------|------|
-| `error` | 시스템 오류, 즉시 대응 필요 | API 실패, 예외 |
-| `warn` | 잠재적 문제, 주의 필요 | 느린 응답, 재시도 |
-| `info` | 중요 비즈니스 이벤트 | 사용자 행동, 배포 |
-| `debug` | 개발/디버깅용 | 변수 값, 흐름 추적 |
+| 레벨    | 용도                        | 예시               |
+| ------- | --------------------------- | ------------------ |
+| `error` | 시스템 오류, 즉시 대응 필요 | API 실패, 예외     |
+| `warn`  | 잠재적 문제, 주의 필요      | 느린 응답, 재시도  |
+| `info`  | 중요 비즈니스 이벤트        | 사용자 행동, 배포  |
+| `debug` | 개발/디버깅용               | 변수 값, 흐름 추적 |
 
 ### 구조화된 로깅
 
@@ -361,12 +357,12 @@ logger.warn('Slow API response', {
 
 ### 알림 우선순위
 
-| 우선순위 | 응답 시간 | 알림 채널 | 예시 |
-|----------|-----------|-----------|------|
-| P1 (Critical) | 15분 이내 | Slack + PagerDuty + 전화 | 서비스 다운, 데이터 손실 |
-| P2 (High) | 1시간 이내 | Slack + PagerDuty | 기능 장애, 높은 에러율 |
-| P3 (Medium) | 4시간 이내 | Slack | 성능 저하, 경고 임계치 |
-| P4 (Low) | 24시간 이내 | Email | 정보성 알림, 트렌드 |
+| 우선순위      | 응답 시간   | 알림 채널                | 예시                     |
+| ------------- | ----------- | ------------------------ | ------------------------ |
+| P1 (Critical) | 15분 이내   | Slack + PagerDuty + 전화 | 서비스 다운, 데이터 손실 |
+| P2 (High)     | 1시간 이내  | Slack + PagerDuty        | 기능 장애, 높은 에러율   |
+| P3 (Medium)   | 4시간 이내  | Slack                    | 성능 저하, 경고 임계치   |
+| P4 (Low)      | 24시간 이내 | Email                    | 정보성 알림, 트렌드      |
 
 ### 알림 규칙
 
@@ -375,7 +371,7 @@ logger.warn('Slow API response', {
 
 alerts:
   # P1: 서비스 다운
-  - name: "Service Down"
+  - name: 'Service Down'
     priority: P1
     condition: |
       avg(last_5m):avg:http.status_code{service:krace} >= 500
@@ -389,7 +385,7 @@ alerts:
       - pagerduty
 
   # P1: 외부 API 전면 장애
-  - name: "External API Total Failure"
+  - name: 'External API Total Failure'
     priority: P1
     condition: |
       avg(last_5m):avg:external.api.success_rate{service:kspo} < 10
@@ -402,7 +398,7 @@ alerts:
       - pagerduty
 
   # P2: 높은 에러율
-  - name: "High Error Rate"
+  - name: 'High Error Rate'
     priority: P2
     condition: |
       avg(last_10m):avg:http.error_rate{service:krace} > 5
@@ -414,7 +410,7 @@ alerts:
       - slack-alerts
 
   # P2: 응답 시간 급증
-  - name: "High Latency"
+  - name: 'High Latency'
     priority: P2
     condition: |
       avg(last_10m):avg:http.response_time.p95{service:krace} > 2000
@@ -426,7 +422,7 @@ alerts:
       - slack-alerts
 
   # P3: 캐시 히트율 저하
-  - name: "Low Cache Hit Rate"
+  - name: 'Low Cache Hit Rate'
     priority: P3
     condition: |
       avg(last_30m):avg:cache.hit_rate{service:krace} < 70
@@ -438,7 +434,7 @@ alerts:
       - slack-monitoring
 
   # P3: Core Web Vitals 저하
-  - name: "Poor Core Web Vitals"
+  - name: 'Poor Core Web Vitals'
     priority: P3
     condition: |
       avg(last_1h):avg:web_vitals.lcp{service:krace} > 2500
@@ -718,11 +714,7 @@ interface HealthStatus {
 }
 
 export async function GET() {
-  const checks = await Promise.all([
-    checkKspoApi(),
-    checkKraApi(),
-    checkCache(),
-  ]);
+  const checks = await Promise.all([checkKspoApi(), checkKraApi(), checkCache()]);
 
   const hasFailure = checks.some((c) => c.status === 'fail');
   const hasWarning = checks.some((c) => c.status === 'warn');

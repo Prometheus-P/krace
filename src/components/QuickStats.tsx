@@ -1,6 +1,10 @@
 // src/components/QuickStats.tsx
 import React from 'react';
-import { fetchHorseRaceSchedules, fetchCycleRaceSchedules, fetchBoatRaceSchedules } from '@/lib/api';
+import {
+  fetchHorseRaceSchedules,
+  fetchCycleRaceSchedules,
+  fetchBoatRaceSchedules,
+} from '@/lib/api';
 import { getTodayYYYYMMDD } from '@/lib/utils/date';
 import { RaceType } from '@/types';
 
@@ -60,43 +64,29 @@ const StatCard = ({ type, value }: StatCardProps) => {
 
   return (
     <article
-      className={`
-        relative overflow-hidden
-        ${isTotal ? 'bg-white' : config.bgColor}
-        p-3 md:p-4 rounded-xl
-        border ${config.borderColor}
-        shadow-sm hover:shadow-md
-        transition-shadow duration-150 ease-out
-        min-h-[80px]
-      `}
+      className={`relative overflow-hidden ${isTotal ? 'bg-white' : config.bgColor} rounded-xl border p-3 md:p-4 ${config.borderColor} min-h-[80px] shadow-sm transition-shadow duration-150 ease-out hover:shadow-md`}
       aria-labelledby={`stat-label-${type}`}
     >
       {/* Accent bar */}
       <div
-        className={`absolute top-0 left-0 right-0 h-1 ${config.accentColor}`}
+        className={`absolute left-0 right-0 top-0 h-1 ${config.accentColor}`}
         aria-hidden="true"
       />
 
       <div className="flex items-start justify-between">
         <div>
-          <p
-            id={`stat-label-${type}`}
-            className="text-sm font-medium text-gray-600 mb-1"
-          >
+          <p id={`stat-label-${type}`} className="mb-1 text-sm font-medium text-gray-600">
             {config.label}
           </p>
           <p
-            className={`text-2xl md:text-3xl font-bold tabular-nums ${config.textColor}`}
+            className={`text-2xl font-bold tabular-nums md:text-3xl ${config.textColor}`}
             aria-label={`${value}개`}
           >
             {value.toLocaleString('ko-KR')}
           </p>
         </div>
         {config.icon && (
-          <span
-            aria-hidden="true"
-            className={`text-2xl ${isTotal ? 'opacity-80' : 'opacity-60'}`}
-          >
+          <span aria-hidden="true" className={`text-2xl ${isTotal ? 'opacity-80' : 'opacity-60'}`}>
             {config.icon}
           </span>
         )}
@@ -124,10 +114,7 @@ export default async function QuickStats() {
   };
 
   return (
-    <section
-      aria-label="오늘의 경주 통계"
-      className="grid grid-cols-2 md:grid-cols-4 gap-4"
-    >
+    <section aria-label="오늘의 경주 통계" className="grid grid-cols-2 gap-4 md:grid-cols-4">
       <StatCard type="total" value={stats.total} />
       <StatCard type="horse" value={stats.horse} />
       <StatCard type="cycle" value={stats.cycle} />

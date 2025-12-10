@@ -13,6 +13,7 @@ export interface M3CardProps {
   onClick?: () => void;
   className?: string;
   'data-testid'?: string;
+  density?: 'default' | 'compact'; // Added density prop
 }
 
 const elevationClasses: Record<M3ElevationLevel, string> = {
@@ -37,30 +38,31 @@ export function M3Card({
   onClick,
   className = '',
   'data-testid': testId,
+  density = 'default', // Default to 'default'
 }: M3CardProps) {
   const isInteractive = !!onClick;
+  const paddingClass = density === 'compact' ? 'p-2' : 'p-4';
 
   const baseClasses = [
     'rounded-m3-md',
     'min-h-[48px]',
-    'p-4',
+    paddingClass, // Use dynamic paddingClass
     'transition-shadow',
     'duration-m3-medium',
     'ease-m3-standard',
     variantClasses[variant],
     variant === 'elevated' ? elevationClasses[elevation] : '',
-    isInteractive ? 'cursor-pointer hover:shadow-m3-3 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2' : '',
+    isInteractive
+      ? 'cursor-pointer hover:shadow-m3-3 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+      : '',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   if (isInteractive) {
     return (
-      <button
-        type="button"
-        onClick={onClick}
-        className={baseClasses}
-        data-testid={testId}
-      >
+      <button type="button" onClick={onClick} className={baseClasses} data-testid={testId}>
         {children}
       </button>
     );

@@ -105,7 +105,7 @@ export function ResultFilters({
     <div
       role="search"
       aria-label="결과 필터"
-      className={`bg-surface-container rounded-xl p-4 ${className}`}
+      className={`rounded-xl bg-surface-container p-4 ${className}`}
       data-testid={testId}
     >
       {/* Mobile toggle */}
@@ -114,20 +114,20 @@ export function ResultFilters({
         onClick={() => setIsExpanded(!isExpanded)}
         aria-expanded={isExpanded}
         aria-label="필터"
-        className="flex items-center justify-between w-full md:hidden"
+        className="flex w-full items-center justify-between md:hidden"
       >
         <span className="text-title-medium text-on-surface">필터</span>
         <div className="flex items-center gap-2">
           {hasActiveFilters && (
             <span
               data-testid="filter-count"
-              className="px-2 py-0.5 bg-primary text-on-primary rounded-full text-label-small"
+              className="rounded-full bg-primary px-2 py-0.5 text-label-small text-on-primary"
             >
               {activeFilterCount}
             </span>
           )}
           <svg
-            className={`w-5 h-5 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+            className={`h-5 w-5 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -138,22 +138,19 @@ export function ResultFilters({
       </button>
 
       {/* Filter content - always visible on desktop, toggleable on mobile */}
-      <div className={`${isExpanded ? 'block' : 'hidden'} md:block mt-4 md:mt-0`}>
+      <div className={`${isExpanded ? 'block' : 'hidden'} mt-4 md:mt-0 md:block`}>
         <div className="flex flex-col gap-4">
           {/* Search */}
           <div>
-            <h3 className="text-label-large text-on-surface-variant mb-2 hidden md:block">
+            <h3 className="mb-2 hidden text-label-large text-on-surface-variant md:block">
               기수/선수 검색
             </h3>
-            <ResultSearch
-              value={jockey}
-              onSearch={handleSearchChange}
-            />
+            <ResultSearch value={jockey} onSearch={handleSearchChange} />
           </div>
 
           {/* Date range filter */}
           <div>
-            <h3 className="text-label-large text-on-surface-variant mb-2 hidden md:block">
+            <h3 className="mb-2 hidden text-label-large text-on-surface-variant md:block">
               날짜 범위
             </h3>
             <DateRangeFilter
@@ -166,18 +163,13 @@ export function ResultFilters({
 
           {/* Race type filter */}
           <div>
-            <h3 className="text-label-large text-on-surface-variant mb-2 hidden md:block">
-              종목
-            </h3>
-            <RaceTypeFilter
-              selectedTypes={types}
-              onChange={handleTypesChange}
-            />
+            <h3 className="mb-2 hidden text-label-large text-on-surface-variant md:block">종목</h3>
+            <RaceTypeFilter selectedTypes={types} onChange={handleTypesChange} />
           </div>
 
           {/* Track filter */}
           <div>
-            <h3 className="text-label-large text-on-surface-variant mb-2 hidden md:block">
+            <h3 className="mb-2 hidden text-label-large text-on-surface-variant md:block">
               경기장
             </h3>
             <TrackFilter
@@ -193,8 +185,7 @@ export function ResultFilters({
               type="button"
               onClick={handleClear}
               aria-label="필터 초기화"
-              className="self-start text-primary hover:text-primary/80 text-label-large
-                         px-3 py-1.5 rounded-lg hover:bg-primary/10 transition-colors"
+              className="self-start rounded-lg px-3 py-1.5 text-label-large text-primary transition-colors hover:bg-primary/10 hover:text-primary/80"
             >
               필터 초기화
             </button>

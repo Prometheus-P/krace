@@ -40,6 +40,7 @@ All code changes MUST follow the TDD cycle without exception:
 **Rationale**: TDD ensures code correctness, enables safe refactoring, and serves as living documentation. The KRace platform handles real-time racing data where reliability is critical.
 
 **Enforcement**:
+
 - No production code without corresponding tests
 - All tests MUST pass before committing
 - Test coverage targets: Unit 80%, Integration 60%, E2E Critical Paths 100%
@@ -52,6 +53,7 @@ Structure changes and behavioral changes MUST never be mixed in a single commit:
 - **Behavioral Changes**: New features, bug fixes, API modifications, test additions
 
 **Commit Convention**:
+
 - `chore(structure):` for structural changes only
 - `feat(behavior):` or `fix(behavior):` for behavioral changes
 
@@ -117,6 +119,7 @@ UI implementation MUST prioritize mobile users:
 ### Commit Discipline
 
 Every commit MUST satisfy:
+
 1. All tests green
 2. Linter/formatter checks pass
 3. Contains exactly one logical unit of change

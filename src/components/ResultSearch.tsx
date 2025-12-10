@@ -78,14 +78,9 @@ export function ResultSearch({
         {/* Search icon */}
         <div
           data-testid="search-icon"
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none"
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant"
         >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -103,9 +98,7 @@ export function ResultSearch({
           onKeyDown={handleKeyDown}
           placeholder="기수/선수 이름 검색"
           aria-label="기수 또는 선수 이름으로 검색"
-          className="w-full pl-10 pr-10 py-2.5 border border-outline rounded-full bg-surface text-on-surface
-                     focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
-                     text-body-medium placeholder:text-on-surface-variant/60"
+          className="w-full rounded-full border border-outline bg-surface py-2.5 pl-10 pr-10 text-body-medium text-on-surface placeholder:text-on-surface-variant/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary"
         />
 
         {/* Clear button */}
@@ -114,15 +107,9 @@ export function ResultSearch({
             type="button"
             onClick={handleClear}
             aria-label="검색어 지우기"
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant
-                       hover:text-on-surface p-1 rounded-full hover:bg-on-surface/10 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-on-surface-variant transition-colors hover:bg-on-surface/10 hover:text-on-surface"
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"

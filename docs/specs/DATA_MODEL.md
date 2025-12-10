@@ -2,7 +2,7 @@
 title: KRace 데이터 모델
 version: 1.0.0
 status: Approved
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -18,8 +18,8 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
+| 버전  | 날짜       | 작성자        | 변경 내용 |
+| ----- | ---------- | ------------- | --------- |
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
 
 ## 관련 문서 (Related Documents)
@@ -80,12 +80,12 @@ language: Korean (한국어)
 
 ### 1.2 데이터 저장 전략
 
-| 데이터 유형 | 저장 방식 | 이유 |
-|------------|----------|------|
-| 경주 목록 | ISR 캐시 | 30초 주기 갱신 |
-| 출주표 | ISR 캐시 | 60초 주기 갱신 |
-| 배당률 | 실시간 | 캐시 없음 |
-| 결과 | ISR 캐시 | 확정 후 5분 |
+| 데이터 유형 | 저장 방식 | 이유           |
+| ----------- | --------- | -------------- |
+| 경주 목록   | ISR 캐시  | 30초 주기 갱신 |
+| 출주표      | ISR 캐시  | 60초 주기 갱신 |
+| 배당률      | 실시간    | 캐시 없음      |
+| 결과        | ISR 캐시  | 확정 후 5분    |
 | 정적 데이터 | 빌드 타임 | 경주장 정보 등 |
 
 ### 1.3 데이터 정합성
@@ -138,10 +138,10 @@ export type RaceType = 'horse' | 'cycle' | 'boat';
  * @description 경주의 현재 진행 상태
  */
 export type RaceStatus =
-  | 'scheduled'    // 예정
-  | 'in_progress'  // 진행중
-  | 'finished'     // 종료
-  | 'cancelled';   // 취소
+  | 'scheduled' // 예정
+  | 'in_progress' // 진행중
+  | 'finished' // 종료
+  | 'cancelled'; // 취소
 
 /**
  * 배당률 변화 방향
@@ -153,9 +153,13 @@ export type OddsChange = 'up' | 'down' | 'same';
  */
 export type VenueCode =
   // 경마장
-  | 'seoul' | 'busan' | 'jeju'
+  | 'seoul'
+  | 'busan'
+  | 'jeju'
   // 경륜/경정장
-  | 'changwon' | 'gwangmyeong' | 'misari';
+  | 'changwon'
+  | 'gwangmyeong'
+  | 'misari';
 ```
 
 ### 2.2 경주 타입
@@ -268,7 +272,7 @@ export interface HorseEntry extends Entry {
   /** 기수 정보 */
   jockey: {
     name: string;
-    weight: number;  // 부담중량
+    weight: number; // 부담중량
   };
 
   /** 조교사 */
@@ -414,7 +418,7 @@ export interface Payouts {
   /** 단승 배당금 */
   win?: {
     number: number;
-    payout: number;  // 100원 기준 배당금
+    payout: number; // 100원 기준 배당금
   };
 
   /** 복승 배당금 */
@@ -560,12 +564,7 @@ export class RaceId {
     if (!match) return null;
 
     const [, type, date, venue, number] = match;
-    return new RaceId(
-      type as RaceType,
-      date,
-      venue as VenueCode,
-      parseInt(number)
-    );
+    return new RaceId(type as RaceType, date, venue as VenueCode, parseInt(number));
   }
 
   toString(): string {
@@ -578,9 +577,7 @@ export class RaceId {
  * @description null 허용 배당률 값 처리
  */
 export class OddsValue {
-  private constructor(
-    public readonly value: number | null
-  ) {}
+  private constructor(public readonly value: number | null) {}
 
   static create(value: number | string | null | undefined): OddsValue {
     if (value === null || value === undefined || value === '') {
@@ -622,39 +619,39 @@ export class OddsValue {
  * @description 경륜/경정 API 원본 데이터 구조
  */
 export interface KSPORaceResponse {
-  rcDate: string;       // 경주일 (YYYYMMDD)
-  rcNo: string;         // 경주번호
-  trkCd: string;        // 경주장 코드
-  trkNm: string;        // 경주장 이름
-  rcTime: string;       // 출발시간 (HHmm)
-  rcDist: string;       // 거리
-  rcStat: string;       // 상태 코드
-  entCnt: string;       // 출주 수
+  rcDate: string; // 경주일 (YYYYMMDD)
+  rcNo: string; // 경주번호
+  trkCd: string; // 경주장 코드
+  trkNm: string; // 경주장 이름
+  rcTime: string; // 출발시간 (HHmm)
+  rcDist: string; // 거리
+  rcStat: string; // 상태 코드
+  entCnt: string; // 출주 수
 }
 
 /**
  * KSPO 출주 API 원본 응답
  */
 export interface KSPOEntryResponse {
-  entNo: string;        // 출주번호
-  playerNm: string;     // 선수명
-  playerGrd: string;    // 선수등급
-  playerWgt: string;    // 체중
-  rcRslt1: string;      // 최근 1경주
-  rcRslt2: string;      // 최근 2경주
-  rcRslt3: string;      // 최근 3경주
-  rcRslt4: string;      // 최근 4경주
-  rcRslt5: string;      // 최근 5경주
-  winRate: string;      // 승률
+  entNo: string; // 출주번호
+  playerNm: string; // 선수명
+  playerGrd: string; // 선수등급
+  playerWgt: string; // 체중
+  rcRslt1: string; // 최근 1경주
+  rcRslt2: string; // 최근 2경주
+  rcRslt3: string; // 최근 3경주
+  rcRslt4: string; // 최근 4경주
+  rcRslt5: string; // 최근 5경주
+  winRate: string; // 승률
 }
 
 /**
  * KSPO 배당률 API 원본 응답
  */
 export interface KSPOOddsResponse {
-  entNo: string;        // 출주번호
-  oddsDansng: string;   // 단승 배당
-  oddsBoksng: string;   // 복승 배당
+  entNo: string; // 출주번호
+  oddsDansng: string; // 단승 배당
+  oddsBoksng: string; // 복승 배당
 }
 ```
 
@@ -686,12 +683,7 @@ export function mapKSPORace(raw: KSPORaceResponse, type: RaceType): Race {
  * 경주 ID 생성
  * @example "cycle-20251125-changwon-1"
  */
-function generateRaceId(
-  type: RaceType,
-  date: string,
-  venueCode: string,
-  raceNo: string
-): string {
+function generateRaceId(type: RaceType, date: string, venueCode: string, raceNo: string): string {
   const venue = mapVenueCode(venueCode);
   return `${type}-${date}-${venue}-${raceNo}`;
 }
@@ -705,9 +697,9 @@ function mapVenueCode(code: string): VenueCode {
     '02': 'gwangmyeong',
     '03': 'misari',
     // 경마
-    'S': 'seoul',
-    'B': 'busan',
-    'J': 'jeju',
+    S: 'seoul',
+    B: 'busan',
+    J: 'jeju',
   };
   return venueMap[code] || 'changwon';
 }
@@ -748,13 +740,9 @@ export function mapKSPOEntry(raw: KSPOEntryResponse): PlayerEntry {
     name: raw.playerNm,
     weight: parseFloat(raw.playerWgt),
     grade: raw.playerGrd,
-    recentResults: [
-      raw.rcRslt1,
-      raw.rcRslt2,
-      raw.rcRslt3,
-      raw.rcRslt4,
-      raw.rcRslt5,
-    ].filter(Boolean),
+    recentResults: [raw.rcRslt1, raw.rcRslt2, raw.rcRslt3, raw.rcRslt4, raw.rcRslt5].filter(
+      Boolean
+    ),
     winRate: parseFloat(raw.winRate) || 0,
   };
 }
@@ -774,15 +762,15 @@ export function mapKSPOOdds(raw: KSPOOddsResponse, name: string): EntryOdds {
 
 ### 4.3 매핑 테이블
 
-| 내부 필드 | KSPO 필드 | 변환 |
-|----------|-----------|------|
-| `id` | `rcDate` + `trkCd` + `rcNo` | 조합 |
-| `venue` | `trkNm` | 직접 |
-| `startTime` | `rcDate` + `rcTime` | ISO 8601 |
-| `status` | `rcStat` | 코드 매핑 |
-| `distance` | `rcDist` | parseInt |
-| `entries` | `entCnt` | parseInt |
-| `odds.win` | `oddsDansng` | parseFloat, null 처리 |
+| 내부 필드   | KSPO 필드                   | 변환                  |
+| ----------- | --------------------------- | --------------------- |
+| `id`        | `rcDate` + `trkCd` + `rcNo` | 조합                  |
+| `venue`     | `trkNm`                     | 직접                  |
+| `startTime` | `rcDate` + `rcTime`         | ISO 8601              |
+| `status`    | `rcStat`                    | 코드 매핑             |
+| `distance`  | `rcDist`                    | parseInt              |
+| `entries`   | `entCnt`                    | parseInt              |
+| `odds.win`  | `oddsDansng`                | parseFloat, null 처리 |
 
 ---
 
@@ -805,12 +793,7 @@ export const RaceTypeSchema = z.enum(['horse', 'cycle', 'boat']);
 /**
  * 경주 상태 스키마
  */
-export const RaceStatusSchema = z.enum([
-  'scheduled',
-  'in_progress',
-  'finished',
-  'cancelled'
-]);
+export const RaceStatusSchema = z.enum(['scheduled', 'in_progress', 'finished', 'cancelled']);
 
 /**
  * 경주 스키마
@@ -856,7 +839,10 @@ export const EntryOddsSchema = z.object({
  * API 요청 파라미터 스키마
  */
 export const RaceListParamsSchema = z.object({
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
 });
 
 export const RaceDetailParamsSchema = z.object({
@@ -894,7 +880,7 @@ export function isValidRaceId(id: string): boolean {
  * 배당률 값 검증
  */
 export function isValidOdds(odds: number | null): boolean {
-  if (odds === null) return true;  // null 허용
+  if (odds === null) return true; // null 허용
   return odds >= 1.0 && odds <= 1000;
 }
 
@@ -981,11 +967,11 @@ erDiagram
 
 현재 MVP 단계에서는 별도의 데이터베이스를 사용하지 않습니다.
 
-| 결정 | 이유 |
-|------|------|
-| DB 미사용 | 모든 데이터가 외부 API에서 실시간 제공 |
-| ISR 캐싱 | Vercel ISR로 충분한 캐싱 |
-| Phase 2 검토 | 히스토리 기능 구현 시 DB 도입 검토 |
+| 결정         | 이유                                   |
+| ------------ | -------------------------------------- |
+| DB 미사용    | 모든 데이터가 외부 API에서 실시간 제공 |
+| ISR 캐싱     | Vercel ISR로 충분한 캐싱               |
+| Phase 2 검토 | 히스토리 기능 구현 시 DB 도입 검토     |
 
 ---
 
@@ -1010,4 +996,4 @@ src/types/
 
 ---
 
-*이 문서는 데이터 모델 변경 시 업데이트됩니다.*
+_이 문서는 데이터 모델 변경 시 업데이트됩니다._

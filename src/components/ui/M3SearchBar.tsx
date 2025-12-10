@@ -99,13 +99,15 @@ export function M3SearchBar({
     'focus-within:bg-surface',
     disabled ? 'opacity-50 cursor-not-allowed' : '',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={baseClasses} data-testid={testId}>
       {/* Search Icon */}
       <svg
-        className="w-5 h-5 text-on-surface-variant flex-shrink-0"
+        className="h-5 w-5 flex-shrink-0 text-on-surface-variant"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -136,11 +138,11 @@ export function M3SearchBar({
         <button
           type="button"
           onClick={handleClear}
-          className="p-1 text-on-surface-variant hover:text-on-surface transition-colors rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+          className="rounded-full p-1 text-on-surface-variant transition-colors hover:text-on-surface focus:outline-none focus:ring-2 focus:ring-primary"
           aria-label="검색어 지우기"
         >
           <svg
-            className="w-5 h-5"
+            className="h-5 w-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

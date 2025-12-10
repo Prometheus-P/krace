@@ -31,15 +31,9 @@ export function DateRangeFilter({
   };
 
   return (
-    <div
-      className={`flex flex-col sm:flex-row gap-3 ${className}`}
-      data-testid={testId}
-    >
+    <div className={`flex flex-col gap-3 sm:flex-row ${className}`} data-testid={testId}>
       <div className="flex flex-col gap-1">
-        <label
-          htmlFor="date-from"
-          className="text-label-medium text-on-surface-variant"
-        >
+        <label htmlFor="date-from" className="text-label-medium text-on-surface-variant">
           시작일
         </label>
         <input
@@ -49,17 +43,12 @@ export function DateRangeFilter({
           onChange={handleDateFromChange}
           max={dateTo || today}
           aria-label="시작일"
-          className="px-3 py-2 border border-outline rounded-lg bg-surface text-on-surface
-                     focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
-                     text-body-medium"
+          className="rounded-lg border border-outline bg-surface px-3 py-2 text-body-medium text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
 
       <div className="flex flex-col gap-1">
-        <label
-          htmlFor="date-to"
-          className="text-label-medium text-on-surface-variant"
-        >
+        <label htmlFor="date-to" className="text-label-medium text-on-surface-variant">
           종료일
         </label>
         <input
@@ -70,9 +59,7 @@ export function DateRangeFilter({
           min={dateFrom}
           max={today}
           aria-label="종료일"
-          className="px-3 py-2 border border-outline rounded-lg bg-surface text-on-surface
-                     focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
-                     text-body-medium"
+          className="rounded-lg border border-outline bg-surface px-3 py-2 text-body-medium text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
     </div>

@@ -1,6 +1,10 @@
 // src/components/TodayRaces.tsx
 import React from 'react';
-import { fetchHorseRaceSchedules, fetchCycleRaceSchedules, fetchBoatRaceSchedules } from '@/lib/api';
+import {
+  fetchHorseRaceSchedules,
+  fetchCycleRaceSchedules,
+  fetchBoatRaceSchedules,
+} from '@/lib/api';
 import { getTodayYYYYMMDD } from '@/lib/utils/date';
 import { Race, RaceType } from '@/types';
 import Link from 'next/link';
@@ -8,14 +12,17 @@ import StatusBadge from './StatusBadge';
 import type { RaceStatus } from './StatusBadge';
 
 // Race type configuration for consistent styling
-const raceTypeConfig: Record<RaceType, {
-  icon: string;
-  label: string;
-  color: string;
-  borderColor: string;
-  bgHover: string;
-  textColor: string;
-}> = {
+const raceTypeConfig: Record<
+  RaceType,
+  {
+    icon: string;
+    label: string;
+    color: string;
+    borderColor: string;
+    bgHover: string;
+    textColor: string;
+  }
+> = {
   horse: {
     icon: '🐎',
     label: '경마',
@@ -44,7 +51,7 @@ const raceTypeConfig: Record<RaceType, {
 
 interface RaceRowProps {
   race: Race;
-  typeConfig: typeof raceTypeConfig[RaceType];
+  typeConfig: (typeof raceTypeConfig)[RaceType];
 }
 
 const RaceRow = ({ race, typeConfig }: RaceRowProps) => {
@@ -56,58 +63,35 @@ const RaceRow = ({ race, typeConfig }: RaceRowProps) => {
       href={`/race/${race.id}`}
       data-testid="race-card"
       aria-label={`${raceLabel} ${distanceText} ${race.startTime} 출발 - 상세 정보 보기`}
-      className={`
-        group flex justify-between items-center
-        min-h-[56px] px-4 py-3
-        rounded-lg border border-transparent
-        transition-all duration-150 ease-out
-        hover:border-gray-200 hover:shadow-sm ${typeConfig.bgHover}
-        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400
-      `}
+      className={`group flex min-h-[56px] items-center justify-between rounded-lg border border-transparent px-4 py-3 transition-all duration-150 ease-out hover:border-gray-200 hover:shadow-sm ${typeConfig.bgHover} focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2`}
     >
       <div className="flex items-center gap-3">
-        <span
-          aria-hidden="true"
-          className={`text-xl ${typeConfig.textColor}`}
-        >
+        <span aria-hidden="true" className={`text-xl ${typeConfig.textColor}`}>
           {typeConfig.icon}
         </span>
         <div>
           <span className="font-semibold text-gray-900">{raceLabel}</span>
-          {distanceText && (
-            <span className="text-sm text-gray-600 ml-2">{distanceText}</span>
-          )}
+          {distanceText && <span className="ml-2 text-sm text-gray-600">{distanceText}</span>}
         </div>
       </div>
       <div className="flex items-center gap-3">
         <StatusBadge status={race.status as RaceStatus} />
-        <time
-          dateTime={race.startTime}
-          className="font-mono font-bold text-lg text-gray-900"
-        >
+        <time dateTime={race.startTime} className="font-mono text-lg font-bold text-gray-900">
           {race.startTime}
         </time>
         <span
-          className={`
-            hidden sm:inline text-sm font-medium ${typeConfig.textColor}
-            group-hover:underline group-focus:underline
-          `}
+          className={`hidden text-sm font-medium sm:inline ${typeConfig.textColor} group-hover:underline group-focus:underline`}
           aria-hidden="true"
         >
           상세보기
           <svg
-            className="inline-block w-4 h-4 ml-1 transition-transform group-hover:translate-x-0.5"
+            className="ml-1 inline-block h-4 w-4 transition-transform group-hover:translate-x-0.5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             aria-hidden="true"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </span>
       </div>
@@ -128,27 +112,17 @@ const RaceSection = ({ type, races, 'data-testid': dataTestId }: RaceSectionProp
   const headingId = `section-heading-${type}`;
 
   return (
-    <section
-      data-testid={dataTestId}
-      aria-labelledby={headingId}
-      className="mb-8"
-    >
+    <section data-testid={dataTestId} aria-labelledby={headingId} className="mb-8">
       <h2
         id={headingId}
-        className={`
-          flex items-center gap-2
-          text-xl font-bold mb-4 pb-2
-          border-b-2 ${config.borderColor}
-        `}
+        className={`mb-4 flex items-center gap-2 border-b-2 pb-2 text-xl font-bold ${config.borderColor} `}
       >
         <span aria-hidden="true">{config.icon}</span>
         <span className={config.color}>{config.label}</span>
-        <span className="ml-2 text-sm font-normal text-gray-500">
-          ({races.length}개 경주)
-        </span>
+        <span className="ml-2 text-sm font-normal text-gray-500">({races.length}개 경주)</span>
       </h2>
       <ul className="space-y-2" role="list">
-        {races.map(race => (
+        {races.map((race) => (
           <li key={race.id}>
             <RaceRow race={race} typeConfig={config} />
           </li>
@@ -161,13 +135,13 @@ const RaceSection = ({ type, races, 'data-testid': dataTestId }: RaceSectionProp
 // Empty state component
 const EmptyState = () => (
   <div
-    className="flex flex-col items-center justify-center py-12 px-4 text-center"
+    className="flex flex-col items-center justify-center px-4 py-12 text-center"
     role="status"
     aria-label="경주 정보 없음"
   >
-    <div className="w-16 h-16 mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
       <svg
-        className="w-8 h-8 text-gray-400"
+        className="h-8 w-8 text-gray-400"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -181,12 +155,8 @@ const EmptyState = () => (
         />
       </svg>
     </div>
-    <p className="text-lg font-medium text-gray-900 mb-1">
-      오늘 예정된 경주가 없습니다
-    </p>
-    <p className="text-sm text-gray-500">
-      다음 경주 일정을 확인해 주세요
-    </p>
+    <p className="mb-1 text-lg font-medium text-gray-900">오늘 예정된 경주가 없습니다</p>
+    <p className="text-sm text-gray-500">다음 경주 일정을 확인해 주세요</p>
   </div>
 );
 

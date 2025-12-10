@@ -31,20 +31,20 @@ open https://racelab.kr/results
 
 ## Feature Pages
 
-| Route | Description |
-|-------|-------------|
-| `/results` | Main results history page with filtering |
-| `/results?dateFrom=20241201&dateTo=20241202` | Results for specific date range |
-| `/results?types=horse` | Horse racing results only |
-| `/results?track=서울` | Seoul track results only |
-| `/results?jockey=김` | Results featuring jockeys matching "김" |
+| Route                                        | Description                              |
+| -------------------------------------------- | ---------------------------------------- |
+| `/results`                                   | Main results history page with filtering |
+| `/results?dateFrom=20241201&dateTo=20241202` | Results for specific date range          |
+| `/results?types=horse`                       | Horse racing results only                |
+| `/results?track=서울`                        | Seoul track results only                 |
+| `/results?jockey=김`                         | Results featuring jockeys matching "김"  |
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/results` | Paginated results list |
-| GET | `/api/results/[id]` | Single race result detail |
+| Method | Endpoint            | Description               |
+| ------ | ------------------- | ------------------------- |
+| GET    | `/api/results`      | Paginated results list    |
+| GET    | `/api/results/[id]` | Single race result detail |
 
 ### Example API Calls
 
@@ -84,6 +84,7 @@ npx playwright test e2e/tests/results.spec.ts
 ## Development Workflow
 
 1. **TDD Cycle** (Required):
+
    ```bash
    # 1. Write failing test
    npm run test -- --watch
@@ -93,6 +94,7 @@ npx playwright test e2e/tests/results.spec.ts
    ```
 
 2. **Commit Convention**:
+
    ```bash
    # Structure changes only
    git commit -m "chore(structure): extract ResultCard component"
@@ -105,24 +107,24 @@ npx playwright test e2e/tests/results.spec.ts
 
 ### New Files (to be created)
 
-| File | Purpose |
-|------|---------|
-| `src/app/results/page.tsx` | Results page component |
-| `src/app/api/results/route.ts` | Results list API |
-| `src/app/api/results/[id]/route.ts` | Result detail API |
-| `src/components/ResultCard.tsx` | Result card component |
-| `src/components/ResultFilters.tsx` | Filter controls |
-| `src/components/ResultSearch.tsx` | Name search input |
+| File                                | Purpose                |
+| ----------------------------------- | ---------------------- |
+| `src/app/results/page.tsx`          | Results page component |
+| `src/app/api/results/route.ts`      | Results list API       |
+| `src/app/api/results/[id]/route.ts` | Result detail API      |
+| `src/components/ResultCard.tsx`     | Result card component  |
+| `src/components/ResultFilters.tsx`  | Filter controls        |
+| `src/components/ResultSearch.tsx`   | Name search input      |
 
 ### Modified Files
 
-| File | Changes |
-|------|---------|
-| `src/types/index.ts` | Add HistoricalRace, Dividend types |
-| `src/lib/api.ts` | Add fetchHistoricalResults function |
-| `src/lib/api-helpers/mappers.ts` | Add result history mappers |
-| `src/lib/api-helpers/dummy.ts` | Add dummy historical data |
-| `src/components/Header.tsx` | Add results link to navigation |
+| File                             | Changes                             |
+| -------------------------------- | ----------------------------------- |
+| `src/types/index.ts`             | Add HistoricalRace, Dividend types  |
+| `src/lib/api.ts`                 | Add fetchHistoricalResults function |
+| `src/lib/api-helpers/mappers.ts` | Add result history mappers          |
+| `src/lib/api-helpers/dummy.ts`   | Add dummy historical data           |
+| `src/components/Header.tsx`      | Add results link to navigation      |
 
 ## Component Hierarchy
 
@@ -146,12 +148,14 @@ ResultsPage
 ### Environment Variables
 
 No new environment variables required. Uses existing:
+
 - `KRA_API_KEY` - Korea Horse Racing Association API
 - `KSPO_API_KEY` - National Sports Promotion Foundation API
 
 ### Tailwind Classes
 
 Uses existing race type color classes:
+
 - `text-horse` / `bg-horse` - Green (#2d5a27)
 - `text-cycle` / `bg-cycle` - Red (#dc2626)
 - `text-boat` / `bg-boat` - Blue (#0369a1)
@@ -175,14 +179,17 @@ After implementation, verify:
 ## Troubleshooting
 
 ### No results displayed
+
 - Check if API keys are set in `.env.local`
 - Verify date range is within 90 days
 - Check browser console for API errors
 
 ### Slow loading
+
 - External APIs may be slow; caching should mitigate
 - Check network tab for API response times
 
 ### Filter not working
+
 - Ensure URL params are updating
 - Check component state management

@@ -2,7 +2,7 @@
 title: KRace 환경 설정 가이드
 version: 1.0.0
 status: Approved
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -17,8 +17,8 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
+| 버전  | 날짜       | 작성자        | 변경 내용 |
+| ----- | ---------- | ------------- | --------- |
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
 
 ## 관련 문서 (Related Documents)
@@ -33,19 +33,19 @@ language: Korean (한국어)
 
 ### 1.1 필수 소프트웨어
 
-| 소프트웨어 | 최소 버전 | 권장 버전 | 확인 명령어 |
-|-----------|----------|----------|------------|
-| **Node.js** | 18.17.0 | 20.x LTS | `node --version` |
-| **npm** | 9.0.0 | 10.x | `npm --version` |
-| **Git** | 2.30.0 | 최신 | `git --version` |
+| 소프트웨어  | 최소 버전 | 권장 버전 | 확인 명령어      |
+| ----------- | --------- | --------- | ---------------- |
+| **Node.js** | 18.17.0   | 20.x LTS  | `node --version` |
+| **npm**     | 9.0.0     | 10.x      | `npm --version`  |
+| **Git**     | 2.30.0    | 최신      | `git --version`  |
 
 ### 1.2 선택 소프트웨어
 
-| 소프트웨어 | 용도 | 설치 링크 |
-|-----------|------|----------|
-| **VS Code** | 권장 IDE | [다운로드](https://code.visualstudio.com/) |
-| **Docker** | 컨테이너 환경 | [다운로드](https://www.docker.com/) |
-| **Playwright** | E2E 테스트 브라우저 | 자동 설치 (`npx playwright install`) |
+| 소프트웨어     | 용도                | 설치 링크                                  |
+| -------------- | ------------------- | ------------------------------------------ |
+| **VS Code**    | 권장 IDE            | [다운로드](https://code.visualstudio.com/) |
+| **Docker**     | 컨테이너 환경       | [다운로드](https://www.docker.com/)        |
+| **Playwright** | E2E 테스트 브라우저 | 자동 설치 (`npx playwright install`)       |
 
 ### 1.3 VS Code 권장 확장
 
@@ -70,12 +70,12 @@ language: Korean (한국어)
 
 프로젝트는 환경별로 다른 `.env` 파일을 사용합니다:
 
-| 파일 | 용도 | Git 추적 |
-|------|------|----------|
-| `.env.local.example` | 환경 변수 템플릿 | ✅ 추적됨 |
-| `.env.local` | 로컬 개발 환경 | ❌ .gitignore |
-| `.env.development` | 개발 환경 | ❌ .gitignore |
-| `.env.production` | 프로덕션 환경 | ❌ .gitignore |
+| 파일                 | 용도             | Git 추적      |
+| -------------------- | ---------------- | ------------- |
+| `.env.local.example` | 환경 변수 템플릿 | ✅ 추적됨     |
+| `.env.local`         | 로컬 개발 환경   | ❌ .gitignore |
+| `.env.development`   | 개발 환경        | ❌ .gitignore |
+| `.env.production`    | 프로덕션 환경    | ❌ .gitignore |
 
 ### 2.2 환경 변수 상세
 
@@ -111,6 +111,11 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 # 발급: https://www.google.com/adsense/
 NEXT_PUBLIC_ADSENSE_ID=ca-pub-XXXXXXXXXX
 
+# Sentry DSN (에러 모니터링)
+# 발급: https://sentry.io/
+SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
+NEXT_PUBLIC_SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
+
 # ┌─────────────────────────────────────────────────────────────┐
 # │ 개발 설정 (Development)                                     │
 # └─────────────────────────────────────────────────────────────┘
@@ -135,12 +140,12 @@ Next.js는 다음 순서로 환경 변수를 로드합니다:
 5. .env
 ```
 
-### 2.4 NEXT_PUBLIC_ 접두사
+### 2.4 NEXT*PUBLIC* 접두사
 
-| 접두사 | 접근 가능 위치 | 보안 |
-|--------|---------------|------|
+| 접두사         | 접근 가능 위치    | 보안      |
+| -------------- | ----------------- | --------- |
 | `NEXT_PUBLIC_` | 서버 + 클라이언트 | ⚠️ 노출됨 |
-| (접두사 없음) | 서버만 | ✅ 안전 |
+| (접두사 없음)  | 서버만            | ✅ 안전   |
 
 ```typescript
 // ✅ 올바른 사용
@@ -186,7 +191,32 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID; // 의도적 노출
    NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
    ```
 
-### 3.4 Google AdSense 설정
+#### 커스텀 이벤트 구현
+
+RaceLab은 다음 GA4 커스텀 이벤트를 추적합니다:
+
+| 이벤트명           | 트리거 시점      | 파라미터                                  |
+| ------------------ | ---------------- | ----------------------------------------- |
+| `tab_click`        | 탭 전환 클릭 시  | `race_type`: 'horse' \| 'cycle' \| 'boat' |
+| `race_detail_view` | 경주 상세 조회시 | `race_id`, `race_type`, `track`, `race_no` |
+
+이벤트 트래킹 유틸리티: `src/lib/utils/ga.ts`
+
+### 3.4 Google Search Console 설정
+
+1. [Google Search Console](https://search.google.com/search-console/) 접속
+2. 속성 추가 > URL 접두사 > `https://racelab.kr` 입력
+3. HTML 태그 인증 방법 선택
+4. 메타 태그의 `content` 값 복사
+5. `src/app/layout.tsx`의 `metadata.verification.google` 업데이트:
+   ```typescript
+   verification: {
+     google: 'your-verification-code', // 여기에 입력
+   }
+   ```
+6. 배포 후 Search Console에서 인증 확인
+
+### 3.5 Google AdSense 설정
 
 1. [Google AdSense](https://www.google.com/adsense/) 가입
 2. 사이트 추가 및 승인 대기
@@ -195,6 +225,34 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID; // 의도적 노출
    ```bash
    NEXT_PUBLIC_ADSENSE_ID=ca-pub-XXXXXXXXXX
    ```
+
+### 3.6 Sentry 에러 모니터링 설정
+
+1. [Sentry](https://sentry.io/) 계정 생성
+2. 새 프로젝트 생성 > Next.js 선택
+3. DSN 복사
+4. `.env.local`에 추가:
+   ```bash
+   SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
+   NEXT_PUBLIC_SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
+   ```
+
+#### 에러 로깅 유틸리티
+
+에러 로깅 유틸리티: `src/lib/utils/errorLogger.ts`
+
+```typescript
+import { logError, logApiError, logExternalApiError } from '@/lib/utils/errorLogger';
+
+// 일반 에러 로깅
+logError(error, { severity: 'error', context: { userId: '123' } });
+
+// API 에러 로깅
+logApiError(error, { endpoint: '/api/races', method: 'GET', statusCode: 500 });
+
+// 외부 API 에러 로깅 (KRA, KSPO)
+logExternalApiError(error, 'KRA', 'https://kra.api.go.kr/races', 5000);
+```
 
 ---
 
@@ -267,6 +325,7 @@ npm test -- --coverage
 ```
 
 **Jest 설정 파일:**
+
 - `jest.config.api.js` - API 라우트 테스트
 - `jest.config.ui.js` - UI 컴포넌트 테스트
 
@@ -297,25 +356,26 @@ npx playwright test --project=chromium
 Vercel은 GitHub 연동으로 자동 배포됩니다.
 
 **환경 변수 설정:**
+
 1. [Vercel Dashboard](https://vercel.com/) 접속
 2. 프로젝트 선택 > Settings > Environment Variables
 3. 환경 변수 추가:
 
-| 변수명 | 환경 |
-|--------|------|
-| `KRA_API_KEY` | Production, Preview |
-| `KSPO_API_KEY` | Production, Preview |
-| `NEXT_PUBLIC_SITE_URL` | Production |
-| `NEXT_PUBLIC_GA_ID` | Production |
+| 변수명                 | 환경                |
+| ---------------------- | ------------------- |
+| `KRA_API_KEY`          | Production, Preview |
+| `KSPO_API_KEY`         | Production, Preview |
+| `NEXT_PUBLIC_SITE_URL` | Production          |
+| `NEXT_PUBLIC_GA_ID`    | Production          |
 
 ### 6.2 배포 환경별 차이
 
-| 항목 | Development | Preview | Production |
-|------|-------------|---------|------------|
-| Mock 데이터 | 가능 | 불가 | 불가 |
-| 캐시 TTL | 10초 | 30초 | 5분 |
-| Analytics | 비활성 | 비활성 | 활성 |
-| AdSense | 비활성 | 비활성 | 활성 |
+| 항목        | Development | Preview | Production |
+| ----------- | ----------- | ------- | ---------- |
+| Mock 데이터 | 가능        | 불가    | 불가       |
+| 캐시 TTL    | 10초        | 30초    | 5분        |
+| Analytics   | 비활성      | 비활성  | 활성       |
+| AdSense     | 비활성      | 비활성  | 활성       |
 
 ---
 
@@ -327,24 +387,24 @@ CI/CD 워크플로우가 정상 동작하려면 GitHub Repository Secrets를 설
 
 GitHub Repository → Settings → Secrets and variables → Actions에서 설정:
 
-| Secret Name | 필수 | 용도 | 발급 방법 |
-|-------------|------|------|----------|
-| `VERCEL_TOKEN` | ✅ | Vercel 배포 인증 | [Vercel Tokens](https://vercel.com/account/tokens) |
-| `VERCEL_ORG_ID` | ✅ | Vercel 조직 ID | Vercel 프로젝트 설정에서 확인 |
-| `VERCEL_PROJECT_ID` | ✅ | Vercel 프로젝트 ID | Vercel 프로젝트 설정에서 확인 |
-| `KSPO_API_KEY` | ✅ | 프로덕션 KSPO API 키 | 공공데이터포털 |
-| `KSPO_API_KEY_TEST` | - | 테스트용 KSPO API 키 | 공공데이터포털 |
-| `KSPO_API_KEY_PREVIEW` | - | 프리뷰용 KSPO API 키 | 공공데이터포털 |
-| `CODECOV_TOKEN` | - | 코드 커버리지 업로드 | [Codecov](https://codecov.io/) |
+| Secret Name            | 필수 | 용도                 | 발급 방법                                          |
+| ---------------------- | ---- | -------------------- | -------------------------------------------------- |
+| `VERCEL_TOKEN`         | ✅   | Vercel 배포 인증     | [Vercel Tokens](https://vercel.com/account/tokens) |
+| `VERCEL_ORG_ID`        | ✅   | Vercel 조직 ID       | Vercel 프로젝트 설정에서 확인                      |
+| `VERCEL_PROJECT_ID`    | ✅   | Vercel 프로젝트 ID   | Vercel 프로젝트 설정에서 확인                      |
+| `KSPO_API_KEY`         | ✅   | 프로덕션 KSPO API 키 | 공공데이터포털                                     |
+| `KSPO_API_KEY_TEST`    | -    | 테스트용 KSPO API 키 | 공공데이터포털                                     |
+| `KSPO_API_KEY_PREVIEW` | -    | 프리뷰용 KSPO API 키 | 공공데이터포털                                     |
+| `CODECOV_TOKEN`        | -    | 코드 커버리지 업로드 | [Codecov](https://codecov.io/)                     |
 
 ### 7.2 Repository Variables
 
 GitHub Repository → Settings → Secrets and variables → Actions → Variables 탭에서 설정:
 
-| Variable Name | 용도 |
-|---------------|------|
-| `KSPO_API_URL` | 프로덕션 KSPO API URL |
-| `KSPO_API_URL_PREVIEW` | 프리뷰 KSPO API URL |
+| Variable Name          | 용도                  |
+| ---------------------- | --------------------- |
+| `KSPO_API_URL`         | 프로덕션 KSPO API URL |
+| `KSPO_API_URL_PREVIEW` | 프리뷰 KSPO API URL   |
 
 ### 7.3 Vercel Token 발급
 
@@ -479,18 +539,21 @@ Error: 429 Too Many Requests
 - [ ] SSL 인증서 활성화
 - [ ] Google Analytics 연동
 - [ ] Google AdSense 승인
+- [ ] Sentry 에러 모니터링 연동
 
 ### 9.2 환경 변수 전체 목록
 
-| 변수명 | 필수 | 기본값 | 설명 |
-|--------|------|--------|------|
-| `KRA_API_KEY` | ✅ | - | 한국마사회 API 키 |
-| `KSPO_API_KEY` | ✅ | - | 국민체육진흥공단 API 키 |
-| `NEXT_PUBLIC_SITE_URL` | - | https://racelab.kr | 사이트 URL |
-| `NEXT_PUBLIC_GA_ID` | - | - | Google Analytics ID |
-| `NEXT_PUBLIC_ADSENSE_ID` | - | - | Google AdSense ID |
-| `NEXT_PUBLIC_USE_MOCK_DATA` | - | false | Mock 데이터 사용 |
-| `DEBUG` | - | false | 디버그 모드 |
+| 변수명                      | 필수 | 기본값             | 설명                    |
+| --------------------------- | ---- | ------------------ | ----------------------- |
+| `KRA_API_KEY`               | ✅   | -                  | 한국마사회 API 키       |
+| `KSPO_API_KEY`              | ✅   | -                  | 국민체육진흥공단 API 키 |
+| `NEXT_PUBLIC_SITE_URL`      | -    | https://racelab.kr | 사이트 URL              |
+| `NEXT_PUBLIC_GA_ID`         | -    | -                  | Google Analytics ID     |
+| `NEXT_PUBLIC_ADSENSE_ID`    | -    | -                  | Google AdSense ID       |
+| `SENTRY_DSN`                | -    | -                  | Sentry DSN (서버용)     |
+| `NEXT_PUBLIC_SENTRY_DSN`    | -    | -                  | Sentry DSN (클라이언트) |
+| `NEXT_PUBLIC_USE_MOCK_DATA` | -    | false              | Mock 데이터 사용        |
+| `DEBUG`                     | -    | false              | 디버그 모드             |
 
 ---
 
@@ -526,4 +589,4 @@ KRA_API_KEY=xxx  # 서버에서만 접근 가능
 
 ---
 
-*이 문서는 환경 설정의 모든 측면을 다루며, 지속적으로 업데이트됩니다.*
+_이 문서는 환경 설정의 모든 측면을 다루며, 지속적으로 업데이트됩니다._

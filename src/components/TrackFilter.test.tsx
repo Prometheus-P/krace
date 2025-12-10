@@ -109,20 +109,12 @@ describe('TrackFilter', () => {
   it('clears selection when race type changes and track not in new types', () => {
     const handleChange = jest.fn();
     const { rerender } = render(
-      <TrackFilter
-        selectedTrack="서울"
-        selectedRaceTypes={['horse']}
-        onChange={handleChange}
-      />
+      <TrackFilter selectedTrack="서울" selectedRaceTypes={['horse']} onChange={handleChange} />
     );
 
     // Change to cycle only - 서울 is not a cycle track
     rerender(
-      <TrackFilter
-        selectedTrack="서울"
-        selectedRaceTypes={['cycle']}
-        onChange={handleChange}
-      />
+      <TrackFilter selectedTrack="서울" selectedRaceTypes={['cycle']} onChange={handleChange} />
     );
 
     // Should call onChange to clear the invalid track

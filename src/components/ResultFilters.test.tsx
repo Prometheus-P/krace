@@ -46,11 +46,7 @@ describe('ResultFilters', () => {
     const handleFilterChange = jest.fn();
     const user = userEvent.setup();
 
-    render(
-      <ResultFilters
-        onFilterChange={handleFilterChange}
-      />
-    );
+    render(<ResultFilters onFilterChange={handleFilterChange} />);
 
     const startDateInput = screen.getByLabelText(/시작일/);
     await user.type(startDateInput, '2023-12-01');
@@ -62,24 +58,14 @@ describe('ResultFilters', () => {
     const handleFilterChange = jest.fn();
     const user = userEvent.setup();
 
-    render(
-      <ResultFilters
-        onFilterChange={handleFilterChange}
-      />
-    );
+    render(<ResultFilters onFilterChange={handleFilterChange} />);
 
     await user.click(screen.getByRole('button', { name: /경마/ }));
     expect(handleFilterChange).toHaveBeenCalled();
   });
 
   it('shows clear filters button when filters are active', () => {
-    render(
-      <ResultFilters
-        {...defaultProps}
-        dateFrom="2023-12-01"
-        types={['horse']}
-      />
-    );
+    render(<ResultFilters {...defaultProps} dateFrom="2023-12-01" types={['horse']} />);
 
     expect(screen.getByRole('button', { name: /필터 초기화/ })).toBeInTheDocument();
   });
@@ -141,11 +127,7 @@ describe('ResultFilters', () => {
 
   it('applies custom className', () => {
     render(
-      <ResultFilters
-        {...defaultProps}
-        className="custom-class"
-        data-testid="result-filters"
-      />
+      <ResultFilters {...defaultProps} className="custom-class" data-testid="result-filters" />
     );
     expect(screen.getByTestId('result-filters')).toHaveClass('custom-class');
   });

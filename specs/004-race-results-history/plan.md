@@ -21,15 +21,15 @@ Enable users to search and view historical race results for horse, cycle, and bo
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Evidence/Notes |
-|-----------|--------|----------------|
-| I. TDD (NON-NEGOTIABLE) | ✅ PASS | Tasks will follow Red-Green-Refactor; tests written before implementation |
-| II. Structural-Behavioral Separation | ✅ PASS | Commits will separate structure from behavior per convention |
-| III. Simplicity First | ✅ PASS | Direct API calls with caching; no complex patterns needed |
-| IV. Clear Data Flow | ✅ PASS | External APIs → lib/api.ts → mappers → API Routes → Components |
-| V. Mobile-First Design | ✅ PASS | Mobile viewport primary, race type colors enforced |
+| Principle                            | Status  | Evidence/Notes                                                            |
+| ------------------------------------ | ------- | ------------------------------------------------------------------------- |
+| I. TDD (NON-NEGOTIABLE)              | ✅ PASS | Tasks will follow Red-Green-Refactor; tests written before implementation |
+| II. Structural-Behavioral Separation | ✅ PASS | Commits will separate structure from behavior per convention              |
+| III. Simplicity First                | ✅ PASS | Direct API calls with caching; no complex patterns needed                 |
+| IV. Clear Data Flow                  | ✅ PASS | External APIs → lib/api.ts → mappers → API Routes → Components            |
+| V. Mobile-First Design               | ✅ PASS | Mobile viewport primary, race type colors enforced                        |
 
 **Gate Result**: PASSED - All constitution principles satisfied. No violations requiring justification.
 
@@ -90,5 +90,5 @@ e2e/
 > No violations requiring justification. Implementation uses established patterns.
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| N/A | N/A | N/A |
+| --------- | ---------- | ------------------------------------ |
+| N/A       | N/A        | N/A                                  |

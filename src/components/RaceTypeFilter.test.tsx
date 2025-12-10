@@ -30,12 +30,7 @@ describe('RaceTypeFilter', () => {
     const handleChange = jest.fn();
     const user = userEvent.setup();
 
-    render(
-      <RaceTypeFilter
-        selectedTypes={['horse']}
-        onChange={handleChange}
-      />
-    );
+    render(<RaceTypeFilter selectedTypes={['horse']} onChange={handleChange} />);
 
     await user.click(screen.getByRole('button', { name: /경륜/ }));
     expect(handleChange).toHaveBeenCalledWith(['horse', 'cycle']);
@@ -45,12 +40,7 @@ describe('RaceTypeFilter', () => {
     const handleChange = jest.fn();
     const user = userEvent.setup();
 
-    render(
-      <RaceTypeFilter
-        selectedTypes={['horse', 'cycle']}
-        onChange={handleChange}
-      />
-    );
+    render(<RaceTypeFilter selectedTypes={['horse', 'cycle']} onChange={handleChange} />);
 
     await user.click(screen.getByRole('button', { name: /경마/ }));
     expect(handleChange).toHaveBeenCalledWith(['cycle']);

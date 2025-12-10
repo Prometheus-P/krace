@@ -4,11 +4,11 @@
 
 ### 1.1 환경 구성
 
-| 환경 | URL | 용도 |
-|------|-----|------|
+| 환경       | URL                  | 용도        |
+| ---------- | -------------------- | ----------- |
 | Production | `https://racelab.kr` | 서비스 운영 |
-| Preview | `*.vercel.app` | PR 미리보기 |
-| Production | `racelab.kr` | 실서비스 |
+| Preview    | `*.vercel.app`       | PR 미리보기 |
+| Production | `racelab.kr`         | 실서비스    |
 
 ### 1.2 인프라 구성
 
@@ -70,9 +70,9 @@ vercel rollback
 
 GitHub 연동 시 자동 배포:
 
-| 트리거 | 환경 |
-|--------|------|
-| PR 생성/업데이트 | Preview |
+| 트리거             | 환경       |
+| ------------------ | ---------- |
+| PR 생성/업데이트   | Preview    |
 | `main` 브랜치 push | Production |
 
 ---
@@ -81,13 +81,13 @@ GitHub 연동 시 자동 배포:
 
 ### 3.1 환경별 변수
 
-| 변수 | Development | Preview | Production |
-|------|-------------|---------|------------|
-| `KRA_API_KEY` | 테스트 키 | 테스트 키 | 프로덕션 키 |
-| `KSPO_API_KEY` | 테스트 키 | 테스트 키 | 프로덕션 키 |
-| `NEXT_PUBLIC_SITE_URL` | racelab.kr | preview URL | racelab.kr |
-| `NEXT_PUBLIC_GA_ID` | - | - | G-XXXXXXXX |
-| `NEXT_PUBLIC_ADSENSE_ID` | - | - | ca-pub-XXX |
+| 변수                     | Development | Preview     | Production  |
+| ------------------------ | ----------- | ----------- | ----------- |
+| `KRA_API_KEY`            | 테스트 키   | 테스트 키   | 프로덕션 키 |
+| `KSPO_API_KEY`           | 테스트 키   | 테스트 키   | 프로덕션 키 |
+| `NEXT_PUBLIC_SITE_URL`   | racelab.kr  | preview URL | racelab.kr  |
+| `NEXT_PUBLIC_GA_ID`      | -           | -           | G-XXXXXXXX  |
+| `NEXT_PUBLIC_ADSENSE_ID` | -           | -           | ca-pub-XXX  |
 
 ### 3.2 Vercel에서 설정
 
@@ -131,6 +131,7 @@ Value: cname.vercel-dns.com
 ### 4.3 SSL 인증서
 
 Vercel 자동 발급 (Let's Encrypt)
+
 - 설정 불필요
 - 자동 갱신
 
@@ -141,14 +142,16 @@ Vercel 자동 발급 (Let's Encrypt)
 ### 5.1 Vercel Analytics
 
 무료 제공:
+
 - 실시간 방문자
 - Web Vitals (LCP, FID, CLS)
 - 지역별 트래픽
 
 설정:
+
 ```tsx
 // layout.tsx
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from '@vercel/analytics/react';
 
 export default function Layout({ children }) {
   return (
@@ -158,7 +161,7 @@ export default function Layout({ children }) {
         <Analytics />
       </body>
     </html>
-  )
+  );
 }
 ```
 
@@ -166,7 +169,7 @@ export default function Layout({ children }) {
 
 ```tsx
 // layout.tsx
-import Script from 'next/script'
+import Script from 'next/script';
 
 export default function Layout({ children }) {
   return (
@@ -187,18 +190,18 @@ export default function Layout({ children }) {
       </head>
       <body>{children}</body>
     </html>
-  )
+  );
 }
 ```
 
 ### 5.3 핵심 모니터링 지표
 
-| 지표 | 목표 | 알람 기준 |
-|------|------|----------|
-| Uptime | 99.9% | < 99% |
-| LCP | < 2.5s | > 4s |
-| Error Rate | < 1% | > 5% |
-| API Response | < 500ms | > 2s |
+| 지표         | 목표    | 알람 기준 |
+| ------------ | ------- | --------- |
+| Uptime       | 99.9%   | < 99%     |
+| LCP          | < 2.5s  | > 4s      |
+| Error Rate   | < 1%    | > 5%      |
+| API Response | < 500ms | > 2s      |
 
 ---
 
@@ -206,12 +209,12 @@ export default function Layout({ children }) {
 
 ### 6.1 장애 등급
 
-| 등급 | 설명 | 대응 시간 |
-|------|------|----------|
-| P1 | 전체 서비스 불가 | 즉시 |
-| P2 | 핵심 기능 장애 | 1시간 내 |
-| P3 | 일부 기능 장애 | 24시간 내 |
-| P4 | 경미한 이슈 | 다음 배포 |
+| 등급 | 설명             | 대응 시간 |
+| ---- | ---------------- | --------- |
+| P1   | 전체 서비스 불가 | 즉시      |
+| P2   | 핵심 기능 장애   | 1시간 내  |
+| P3   | 일부 기능 장애   | 24시간 내 |
+| P4   | 경미한 이슈      | 다음 배포 |
 
 ### 6.2 롤백 절차
 
@@ -232,12 +235,14 @@ curl -I https://racelab.kr
 ### 6.3 장애 체크리스트
 
 **서비스 불가 시:**
+
 1. [ ] Vercel Status 확인 (status.vercel.com)
 2. [ ] DNS 확인 (`dig racelab.kr`)
 3. [ ] 최근 배포 확인 → 롤백 검토
 4. [ ] 에러 로그 확인 (Vercel Dashboard → Logs)
 
 **API 오류 시:**
+
 1. [ ] 공공데이터 포털 상태 확인
 2. [ ] API 키 만료 여부 확인
 3. [ ] Rate Limit 초과 여부 확인
@@ -252,19 +257,19 @@ curl -I https://racelab.kr
 ```typescript
 // API 캐싱
 const response = await fetch(url, {
-  next: { 
-    revalidate: 60 // 60초 캐시
-  }
-})
+  next: {
+    revalidate: 60, // 60초 캐시
+  },
+});
 
 // 정적 페이지
-export const revalidate = 300 // 5분
+export const revalidate = 300; // 5분
 ```
 
 ### 7.2 이미지 최적화
 
 ```tsx
-import Image from 'next/image'
+import Image from 'next/image';
 
 <Image
   src="/logo.png"
@@ -272,7 +277,7 @@ import Image from 'next/image'
   width={200}
   height={50}
   priority // LCP 이미지
-/>
+/>;
 ```
 
 ### 7.3 번들 최적화
@@ -305,6 +310,7 @@ vercel env pull .env.backup
 ### 8.3 데이터 백업
 
 현재 버전: 데이터베이스 미사용
+
 - 모든 데이터는 외부 API에서 실시간 조회
 - 백업 불필요
 
@@ -314,19 +320,19 @@ vercel env pull .env.backup
 
 ### 9.1 Vercel 요금제
 
-| 플랜 | 월 비용 | 적합 트래픽 |
-|------|---------|------------|
-| Hobby | $0 | ~10K MAU |
-| Pro | $20 | ~100K MAU |
-| Enterprise | 문의 | 100K+ MAU |
+| 플랜       | 월 비용 | 적합 트래픽 |
+| ---------- | ------- | ----------- |
+| Hobby      | $0      | ~10K MAU    |
+| Pro        | $20     | ~100K MAU   |
+| Enterprise | 문의    | 100K+ MAU   |
 
 ### 9.2 예상 비용 (Phase별)
 
-| Phase | MAU | 예상 비용 |
-|-------|-----|----------|
-| Phase 1 | 5K | $0 (Hobby) |
-| Phase 2 | 20K | $20 (Pro) |
-| Phase 3 | 50K+ | $20-50 |
+| Phase   | MAU  | 예상 비용  |
+| ------- | ---- | ---------- |
+| Phase 1 | 5K   | $0 (Hobby) |
+| Phase 2 | 20K  | $20 (Pro)  |
+| Phase 3 | 50K+ | $20-50     |
 
 ### 9.3 비용 최적화
 
@@ -352,17 +358,17 @@ vercel env pull .env.backup
 const securityHeaders = [
   {
     key: 'X-Frame-Options',
-    value: 'DENY'
+    value: 'DENY',
   },
   {
     key: 'X-Content-Type-Options',
-    value: 'nosniff'
+    value: 'nosniff',
   },
   {
     key: 'Referrer-Policy',
-    value: 'origin-when-cross-origin'
-  }
-]
+    value: 'origin-when-cross-origin',
+  },
+];
 
 module.exports = {
   async headers() {
@@ -371,21 +377,22 @@ module.exports = {
         source: '/(.*)',
         headers: securityHeaders,
       },
-    ]
+    ];
   },
-}
+};
 ```
 
 ---
 
 ## 11. 연락처
 
-| 역할 | 담당 | 연락처 |
-|------|------|--------|
-| 기술 리드 | TBD | |
-| 운영 담당 | TBD | |
-| 긴급 연락 | TBD | |
+| 역할      | 담당 | 연락처 |
+| --------- | ---- | ------ |
+| 기술 리드 | TBD  |        |
+| 운영 담당 | TBD  |        |
+| 긴급 연락 | TBD  |        |
 
 ---
+
 **문서 버전**: 1.0
 **최종 수정일**: 2024-XX-XX

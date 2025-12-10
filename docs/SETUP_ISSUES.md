@@ -12,7 +12,7 @@
 
 **Body:**
 
-```markdown
+````markdown
 ## 개요
 
 Vercel 배포 워크플로우가 정상 작동하려면 아래 설정이 필요합니다.
@@ -27,6 +27,7 @@ npm i -g vercel
 vercel login
 vercel link
 ```
+````
 
 ### 2. Vercel 토큰 생성
 
@@ -40,10 +41,10 @@ vercel link
 
 **Repository → Settings → Secrets and variables → Actions → New repository secret**
 
-| Secret Name | 설명 | 확인 방법 |
-|-------------|------|----------|
-| `VERCEL_TOKEN` | Vercel API 토큰 | 위 2단계에서 생성 |
-| `VERCEL_ORG_ID` | Vercel 조직 ID | `.vercel/project.json` → `orgId` |
+| Secret Name         | 설명               | 확인 방법                            |
+| ------------------- | ------------------ | ------------------------------------ |
+| `VERCEL_TOKEN`      | Vercel API 토큰    | 위 2단계에서 생성                    |
+| `VERCEL_ORG_ID`     | Vercel 조직 ID     | `.vercel/project.json` → `orgId`     |
 | `VERCEL_PROJECT_ID` | Vercel 프로젝트 ID | `.vercel/project.json` → `projectId` |
 
 ### 4. 확인 방법
@@ -54,6 +55,7 @@ cat .vercel/project.json
 ```
 
 예시 출력:
+
 ```json
 {
   "projectId": "prj_xxxxxxxxxxxx",
@@ -76,7 +78,8 @@ cat .vercel/project.json
 
 - `.github/workflows/deploy-preview.yml`
 - `.github/workflows/deploy-prod.yml`
-```
+
+````
 
 ---
 
@@ -143,7 +146,7 @@ cat .vercel/project.json
 ```env
 KRA_API_KEY=your_kra_api_key_here
 KSPO_API_KEY=your_kspo_api_key_here
-```
+````
 
 > ⚠️ `.env.local`은 `.gitignore`에 포함되어 있어 커밋되지 않습니다.
 
@@ -163,7 +166,8 @@ KSPO_API_KEY=your_kspo_api_key_here
 ## 참고
 
 API 키가 없으면 더미 데이터가 반환됩니다 (개발 모드).
-```
+
+````
 
 ---
 
@@ -199,9 +203,11 @@ API 키가 없으면 더미 데이터가 반환됩니다 (개발 모드).
 
 또는 GitHub Secrets에 설정:
 
-```
+````
+
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-```
+
+````
 
 ## 2. Google Search Console 설정
 
@@ -221,7 +227,7 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 verification: {
   google: 'your-actual-verification-code', // 실제 코드로 변경
 },
-```
+````
 
 ## 3. Sitemap 제출
 
@@ -246,7 +252,8 @@ verification: {
 - `src/app/layout.tsx` - 메타데이터 및 GA 스크립트
 - `src/app/sitemap.ts` - 사이트맵 생성
 - `src/app/robots.ts` - robots.txt 생성
-```
+
+````
 
 ---
 
@@ -293,20 +300,21 @@ verification: {
 **`src/app/robots.ts`**
 ```typescript
 sitemap: 'https://racelab.kr/sitemap.xml',
-```
+````
 
 **`src/app/sitemap.ts`**
+
 ```typescript
 const baseUrl = 'https://racelab.kr';
 ```
 
 ### 4. 환경별 도메인 설정
 
-| 환경 | 도메인 |
-|------|--------|
-| Production | `racelab.kr` |
-| Preview | `*.vercel.app` (자동) |
-| Production | `https://racelab.kr` |
+| 환경       | 도메인                |
+| ---------- | --------------------- |
+| Production | `racelab.kr`          |
+| Preview    | `*.vercel.app` (자동) |
+| Production | `https://racelab.kr`  |
 
 ## 체크리스트
 
@@ -324,6 +332,7 @@ const baseUrl = 'https://racelab.kr';
 - `src/app/robots.ts` - Sitemap URL
 - `src/app/sitemap.ts` - 기본 URL
 - `.github/workflows/deploy-prod.yml` - 배포 URL
+
 ```
 
 ---
@@ -341,3 +350,4 @@ const baseUrl = 'https://racelab.kr';
 | Analytics | `NEXT_PUBLIC_GA_ID` | 🟢 Low |
 | SEO | Google verification code | 🟢 Low |
 | Domain | 커스텀 도메인 | 🟢 Low |
+```

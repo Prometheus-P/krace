@@ -122,13 +122,7 @@ export interface SpacingSystem {
 // =============================================================================
 
 /** Elevation level names */
-export type ElevationLevel =
-  | 'level0'
-  | 'level1'
-  | 'level2'
-  | 'level3'
-  | 'level4'
-  | 'level5';
+export type ElevationLevel = 'level0' | 'level1' | 'level2' | 'level3' | 'level4' | 'level5';
 
 /** Complete elevation system */
 export interface ElevationSystem {

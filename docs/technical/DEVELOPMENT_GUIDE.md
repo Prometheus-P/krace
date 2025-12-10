@@ -4,11 +4,11 @@
 
 ### 1.1 필수 요구사항
 
-| 도구 | 최소 버전 | 권장 버전 |
-|------|----------|----------|
-| Node.js | 18.17.0 | 20.x LTS |
-| npm | 9.x | 10.x |
-| Git | 2.x | 최신 |
+| 도구    | 최소 버전 | 권장 버전 |
+| ------- | --------- | --------- |
+| Node.js | 18.17.0   | 20.x LTS  |
+| npm     | 9.x       | 10.x      |
+| Git     | 2.x       | 최신      |
 
 ### 1.2 초기 설정
 
@@ -35,8 +35,8 @@ npm run dev
 
 1. [공공데이터포털](https://www.data.go.kr) 회원가입
 2. 아래 API 활용 신청:
-   - 한국마사회_경마정보 (경마)
-   - 국민체육진흥공단_경륜경정정보 (경륜/경정)
+   - 한국마사회\_경마정보 (경마)
+   - 국민체육진흥공단\_경륜경정정보 (경륜/경정)
 3. 발급받은 키를 `.env.local`에 입력
 
 > **참고**: API 키 없이도 더미 데이터로 개발 가능
@@ -131,12 +131,12 @@ function RaceCard({ race }: { race: Race }) {
 
 ### 3.2 파일 명명
 
-| 유형 | 컨벤션 | 예시 |
-|------|--------|------|
+| 유형     | 컨벤션     | 예시             |
+| -------- | ---------- | ---------------- |
 | 컴포넌트 | PascalCase | `TodayRaces.tsx` |
-| 유틸리티 | camelCase | `api.ts` |
-| 타입 | camelCase | `index.ts` |
-| 페이지 | kebab-case | `page.tsx` |
+| 유틸리티 | camelCase  | `api.ts`         |
+| 타입     | camelCase  | `index.ts`       |
+| 페이지   | kebab-case | `page.tsx`       |
 
 ### 3.3 컴포넌트 구조
 
@@ -152,9 +152,9 @@ interface Props {
 // 3. Component
 export default function RaceCard({ race }: Props) {
   // 4. Hooks (해당시)
-  
+
   // 5. Event handlers
-  
+
   // 6. Render
   return (
     <div className="...">
@@ -208,7 +208,7 @@ colors: {
 ```tsx
 // 모바일 퍼스트
 <div className="
-  grid 
+  grid
   grid-cols-1           // 기본: 1열
   sm:grid-cols-2        // 640px+: 2열
   md:grid-cols-3        // 768px+: 3열
@@ -227,30 +227,30 @@ colors: {
 // src/lib/api.ts
 
 // 환경변수
-const KRA_API_KEY = process.env.KRA_API_KEY || ''
+const KRA_API_KEY = process.env.KRA_API_KEY || '';
 
 // API 호출 공통 함수
 async function fetchApi<T>(url: string): Promise<T> {
   const response = await fetch(url, {
-    next: { revalidate: 60 } // 60초 캐시
-  })
-  
+    next: { revalidate: 60 }, // 60초 캐시
+  });
+
   if (!response.ok) {
-    throw new Error(`API Error: ${response.status}`)
+    throw new Error(`API Error: ${response.status}`);
   }
-  
-  return response.json()
+
+  return response.json();
 }
 
 // API 키 없으면 더미 데이터 반환
 export async function getHorseRacesToday(): Promise<Race[]> {
   if (!KRA_API_KEY) {
-    return getDummyHorseRaces()
+    return getDummyHorseRaces();
   }
-  
-  const url = `${API_BASE}/...?serviceKey=${KRA_API_KEY}&_type=json`
-  const data = await fetchApi<KRAApiResponse>(url)
-  return parseHorseRaces(data)
+
+  const url = `${API_BASE}/...?serviceKey=${KRA_API_KEY}&_type=json`;
+  const data = await fetchApi<KRAApiResponse>(url);
+  return parseHorseRaces(data);
 }
 ```
 
@@ -258,19 +258,19 @@ export async function getHorseRacesToday(): Promise<Race[]> {
 
 ```tsx
 // src/components/TodayRaces.tsx
-import { getAllRacesToday } from '@/lib/api'
+import { getAllRacesToday } from '@/lib/api';
 
 // Server Component - async 가능
 export default async function TodayRaces() {
-  const races = await getAllRacesToday()
-  
+  const races = await getAllRacesToday();
+
   return (
     <div>
-      {races.map(race => (
+      {races.map((race) => (
         <RaceCard key={race.id} race={race} />
       ))}
     </div>
-  )
+  );
 }
 ```
 
@@ -341,6 +341,7 @@ vercel --prod
 ### 7.2 환경변수 설정
 
 Vercel 대시보드에서 설정:
+
 1. Project Settings → Environment Variables
 2. 추가:
    - `KRA_API_KEY`
@@ -365,6 +366,7 @@ Vercel 대시보드에서 설정:
 **문제**: `Type error: Cannot find module '@/types'`
 
 **해결**:
+
 ```json
 // tsconfig.json
 {
@@ -381,6 +383,7 @@ Vercel 대시보드에서 설정:
 **문제**: `API Error: 401`
 
 **해결**:
+
 - API 키 확인 (`.env.local`)
 - URL 인코딩 확인
 - 공공데이터 포털에서 활용 신청 상태 확인
@@ -390,11 +393,10 @@ Vercel 대시보드에서 설정:
 **문제**: Tailwind 클래스가 작동하지 않음
 
 **해결**:
+
 ```typescript
 // tailwind.config.ts - content 경로 확인
-content: [
-  './src/**/*.{js,ts,jsx,tsx,mdx}',
-]
+content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'];
 ```
 
 ---
@@ -431,5 +433,6 @@ refactor: API 호출 로직 분리
 - [Vercel 문서](https://vercel.com/docs)
 
 ---
+
 **문서 버전**: 1.1
 **최종 수정일**: 2025-11-26

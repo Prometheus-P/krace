@@ -5,7 +5,7 @@
 **Status**: Draft
 **Input**: User description: "Race results history - Allow users to search and view historical race results for horse, cycle, and boat racing. Users should be able to filter by date range, race type, track location, and search for specific jockeys/riders. Display past race results with finishing positions, times, and dividend payouts."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Browse Recent Results (Priority: P1)
 
@@ -96,7 +96,7 @@ A user wants to see complete details for a specific race, including all finisher
 - How does the system handle races that were canceled? Display canceled races with appropriate visual indicator but exclude from default results view.
 - What happens with partial data (e.g., missing dividend info)? Display available data with "unavailable" indicator for missing fields rather than hiding the entire result.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -120,7 +120,7 @@ A user wants to see complete details for a specific race, including all finisher
 - **Dividend**: Payout information for a race - includes win (단승), place (복승), and quinella (쌍승) amounts with the entry numbers involved
 - **Track**: A venue where races occur - categorized by race type with Korean name and code (e.g., Seoul=1, Busan=2 for horse racing)
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
@@ -147,6 +147,7 @@ A user wants to see complete details for a specific race, including all finisher
 This feature adopts Material Design 3 as the foundational design system, customized for the Korean racing industry audience.
 
 **Color Strategy**:
+
 - **Primary Brand**: M3 neutral/professional palette for app-wide consistency
 - **Semantic Race Colors**: Established race type colors preserved as accent colors
   - Horse (경마): Green `#2d5a27` - 전통적 경마 색상
@@ -155,23 +156,27 @@ This feature adopts Material Design 3 as the foundational design system, customi
 - **Target Audience**: 경마/경륜/경정 소비자층 (40-60대 남성 중심) - 가독성과 신뢰감 우선
 
 **Typography**: M3 Type Scale with Pretendard font family
+
 - **Font**: Pretendard (한국어 최적화, 숫자 가독성 우수)
 - **Weights**: 400 (Regular), 500 (Medium), 600 (SemiBold), 700 (Bold)
 - **Scale**: Display (36-57px), Headline (24-32px), Body (14-16px), Label (12-14px)
 - **Line Height**: 1.5 for body text (40-60대 가독성 고려)
 
 **Components**: M3 components adapted for touch-friendly mobile racing data display
+
 - **Result Cards**: M3 Elevated Cards - 각 경주 결과를 독립 카드로 표시, 큰 터치 영역 (min 48px touch target)
 - **Filters**: M3 Filter Chips - 레이스 타입/트랙 필터링
 - **Search**: M3 Search Bar - 기수/선수 검색
 - **Navigation**: M3 Top App Bar + Navigation Rail (tablet+)
 
 **Motion & Interaction**:
+
 - **Card Expansion**: In-place expansion (아코디언 스타일) - 카드 클릭 시 제자리에서 확장하여 상세 정보 표시
 - **Transition**: M3 standard easing (300ms) - 부드러운 확장/축소 애니메이션
 - **Context Preservation**: 페이지 이동 없이 현재 스크롤 위치 유지 (40-60대 사용자 친화적)
 
 **Theme**:
+
 - **Initial Release**: Light mode only - 40-60대 사용자층 친화적, 안정성 우선
 - **Future**: 다크 모드 추후 확장 가능 (prefers-color-scheme 기반)
 

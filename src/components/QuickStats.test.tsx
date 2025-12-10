@@ -1,7 +1,11 @@
 // src/components/QuickStats.test.tsx
 import { render, screen } from '@testing-library/react';
 import QuickStats from './QuickStats';
-import { fetchHorseRaceSchedules, fetchCycleRaceSchedules, fetchBoatRaceSchedules } from '@/lib/api';
+import {
+  fetchHorseRaceSchedules,
+  fetchCycleRaceSchedules,
+  fetchBoatRaceSchedules,
+} from '@/lib/api';
 
 // Mock the API client dependency
 jest.mock('@/lib/api', () => ({
@@ -59,7 +63,7 @@ describe('QuickStats Component', () => {
 
       // Check for 4 stat cards (total + 3 race types)
       const statLabels = ['총 경주', '경마', '경륜', '경정'];
-      statLabels.forEach(label => {
+      statLabels.forEach((label) => {
         expect(screen.getByText(label)).toBeInTheDocument();
       });
     });
@@ -92,7 +96,7 @@ describe('QuickStats Component', () => {
       expect(articles).toHaveLength(4);
 
       // Check that each article has aria-labelledby
-      articles.forEach(article => {
+      articles.forEach((article) => {
         expect(article).toHaveAttribute('aria-labelledby');
       });
     });
@@ -155,7 +159,7 @@ describe('QuickStats Component', () => {
       render(resolvedComponent);
 
       const articles = screen.getAllByRole('article');
-      articles.forEach(article => {
+      articles.forEach((article) => {
         expect(article.className).toContain('min-h-[80px]');
       });
     });

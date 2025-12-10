@@ -23,9 +23,7 @@ export interface UseCardExpansionReturn {
   };
 }
 
-export function useCardExpansion(
-  options: UseCardExpansionOptions = {}
-): UseCardExpansionReturn {
+export function useCardExpansion(options: UseCardExpansionOptions = {}): UseCardExpansionReturn {
   const { defaultExpanded = false, expanded, onExpandedChange } = options;
 
   const isControlled = expanded !== undefined;

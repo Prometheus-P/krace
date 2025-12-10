@@ -25,10 +25,5 @@ export function ResultsListClient({ results }: ResultsListClientProps) {
     router.push(queryString ? `/results?${queryString}` : '/results');
   };
 
-  return (
-    <ResultsList
-      results={results}
-      onPageChange={handlePageChange}
-    />
-  );
+  return <ResultsList results={results} onPageChange={handlePageChange} />;
 }

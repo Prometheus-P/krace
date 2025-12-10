@@ -44,7 +44,9 @@ export class ResultsPage {
     this.boatTypeChip = page.locator('button[aria-label*="경정"]');
     this.trackSelect = page.locator('select[aria-label*="경기장"]');
     this.searchInput = page.locator('input[type="search"], input[aria-label*="검색"]');
-    this.searchClearButton = page.locator('button[aria-label*="지우기"], button[aria-label*="초기화"]').first();
+    this.searchClearButton = page
+      .locator('button[aria-label*="지우기"], button[aria-label*="초기화"]')
+      .first();
     this.clearFiltersButton = page.locator('button[aria-label*="필터 초기화"]');
     this.filterToggle = page.locator('button[aria-label*="필터"]').first();
     this.filterCountBadge = page.locator('[data-testid="filter-count"]');

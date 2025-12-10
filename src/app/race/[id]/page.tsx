@@ -1,17 +1,10 @@
 // src/app/race/[id]/page.tsx
-import { fetchRaceById, fetchHorseEntryDetail } from '@/lib/api';
+import { fetchRaceById } from '@/lib/api';
 import type { Metadata, ResolvingMetadata } from 'next';
 import Script from 'next/script';
-import OddsDisplay from '@/components/OddsDisplay';
-import ResultsTable from '@/components/ResultsTable';
-import HorseEntryTable from '@/components/HorseEntryTable';
-import { RaceResult, Entry } from '@/types';
-import {
-  RaceNotFound,
-  BackNavigation,
-  RaceHeader,
-  EntriesSection,
-} from './components';
+import { RaceResult, Dividend } from '@/types';
+import { RaceNotFound, BackNavigation } from './components';
+import { RaceSummaryCard, EntryTable, RaceResultsOdds, KeyInsightBlock } from '@/components/race-detail';
 
 type Props = {
   params: { id: string };
@@ -60,7 +53,10 @@ export async function generateMetadata(
 }
 
 // Mock results for demonstration (will be replaced with API data)
-function getMockResults(raceStatus: string, entries: { no: number; name: string; jockey?: string; odds?: number }[]): RaceResult[] {
+function getMockResults(
+  raceStatus: string,
+  entries: { no: number; name: string; jockey?: string; odds?: number }[]
+): RaceResult[] {
   if (raceStatus !== 'finished' || entries.length < 3) {
     return [];
   }
@@ -77,6 +73,19 @@ function getMockResults(raceStatus: string, entries: { no: number; name: string;
   }));
 }
 
+// Mock dividends for demonstration (will be replaced with API data)
+function getMockDividends(raceStatus: string, results: RaceResult[]): Dividend[] {
+  if (raceStatus !== 'finished' || results.length < 2) {
+    return [];
+  }
+
+  return [
+    { type: 'win', entries: [results[0].no], amount: results[0].payout || 3500 },
+    { type: 'place', entries: [results[0].no, results[1].no], amount: 1200 },
+    { type: 'quinella', entries: [results[0].no, results[1].no], amount: 5600 },
+  ];
+}
+
 export default async function RaceDetailPage({ params }: Props) {
   const race = await fetchRaceById(params.id);
 
@@ -84,25 +93,8 @@ export default async function RaceDetailPage({ params }: Props) {
     return <RaceNotFound />;
   }
 
-  // Extract date from race ID (format: type-meet-raceNo-date)
-  const idParts = race.id.split('-');
-  const raceDate = idParts[idParts.length - 1] || '';
-
-  const horseEntryDetails = race.type === 'horse'
-    ? await fetchHorseEntryDetail(raceDate)
-    : [];
-  const detailedEntries: Entry[] = horseEntryDetails.map(detail => ({
-    no: detail.entryNo,
-    name: detail.horseName,
-    trainer: detail.trainer,
-    jockey: detail.jockey,
-    age: detail.age ? parseInt(detail.age, 10) : undefined,
-    weight: detail.weight ? parseFloat(detail.weight) : undefined,
-    recentRecord: detail.recentRecord || undefined,
-  }));
-
-  const isFinished = race.status === 'finished';
   const results = getMockResults(race.status, race.entries);
+  const dividends = getMockDividends(race.status, results);
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
 
   // Race type in Korean
@@ -138,13 +130,16 @@ export default async function RaceDetailPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'SportsEvent',
     name: `${race.track} 제${race.raceNo}경주`,
-    description: race.distance ? `${raceTypeKorean} ${race.distance}m 경주` : `${raceTypeKorean} 경주`,
+    description: race.distance
+      ? `${raceTypeKorean} ${race.distance}m 경주`
+      : `${raceTypeKorean} 경주`,
     startDate: new Date().toISOString().split('T')[0] + 'T' + race.startTime + ':00',
-    eventStatus: race.status === 'finished'
-      ? 'https://schema.org/EventCompleted'
-      : race.status === 'live'
-      ? 'https://schema.org/EventLive'
-      : 'https://schema.org/EventScheduled',
+    eventStatus:
+      race.status === 'finished'
+        ? 'https://schema.org/EventCompleted'
+        : race.status === 'live'
+          ? 'https://schema.org/EventLive'
+          : 'https://schema.org/EventScheduled',
     location: {
       '@type': 'Place',
       name: race.track,
@@ -173,39 +168,10 @@ export default async function RaceDetailPage({ params }: Props) {
 
       <div className="space-y-6">
         <BackNavigation raceType={race.type} />
-        <RaceHeader race={race} />
-        <EntriesSection race={race} />
-        {race.type === 'horse' && detailedEntries.length > 0 && (
-          <HorseEntryTable race={race} entries={detailedEntries} />
-        )}
-
-      {/* Odds section */}
-      <section
-        className="bg-white p-4 md:p-6 rounded-xl shadow-sm"
-        data-testid="odds"
-        aria-labelledby="odds-heading"
-      >
-        <h2 id="odds-heading" className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <span aria-hidden="true">💰</span>
-          단승 배당률
-        </h2>
-        <OddsDisplay entries={race.entries} raceType={race.type} />
-      </section>
-
-        {/* Results section (only for finished races) */}
-        {isFinished && results.length > 0 && (
-          <section
-            className="bg-white p-4 md:p-6 rounded-xl shadow-sm"
-            data-testid="results"
-            aria-labelledby="results-heading"
-          >
-            <h2 id="results-heading" className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <span aria-hidden="true">🏆</span>
-              경주 결과
-            </h2>
-            <ResultsTable results={results} raceType={race.type} />
-          </section>
-        )}
+        <RaceSummaryCard race={race} />
+        <KeyInsightBlock race={race} results={results} />
+        <EntryTable race={race} />
+        <RaceResultsOdds race={race} results={results} dividends={dividends} />
       </div>
     </>
   );

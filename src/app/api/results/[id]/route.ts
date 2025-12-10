@@ -56,7 +56,8 @@ export async function GET(
   } catch (error: unknown) {
     console.error('Error fetching historical result:', error);
 
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch historical result';
+    const errorMessage =
+      error instanceof Error ? error.message : 'Failed to fetch historical result';
     const errorResponse: ApiResponse<HistoricalRace> = {
       success: false,
       error: {

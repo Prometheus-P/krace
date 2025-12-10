@@ -125,7 +125,7 @@ export function M3Dialog({
     >
       {/* Backdrop/Scrim */}
       <div
-        className="fixed inset-0 bg-black/50 animate-in fade-in duration-m3-short"
+        className="animate-in fade-in fixed inset-0 bg-black/50 duration-m3-short"
         data-testid="dialog-backdrop"
         onClick={handleBackdropClick}
         aria-hidden="true"
@@ -143,7 +143,7 @@ export function M3Dialog({
       >
         {/* Title */}
         {title && (
-          <div className="px-6 pt-6 pb-4">
+          <div className="px-6 pb-4 pt-6">
             <h2 id={titleId} className="text-headline-small text-on-surface">
               {title}
             </h2>
@@ -155,10 +155,7 @@ export function M3Dialog({
 
         {/* Actions */}
         {actions && (
-          <div
-            className="flex justify-end gap-2 px-6 pb-6"
-            data-dialog-actions
-          >
+          <div className="flex justify-end gap-2 px-6 pb-6" data-dialog-actions>
             {actions}
           </div>
         )}

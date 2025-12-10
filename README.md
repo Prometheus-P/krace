@@ -2,7 +2,7 @@
 title: KRace - 한국 공영경주 정보 플랫폼
 version: 1.1.0
 status: Approved
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 language: Korean (한국어)
@@ -40,12 +40,12 @@ language: Korean (한국어)
 
 ### 핵심 가치
 
-| 가치 | 설명 |
-|------|------|
-| 🏃 **빠름** | Next.js ISR 캐싱으로 즉시 로딩 |
-| 📱 **편리함** | 모바일 최적화 반응형 UI |
+| 가치          | 설명                             |
+| ------------- | -------------------------------- |
+| 🏃 **빠름**   | Next.js ISR 캐싱으로 즉시 로딩   |
+| 📱 **편리함** | 모바일 최적화 반응형 UI          |
 | 🔒 **신뢰성** | KSPO 공식 API 기반 정확한 데이터 |
-| 🎯 **통합** | 3개 종목을 한 곳에서 |
+| 🎯 **통합**   | 3개 종목을 한 곳에서             |
 
 ### 기술 스택
 
@@ -160,14 +160,14 @@ NEXT_PUBLIC_ADSENSE_ID=ca-pub-XXXXXXXXXX
 
 ### 사용 가능한 스크립트
 
-| 명령어 | 설명 |
-|--------|------|
-| `npm run dev` | 개발 서버 실행 (https://racelab.kr) |
-| `npm run build` | 프로덕션 빌드 |
-| `npm start` | 프로덕션 서버 실행 |
-| `npm run lint` | ESLint 검사 |
-| `npm test` | Jest 단위 테스트 |
-| `npm run test:e2e` | Playwright E2E 테스트 |
+| 명령어             | 설명                                |
+| ------------------ | ----------------------------------- |
+| `npm run dev`      | 개발 서버 실행 (https://racelab.kr) |
+| `npm run build`    | 프로덕션 빌드                       |
+| `npm start`        | 프로덕션 서버 실행                  |
+| `npm run lint`     | ESLint 검사                         |
+| `npm test`         | Jest 단위 테스트                    |
+| `npm run test:e2e` | Playwright E2E 테스트               |
 
 ### TDD 개발 사이클
 
@@ -190,16 +190,17 @@ NEXT_PUBLIC_ADSENSE_ID=ca-pub-XXXXXXXXXX
 <type>(<scope>): <subject>
 ```
 
-| Type | 설명 |
-|------|------|
-| `feat` | 새 기능 |
-| `fix` | 버그 수정 |
-| `refactor` | 리팩토링 |
-| `test` | 테스트 추가/수정 |
-| `docs` | 문서 변경 |
-| `chore` | 빌드/설정 변경 |
+| Type       | 설명             |
+| ---------- | ---------------- |
+| `feat`     | 새 기능          |
+| `fix`      | 버그 수정        |
+| `refactor` | 리팩토링         |
+| `test`     | 테스트 추가/수정 |
+| `docs`     | 문서 변경        |
+| `chore`    | 빌드/설정 변경   |
 
 **예시:**
+
 ```bash
 git commit -m "feat(race): add odds display component"
 git commit -m "fix(api): handle null response from KSPO"
@@ -238,11 +239,11 @@ npx playwright test e2e/tests/home.spec.ts
 
 ### 테스트 커버리지 목표
 
-| 유형 | 목표 | 현재 |
-|------|------|------|
-| Unit | 80% | ~70% |
-| Integration | 60% | ~50% |
-| E2E (Critical) | 100% | ✅ |
+| 유형           | 목표 | 현재 |
+| -------------- | ---- | ---- |
+| Unit           | 80%  | ~70% |
+| Integration    | 60%  | ~50% |
+| E2E (Critical) | 100% | ✅   |
 
 ---
 
@@ -269,25 +270,25 @@ npm start
 
 ### 환경별 URL
 
-| 환경 | URL |
-|------|-----|
-| Production | https://racelab.kr |
-| Preview | https://racelab-*.vercel.app |
-| Production | https://racelab.kr |
+| 환경       | URL                           |
+| ---------- | ----------------------------- |
+| Production | https://racelab.kr            |
+| Preview    | https://racelab-\*.vercel.app |
+| Production | https://racelab.kr            |
 
 ---
 
 ## 문서
 
-| 문서 | 설명 |
-|------|------|
-| [CONTEXT.md](./CONTEXT.md) | 프로젝트 전체 맥락 (필독) |
-| [ENVIRONMENT.md](./ENVIRONMENT.md) | 환경 설정 상세 가이드 |
-| [plan.md](./plan.md) | TDD 개발 계획 |
-| [docs/TDD_RULES.md](./docs/TDD_RULES.md) | TDD 규칙 |
-| [docs/technical/TECHNICAL_DESIGN.md](./docs/technical/TECHNICAL_DESIGN.md) | 시스템 아키텍처 |
-| [docs/technical/API_SPECIFICATION.md](./docs/technical/API_SPECIFICATION.md) | API 명세 |
-| [docs/technical/DEVELOPMENT_GUIDE.md](./docs/technical/DEVELOPMENT_GUIDE.md) | 개발 가이드 |
+| 문서                                                                         | 설명                      |
+| ---------------------------------------------------------------------------- | ------------------------- |
+| [CONTEXT.md](./CONTEXT.md)                                                   | 프로젝트 전체 맥락 (필독) |
+| [ENVIRONMENT.md](./ENVIRONMENT.md)                                           | 환경 설정 상세 가이드     |
+| [plan.md](./plan.md)                                                         | TDD 개발 계획             |
+| [docs/TDD_RULES.md](./docs/TDD_RULES.md)                                     | TDD 규칙                  |
+| [docs/technical/TECHNICAL_DESIGN.md](./docs/technical/TECHNICAL_DESIGN.md)   | 시스템 아키텍처           |
+| [docs/technical/API_SPECIFICATION.md](./docs/technical/API_SPECIFICATION.md) | API 명세                  |
+| [docs/technical/DEVELOPMENT_GUIDE.md](./docs/technical/DEVELOPMENT_GUIDE.md) | 개발 가이드               |
 
 ---
 

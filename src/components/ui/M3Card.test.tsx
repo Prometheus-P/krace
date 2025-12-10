@@ -17,25 +17,41 @@ describe('M3Card', () => {
   });
 
   it('applies specified elevation level', () => {
-    render(<M3Card elevation={3} data-testid="card">Content</M3Card>);
+    render(
+      <M3Card elevation={3} data-testid="card">
+        Content
+      </M3Card>
+    );
     const card = screen.getByTestId('card');
     expect(card).toHaveClass('shadow-m3-3');
   });
 
   it('applies elevated variant styles', () => {
-    render(<M3Card variant="elevated" data-testid="card">Content</M3Card>);
+    render(
+      <M3Card variant="elevated" data-testid="card">
+        Content
+      </M3Card>
+    );
     const card = screen.getByTestId('card');
     expect(card).toHaveClass('bg-surface');
   });
 
   it('applies filled variant styles', () => {
-    render(<M3Card variant="filled" data-testid="card">Content</M3Card>);
+    render(
+      <M3Card variant="filled" data-testid="card">
+        Content
+      </M3Card>
+    );
     const card = screen.getByTestId('card');
     expect(card).toHaveClass('bg-surface-container-highest');
   });
 
   it('applies outlined variant styles', () => {
-    render(<M3Card variant="outlined" data-testid="card">Content</M3Card>);
+    render(
+      <M3Card variant="outlined" data-testid="card">
+        Content
+      </M3Card>
+    );
     const card = screen.getByTestId('card');
     expect(card).toHaveClass('border');
     expect(card).toHaveClass('border-outline-variant');
@@ -51,7 +67,11 @@ describe('M3Card', () => {
     const handleClick = jest.fn();
     const user = userEvent.setup();
 
-    render(<M3Card onClick={handleClick} data-testid="card">Clickable</M3Card>);
+    render(
+      <M3Card onClick={handleClick} data-testid="card">
+        Clickable
+      </M3Card>
+    );
     const card = screen.getByTestId('card');
 
     await user.click(card);
@@ -65,13 +85,21 @@ describe('M3Card', () => {
   });
 
   it('accepts custom className', () => {
-    render(<M3Card className="custom-class" data-testid="card">Content</M3Card>);
+    render(
+      <M3Card className="custom-class" data-testid="card">
+        Content
+      </M3Card>
+    );
     const card = screen.getByTestId('card');
     expect(card).toHaveClass('custom-class');
   });
 
   it('renders as button when interactive', () => {
-    render(<M3Card onClick={() => {}} data-testid="card">Clickable</M3Card>);
+    render(
+      <M3Card onClick={() => {}} data-testid="card">
+        Clickable
+      </M3Card>
+    );
     const card = screen.getByTestId('card');
     expect(card.tagName).toBe('BUTTON');
   });

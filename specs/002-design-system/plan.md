@@ -21,15 +21,15 @@ Establish a comprehensive M3-based design system for the KRace platform includin
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. Test-Driven Development | ✅ PASS | Component tests required before implementation |
-| II. Structural-Behavioral Separation | ✅ PASS | Token files (structure) separate from component behavior |
-| III. Simplicity First | ✅ PASS | Building on existing tokens.ts, minimal abstraction |
-| IV. Clear Data Flow | ✅ PASS | Design tokens → Tailwind config → Components (unidirectional) |
-| V. Mobile-First Responsive | ✅ PASS | Mobile default, tablet (md:), desktop (lg:) breakpoints |
+| Principle                            | Status  | Notes                                                         |
+| ------------------------------------ | ------- | ------------------------------------------------------------- |
+| I. Test-Driven Development           | ✅ PASS | Component tests required before implementation                |
+| II. Structural-Behavioral Separation | ✅ PASS | Token files (structure) separate from component behavior      |
+| III. Simplicity First                | ✅ PASS | Building on existing tokens.ts, minimal abstraction           |
+| IV. Clear Data Flow                  | ✅ PASS | Design tokens → Tailwind config → Components (unidirectional) |
+| V. Mobile-First Responsive           | ✅ PASS | Mobile default, tablet (md:), desktop (lg:) breakpoints       |
 
 **Gate Status**: ✅ PASSED - All constitution principles satisfied
 
@@ -87,5 +87,5 @@ tailwind.config.ts       # Extend with new M3 tokens
 > No violations - design system uses minimal complexity with existing patterns.
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| N/A | - | - |
+| --------- | ---------- | ------------------------------------ |
+| N/A       | -          | -                                    |

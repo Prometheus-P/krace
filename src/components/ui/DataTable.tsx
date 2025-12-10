@@ -72,13 +72,10 @@ function DataTable<T extends Record<string, unknown>>({
       <div className={`w-full ${className}`}>
         <div className="animate-pulse">
           {/* Header skeleton */}
-          <div className="h-12 bg-surface-dim rounded-t-rl-md" />
+          <div className="h-12 rounded-t-rl-md bg-surface-dim" />
           {/* Row skeletons */}
           {[...Array(5)].map((_, i) => (
-            <div
-              key={i}
-              className={`h-14 ${i % 2 === 0 ? 'bg-white' : 'bg-surface-dim'}`}
-            />
+            <div key={i} className={`h-14 ${i % 2 === 0 ? 'bg-white' : 'bg-surface-dim'}`} />
           ))}
         </div>
       </div>
@@ -87,22 +84,14 @@ function DataTable<T extends Record<string, unknown>>({
 
   return (
     <div className={`overflow-x-auto rounded-rl-lg border border-neutral-divider ${className}`}>
-      <table
-        className="w-full text-body-medium"
-        role="table"
-        aria-label={ariaLabel}
-      >
+      <table className="w-full text-body-medium" role="table" aria-label={ariaLabel}>
         <thead className="bg-surface-dim">
           <tr>
             {columns.map((column) => (
               <th
                 key={String(column.key)}
                 scope="col"
-                className={`
-                  px-4 py-4 font-semibold text-on-surface
-                  ${getAlignClass(column)}
-                  ${column.width || ''}
-                `}
+                className={`px-4 py-4 font-semibold text-on-surface ${getAlignClass(column)} ${column.width || ''} `}
               >
                 {column.header}
               </th>
@@ -124,11 +113,7 @@ function DataTable<T extends Record<string, unknown>>({
               <tr
                 key={getRowKey(row, rowIndex)}
                 onClick={() => onRowClick?.(row, rowIndex)}
-                className={`
-                  min-h-touch
-                  ${rowIndex % 2 === 0 ? 'bg-white' : 'bg-surface-dim'}
-                  ${onRowClick ? 'cursor-pointer hover:bg-surface-container-high transition-colors duration-rl-fast' : ''}
-                `}
+                className={`min-h-touch ${rowIndex % 2 === 0 ? 'bg-white' : 'bg-surface-dim'} ${onRowClick ? 'cursor-pointer transition-colors duration-rl-fast hover:bg-surface-container-high' : ''} `}
                 role={onRowClick ? 'button' : undefined}
                 tabIndex={onRowClick ? 0 : undefined}
                 onKeyDown={(e) => {
@@ -143,12 +128,7 @@ function DataTable<T extends Record<string, unknown>>({
                   return (
                     <td
                       key={String(column.key)}
-                      className={`
-                        px-4 py-4 border-b border-neutral-divider
-                        ${getAlignClass(column)}
-                        ${column.numeric ? 'font-extrabold tabular-nums' : ''}
-                        ${column.width || ''}
-                      `}
+                      className={`border-b border-neutral-divider px-4 py-4 ${getAlignClass(column)} ${column.numeric ? 'font-extrabold tabular-nums' : ''} ${column.width || ''} `}
                     >
                       {column.render
                         ? column.render(value as T[keyof T], row, rowIndex)

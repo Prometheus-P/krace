@@ -113,22 +113,24 @@ describe('mapOddsResponse', () => {
     const rcDate = '20240101';
 
     it('maps boat race results to HistoricalRace', () => {
-      const items = [{
-        stnd_yr: '2024',
-        race_no: '1',
-        rank1: '3',
-        rank2: '5',
-        rank3: '7',
-        pool1_val: '1200',
-        pool2_val: '800',
-        pool3_val: '5000',
-        pool4_val: '400',
-        pool5_val: '700',
-        pool6_val: '900',
-        week_tcnt: '1',
-        day_tcnt: '1',
-        row_num: '1',
-      }];
+      const items = [
+        {
+          stnd_yr: '2024',
+          race_no: '1',
+          rank1: '3',
+          rank2: '5',
+          rank3: '7',
+          pool1_val: '1200',
+          pool2_val: '800',
+          pool3_val: '5000',
+          pool4_val: '400',
+          pool5_val: '700',
+          pool6_val: '900',
+          week_tcnt: '1',
+          day_tcnt: '1',
+          row_num: '1',
+        },
+      ];
 
       const races = mapKSPOBoatRaceResults(items as any, rcDate);
       expect(races).toHaveLength(1);
@@ -139,20 +141,22 @@ describe('mapOddsResponse', () => {
     });
 
     it('maps boat payoffs to dividends', () => {
-      const items = [{
-        stnd_yr: '2024',
-        race_ymd: '20240101',
-        race_no: '1',
-        pool1_val: '1000',
-        pool2_1_val: '500',
-        pool2_2_val: '600',
-        pool4_val: '2000',
-        pool5_val: '3000',
-        pool6_val: '4000',
-        week_tcnt: '1',
-        day_tcnt: '1',
-        row_num: '1',
-      }];
+      const items = [
+        {
+          stnd_yr: '2024',
+          race_ymd: '20240101',
+          race_no: '1',
+          pool1_val: '1000',
+          pool2_1_val: '500',
+          pool2_2_val: '600',
+          pool4_val: '2000',
+          pool5_val: '3000',
+          pool6_val: '4000',
+          week_tcnt: '1',
+          day_tcnt: '1',
+          row_num: '1',
+        },
+      ];
 
       const dividends = mapKSPOBoatPayoffs(items as any);
       expect(dividends).toHaveLength(6);
@@ -161,27 +165,29 @@ describe('mapOddsResponse', () => {
     });
 
     it('maps boat racer info to Racer', () => {
-      const items = [{
-        rank1_tcnt: '1',
-        rank2_tcnt: '2',
-        rank3_tcnt: '3',
-        rank4_tcnt: '0',
-        rank5_tcnt: '0',
-        rank6_tcnt: '0',
-        stnd_yr: '2024',
-        racer_nm: '선수A',
-        race_tcnt: '10',
-        avg_rank: '2.3',
-        avg_acdnt_scr: '0.1',
-        avg_scr: '1.2',
-        avg_strt_tm: '0.15',
-        win_ratio: '20.5',
-        high_rate: '40.0',
-        high_3_rank_ratio: '60.0',
-        row_num: '1',
-        racer_perio_no: 'R123',
-        racer_grd_cd: 'A',
-      }];
+      const items = [
+        {
+          rank1_tcnt: '1',
+          rank2_tcnt: '2',
+          rank3_tcnt: '3',
+          rank4_tcnt: '0',
+          rank5_tcnt: '0',
+          rank6_tcnt: '0',
+          stnd_yr: '2024',
+          racer_nm: '선수A',
+          race_tcnt: '10',
+          avg_rank: '2.3',
+          avg_acdnt_scr: '0.1',
+          avg_scr: '1.2',
+          avg_strt_tm: '0.15',
+          win_ratio: '20.5',
+          high_rate: '40.0',
+          high_3_rank_ratio: '60.0',
+          row_num: '1',
+          racer_perio_no: 'R123',
+          racer_grd_cd: 'A',
+        },
+      ];
 
       const racers = mapKSPOBoatRacerInfo(items as any);
       expect(racers).toHaveLength(1);
@@ -196,64 +202,74 @@ describe('mapOddsResponse', () => {
     });
 
     it('maps boat part master', () => {
-      const items = [{
-        parts_item_cd_nm: '엔진',
-        supp_spec_nm: '사양A',
-        row_num: '1',
-      }];
+      const items = [
+        {
+          parts_item_cd_nm: '엔진',
+          supp_spec_nm: '사양A',
+          row_num: '1',
+        },
+      ];
       const mapped = mapKSPOBoatPartMaster(items as any);
       expect(mapped[0]).toEqual({ codeName: '엔진', spec: '사양A' });
     });
 
     it('maps boat supplier', () => {
-      const items = [{
-        supp_nm: '공급사',
-        supp_spec_nm: '사양B',
-        row_num: '1',
-      }];
+      const items = [
+        {
+          supp_nm: '공급사',
+          supp_spec_nm: '사양B',
+          row_num: '1',
+        },
+      ];
       const mapped = mapKSPOBoatSupplier(items as any);
       expect(mapped[0]).toEqual({ name: '공급사', spec: '사양B' });
     });
 
     it('maps boat equipment reports', () => {
-      const items = [{
-        stnd_yr: '2024',
-        repr_ymd: '20240101',
-        equip_tpe_nm: '장비',
-        mjr_parts_nm: '부품',
-        repr_desc_cn: '설명',
-        row_num: '1',
-      }];
+      const items = [
+        {
+          stnd_yr: '2024',
+          repr_ymd: '20240101',
+          equip_tpe_nm: '장비',
+          mjr_parts_nm: '부품',
+          repr_desc_cn: '설명',
+          row_num: '1',
+        },
+      ];
       const mapped = mapKSPOBoatEquipmentReports(items as any);
       expect(mapped[0]).toMatchObject({ year: '2024', equipmentType: '장비', mainParts: '부품' });
     });
 
     it('maps boat racer tilts', () => {
-      const items = [{
-        race_no: '2',
-        tilt_val: '0.5',
-        jacket_add_wght: '+1',
-        boat_add_wght_cn: '+2',
-        body_wght: 55,
-        day_tcnt: 1,
-        week_tcnt: 1,
-        stnd_yr: '2024',
-        racer_no: 'R1',
-        row_num: '1',
-      }];
+      const items = [
+        {
+          race_no: '2',
+          tilt_val: '0.5',
+          jacket_add_wght: '+1',
+          boat_add_wght_cn: '+2',
+          body_wght: 55,
+          day_tcnt: 1,
+          week_tcnt: 1,
+          stnd_yr: '2024',
+          racer_no: 'R1',
+          row_num: '1',
+        },
+      ];
       const mapped = mapKSPOBoatRacerTilts(items as any);
       expect(mapped[0]).toMatchObject({ raceNo: 2, tilt: '0.5', racerNo: 'R1' });
     });
 
     it('maps boat racer conditions', () => {
-      const items = [{
-        stnd_yr: '2024',
-        week_tcnt: 1,
-        racer_no: 'R2',
-        heal_stat_cn: '양호',
-        trng_stat_cn: '훈련중',
-        row_num: '1',
-      }];
+      const items = [
+        {
+          stnd_yr: '2024',
+          week_tcnt: 1,
+          racer_no: 'R2',
+          heal_stat_cn: '양호',
+          trng_stat_cn: '훈련중',
+          row_num: '1',
+        },
+      ];
       const mapped = mapKSPOBoatRacerConditions(items as any);
       expect(mapped[0]).toMatchObject({ year: '2024', racerNo: 'R2', health: '양호' });
     });
@@ -261,25 +277,27 @@ describe('mapOddsResponse', () => {
 
   describe('KSPO Cycle race result mapper', () => {
     it('maps cycle race results to HistoricalRace with dividends', () => {
-      const items = [{
-        stnd_yr: '2024',
-        race_ymd: '20240102',
-        meet_nm: '광명',
-        race_no: '5',
-        rank1: '1',
-        rank2: '4',
-        rank3: '7',
-        pool1_val: '1100',
-        pool2_val: '900',
-        pool4_val: '5000',
-        pool5_val: '4200',
-        pool6_val: '3100',
-        pool7_val: '2500',
-        pool8_val: '800',
-        week_tcnt: 1,
-        day_tcnt: 1,
-        row_num: '1',
-      }];
+      const items = [
+        {
+          stnd_yr: '2024',
+          race_ymd: '20240102',
+          meet_nm: '광명',
+          race_no: '5',
+          rank1: '1',
+          rank2: '4',
+          rank3: '7',
+          pool1_val: '1100',
+          pool2_val: '900',
+          pool4_val: '5000',
+          pool5_val: '4200',
+          pool6_val: '3100',
+          pool7_val: '2500',
+          pool8_val: '800',
+          week_tcnt: 1,
+          day_tcnt: 1,
+          row_num: '1',
+        },
+      ];
 
       const races = mapKSPOCycleRaceResults(items as any, '20240102');
       expect(races).toHaveLength(1);
@@ -292,18 +310,20 @@ describe('mapOddsResponse', () => {
 
   describe('KSPO Cycle race rank mapper', () => {
     it('maps cycle race rank items to HistoricalRace', () => {
-      const items = [{
-        row_num: '1',
-        stnd_year: '2024',
-        meet_nm: '광명',
-        tms: '1',
-        day_ord: '1',
-        race_no: '3',
-        race_day: '20240103',
-        racer_no: '9',
-        racer_nm: '사이클선수',
-        race_rank: '1',
-      }];
+      const items = [
+        {
+          row_num: '1',
+          stnd_year: '2024',
+          meet_nm: '광명',
+          tms: '1',
+          day_ord: '1',
+          race_no: '3',
+          race_day: '20240103',
+          racer_no: '9',
+          racer_nm: '사이클선수',
+          race_rank: '1',
+        },
+      ];
 
       const races = mapKSPOCycleRaceRankings(items as any);
       expect(races).toHaveLength(1);
@@ -314,53 +334,62 @@ describe('mapOddsResponse', () => {
 
   describe('KSPO Cycle racer info mapper', () => {
     it('maps cycle racer info to Racer[]', () => {
-      const items = [{
-        racer_nm: '사이클선수',
-        racer_grd_cd: 'S1',
-        run_cnt: '12',
-        run_day_tcnt: '3',
-        rank1_tcnt: '2',
-        win_rate: '16.7',
-        rank2_tcnt: '1',
-        high_rate: '25.0',
-        rank3_tcnt: '1',
-        high_3_rate: '33.3',
-        rank4_tcnt: '0',
-        stnd_yr: '2024',
-        rank5_tcnt: '0',
-        rank6_tcnt: '0',
-        rank7_tcnt: '0',
-        rank8_tcnt: '0',
-        rank9_tcnt: '0',
-        elim_tcnt: '0',
-        down_po_cnt: '0',
-        go_po_tcnt: '0',
-        period_no: 'P-99',
-        row_num: '1',
-      }];
+      const items = [
+        {
+          racer_nm: '사이클선수',
+          racer_grd_cd: 'S1',
+          run_cnt: '12',
+          run_day_tcnt: '3',
+          rank1_tcnt: '2',
+          win_rate: '16.7',
+          rank2_tcnt: '1',
+          high_rate: '25.0',
+          rank3_tcnt: '1',
+          high_3_rate: '33.3',
+          rank4_tcnt: '0',
+          stnd_yr: '2024',
+          rank5_tcnt: '0',
+          rank6_tcnt: '0',
+          rank7_tcnt: '0',
+          rank8_tcnt: '0',
+          rank9_tcnt: '0',
+          elim_tcnt: '0',
+          down_po_cnt: '0',
+          go_po_tcnt: '0',
+          period_no: 'P-99',
+          row_num: '1',
+        },
+      ];
 
       const racers = mapKSPOCycleRacerInfo(items as any);
       expect(racers).toHaveLength(1);
-      expect(racers[0]).toMatchObject({ id: 'P-99', name: '사이클선수', grade: 'S1', winRate: 16.7 });
+      expect(racers[0]).toMatchObject({
+        id: 'P-99',
+        name: '사이클선수',
+        grade: 'S1',
+        winRate: 16.7,
+      });
     });
   });
 
   describe('KSPO Cycle payoff mapper', () => {
     it('maps cycle payoffs to dividends', () => {
-      const items = [{
-        stnd_yr: '2024',
-        race_ymd: '20240101',
-        race_no: '1',
-        pool1_val: '1000',
-        pool2_1_val: '400',
-        pool2_2_val: '500',
-        pool4_val: '2000',
-        pool5_val: '2500',
-        pool6_val: '3000',
-        week_tcnt: 1,
-        day_tcnt: 1,
-        row_num: '1',
-      }];
+      const items = [
+        {
+          stnd_yr: '2024',
+          race_ymd: '20240101',
+          race_no: '1',
+          pool1_val: '1000',
+          pool2_1_val: '400',
+          pool2_2_val: '500',
+          pool4_val: '2000',
+          pool5_val: '2500',
+          pool6_val: '3000',
+          week_tcnt: 1,
+          day_tcnt: 1,
+          row_num: '1',
+        },
+      ];
 
       const dividends = mapKSPOCyclePayoffs(items as any);
       expect(dividends).toHaveLength(6);
@@ -371,73 +400,91 @@ describe('mapOddsResponse', () => {
 
   describe('KRA horse result detail mapper', () => {
     it('maps detailed results to HistoricalRaceResult[]', () => {
-      const items = [{
-        rsutRk: '1',
-        pthrHrno: '7',
-        pthrHrnm: '마필A',
-        hrmJckyNm: '기수A',
-        hrmTrarNm: '조교사A',
-        rsutRaceRcd: '1:12.3',
-        rsutMargin: '1.0',
-      }];
+      const items = [
+        {
+          rsutRk: '1',
+          pthrHrno: '7',
+          pthrHrnm: '마필A',
+          hrmJckyNm: '기수A',
+          hrmTrarNm: '조교사A',
+          rsutRaceRcd: '1:12.3',
+          rsutMargin: '1.0',
+        },
+      ];
 
       const results = mapKRAHorseResultDetails(items as any);
       expect(results).toHaveLength(1);
-      expect(results[0]).toMatchObject({ rank: 1, entryNo: 7, name: '마필A', jockey: '기수A', time: '1:12.3' });
+      expect(results[0]).toMatchObject({
+        rank: 1,
+        entryNo: 7,
+        name: '마필A',
+        jockey: '기수A',
+        time: '1:12.3',
+      });
     });
   });
 
   describe('KRA horse race info mapper', () => {
     it('maps monthly horse race info', () => {
-      const items = [{
-        meet: '서울',
-        rank: '1등급',
-        rcKrFlag: '1',
-        rcKrFlagText: '국산마',
-        rccnt: 12,
-        yyyymm: '202401',
-      }];
+      const items = [
+        {
+          meet: '서울',
+          rank: '1등급',
+          rcKrFlag: '1',
+          rcKrFlagText: '국산마',
+          rccnt: 12,
+          yyyymm: '202401',
+        },
+      ];
 
       const info = mapKRAHorseRaceInfo(items as any);
-      expect(info[0]).toMatchObject({ track: '서울', grade: '1등급', originText: '국산마', raceCount: 12, yearMonth: '202401' });
+      expect(info[0]).toMatchObject({
+        track: '서울',
+        grade: '1등급',
+        originText: '국산마',
+        raceCount: 12,
+        yearMonth: '202401',
+      });
     });
   });
 
   describe('KRA horse entry registration mapper', () => {
     it('maps entry registration to Race[] with entries', () => {
-      const items = [{
-        meet: '서울',
-        pgDate: '20240120',
-        pgNo: '4',
-        rcName: '제4경주',
-        rank: '국산5등급',
-        rcDist: '1200',
-        budam: '',
-        prizeCond: '',
-        ageCond: '',
-        chaksun1: '1000',
-        chaksun2: '500',
-        chaksun3: '300',
-        chaksun4: '200',
-        chaksun5: '100',
-        enNo: '3',
-        recentRating: '70',
-        hrName: '빠른말',
-        hrNo: '123',
-        name: '빠른말',
-        sex: '수',
-        age: '4',
-        trName: '조교사A',
-        trNo: 'T1',
-        owName: '마주A',
-        owNo: 'O1',
-        prdName: '미국',
-        rcCntY: '5',
-        calPrize_6m: '0',
-        calPrizeY: '0',
-        chaksunT: '0',
-        cndStrtPargTim: '14:30',
-      }];
+      const items = [
+        {
+          meet: '서울',
+          pgDate: '20240120',
+          pgNo: '4',
+          rcName: '제4경주',
+          rank: '국산5등급',
+          rcDist: '1200',
+          budam: '',
+          prizeCond: '',
+          ageCond: '',
+          chaksun1: '1000',
+          chaksun2: '500',
+          chaksun3: '300',
+          chaksun4: '200',
+          chaksun5: '100',
+          enNo: '3',
+          recentRating: '70',
+          hrName: '빠른말',
+          hrNo: '123',
+          name: '빠른말',
+          sex: '수',
+          age: '4',
+          trName: '조교사A',
+          trNo: 'T1',
+          owName: '마주A',
+          owNo: 'O1',
+          prdName: '미국',
+          rcCntY: '5',
+          calPrize_6m: '0',
+          calPrizeY: '0',
+          chaksunT: '0',
+          cndStrtPargTim: '14:30',
+        },
+      ];
 
       const races = mapKRAHorseEntryRegistration(items as any);
       expect(races).toHaveLength(1);
@@ -448,48 +495,64 @@ describe('mapOddsResponse', () => {
 
   describe('KRA horse dividend summary mapper', () => {
     it('maps dividend summary to simplified objects', () => {
-      const items = [{
-        meet: '서울',
-        rcDate: '20240120',
-        rcNo: '5',
-        hrName: '스피드',
-        chulNo: '7',
-        ord: '2',
-        jkName: '기수B',
-        trName: '조교사B',
-        wgHr: '500',
-        wgBudam: '55',
-        finalBit: '3.5',
-        rcTime: '1:11.2',
-      }];
+      const items = [
+        {
+          meet: '서울',
+          rcDate: '20240120',
+          rcNo: '5',
+          hrName: '스피드',
+          chulNo: '7',
+          ord: '2',
+          jkName: '기수B',
+          trName: '조교사B',
+          wgHr: '500',
+          wgBudam: '55',
+          finalBit: '3.5',
+          rcTime: '1:11.2',
+        },
+      ];
 
       const summaries = mapKRAHorseDividendSummary(items as any);
-      expect(summaries[0]).toMatchObject({ raceNo: 5, horseName: '스피드', entryNo: 7, finish: 2, odds: 3.5 });
+      expect(summaries[0]).toMatchObject({
+        raceNo: 5,
+        horseName: '스피드',
+        entryNo: 7,
+        finish: 2,
+        odds: 3.5,
+      });
     });
   });
 
   describe('KRA horse entry detail mapper', () => {
     it('maps entry detail to simplified records', () => {
-      const items = [{
-        meet: '서울',
-        rcDate: '20240120',
-        rcDay: '토',
-        rcNo: '5',
-        chulNo: '8',
-        hrName: '디테일말',
-        hrNo: '88',
-        trName: '조교사C',
-        owName: '마주C',
-        jkName: '기수C',
-        rating: '70',
-        wgBudam: '55',
-        prizeCond: '조건',
-        rcDist: '1200',
-        stTime: '14:10',
-      }];
+      const items = [
+        {
+          meet: '서울',
+          rcDate: '20240120',
+          rcDay: '토',
+          rcNo: '5',
+          chulNo: '8',
+          hrName: '디테일말',
+          hrNo: '88',
+          trName: '조교사C',
+          owName: '마주C',
+          jkName: '기수C',
+          rating: '70',
+          wgBudam: '55',
+          prizeCond: '조건',
+          rcDist: '1200',
+          stTime: '14:10',
+        },
+      ];
 
       const results = mapKRAHorseEntryDetails(items as any);
-      expect(results[0]).toMatchObject({ raceNo: 5, entryNo: 8, horseName: '디테일말', jockey: '기수C', trainer: '조교사C' });
+      expect(results[0]).toMatchObject({
+        raceNo: 5,
+        entryNo: 8,
+        horseName: '디테일말',
+        jockey: '기수C',
+        trainer: '조교사C',
+      });
     });
   });
 });

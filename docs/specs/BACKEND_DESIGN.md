@@ -2,7 +2,7 @@
 title: KRace 백엔드 설계
 version: 1.0.0
 status: Approved
-owner: "@Prometheus-P"
+owner: '@Prometheus-P'
 created: 2025-11-25
 updated: 2025-11-25
 reviewers: []
@@ -18,8 +18,8 @@ language: Korean (한국어)
 
 ## 변경 이력 (Changelog)
 
-| 버전 | 날짜 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
+| 버전  | 날짜       | 작성자        | 변경 내용 |
+| ----- | ---------- | ------------- | --------- |
 | 1.0.0 | 2025-11-25 | @Prometheus-P | 최초 작성 |
 
 ## 관련 문서 (Related Documents)
@@ -75,12 +75,12 @@ language: Korean (한국어)
 
 ### 1.2 설계 원칙
 
-| 원칙 | 설명 | 적용 |
-|------|------|------|
-| **단일 책임** | 각 API Route는 하나의 책임 | 경주 목록, 배당률 분리 |
-| **Stateless** | 서버 상태 없음 | 모든 상태는 외부에 |
-| **Proxy Pattern** | 외부 API 프록시 | 데이터 변환, 캐싱 |
-| **Fail Fast** | 빠른 실패 | 타임아웃, 검증 |
+| 원칙              | 설명                       | 적용                   |
+| ----------------- | -------------------------- | ---------------------- |
+| **단일 책임**     | 각 API Route는 하나의 책임 | 경주 목록, 배당률 분리 |
+| **Stateless**     | 서버 상태 없음             | 모든 상태는 외부에     |
+| **Proxy Pattern** | 외부 API 프록시            | 데이터 변환, 캐싱      |
+| **Fail Fast**     | 빠른 실패                  | 타임아웃, 검증         |
 
 ### 1.3 레이어 구조
 
@@ -159,15 +159,12 @@ export async function GET(request: NextRequest) {
     const races = await getRaces('horse', date);
 
     // 3. 응답 반환
-    return NextResponse.json(
-      createSuccessResponse(races),
-      {
-        status: 200,
-        headers: {
-          'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=59',
-        },
-      }
-    );
+    return NextResponse.json(createSuccessResponse(races), {
+      status: 200,
+      headers: {
+        'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=59',
+      },
+    });
   } catch (error) {
     console.error('[API] GET /api/races/horse 에러:', error);
 
@@ -180,10 +177,9 @@ export async function GET(request: NextRequest) {
     }
 
     // 기타 에러
-    return NextResponse.json(
-      createErrorResponse('INTERNAL_ERROR', '서버 오류가 발생했습니다.'),
-      { status: 500 }
-    );
+    return NextResponse.json(createErrorResponse('INTERNAL_ERROR', '서버 오류가 발생했습니다.'), {
+      status: 500,
+    });
   }
 }
 
@@ -217,10 +213,7 @@ interface ErrorResponse {
 /**
  * 성공 응답 생성
  */
-export function createSuccessResponse<T>(
-  data: T,
-  cached: boolean = false
-): SuccessResponse<T> {
+export function createSuccessResponse<T>(data: T, cached: boolean = false): SuccessResponse<T> {
   return {
     success: true,
     data,
@@ -272,10 +265,7 @@ const TIMEOUT_MS = 5000;
 /**
  * KSPO API 호출 기본 함수
  */
-async function fetchKSPO<T>(
-  endpoint: string,
-  params: Record<string, string>
-): Promise<T> {
+async function fetchKSPO<T>(endpoint: string, params: Record<string, string>): Promise<T> {
   const url = new URL(`${KSPO_BASE_URL}/${endpoint}`);
   url.searchParams.set('serviceKey', KSPO_API_KEY!);
   url.searchParams.set('type', 'json');
@@ -291,27 +281,21 @@ async function fetchKSPO<T>(
     const response = await fetch(url.toString(), {
       signal: controller.signal,
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
     });
 
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new ExternalAPIError(
-        `KSPO API 응답 오류: ${response.status}`,
-        response.status
-      );
+      throw new ExternalAPIError(`KSPO API 응답 오류: ${response.status}`, response.status);
     }
 
     const data = await response.json();
 
     // KSPO API 에러 응답 처리
     if (data.response?.header?.resultCode !== '00') {
-      throw new ExternalAPIError(
-        data.response?.header?.resultMsg || 'API 오류',
-        500
-      );
+      throw new ExternalAPIError(data.response?.header?.resultMsg || 'API 오류', 500);
     }
 
     return data.response.body.items as T;
@@ -333,10 +317,7 @@ async function fetchKSPO<T>(
 /**
  * 경주 목록 조회
  */
-export async function getRaces(
-  type: RaceType,
-  date: string
-): Promise<Race[]> {
+export async function getRaces(type: RaceType, date: string): Promise<Race[]> {
   // 경마는 별도 API (KRA) 사용
   if (type === 'horse') {
     return getHorseRaces(date);
@@ -354,15 +335,10 @@ export async function getRaces(
 /**
  * 출주표 조회
  */
-export async function getEntries(
-  type: RaceType,
-  raceId: string
-): Promise<Entry[]> {
+export async function getEntries(type: RaceType, raceId: string): Promise<Entry[]> {
   const { date, venue, raceNumber } = parseRaceId(raceId);
 
-  const endpoint = type === 'horse'
-    ? 'horse_entry_info'
-    : `${type}_entry_info`;
+  const endpoint = type === 'horse' ? 'horse_entry_info' : `${type}_entry_info`;
 
   const rawData = await fetchKSPO<KSPOEntryResponse[]>(endpoint, {
     rcDate: date,
@@ -382,9 +358,7 @@ export async function getOdds(
 ): Promise<{ odds: EntryOdds[]; updatedAt: string }> {
   const { date, venue, raceNumber } = parseRaceId(raceId);
 
-  const endpoint = type === 'horse'
-    ? 'horse_odds_info'
-    : `${type}_odds_info`;
+  const endpoint = type === 'horse' ? 'horse_odds_info' : `${type}_odds_info`;
 
   const rawData = await fetchKSPO<KSPOOddsResponse[]>(endpoint, {
     rcDate: date,
@@ -447,26 +421,13 @@ export class NotFoundError extends Error {
 ```typescript
 // src/lib/api-helpers/mappers.ts
 
-import type {
-  Race,
-  Entry,
-  EntryOdds,
-  RaceType,
-  RaceStatus,
-} from '@/types';
-import type {
-  KSPORaceResponse,
-  KSPOEntryResponse,
-  KSPOOddsResponse,
-} from './kspoTypes';
+import type { Race, Entry, EntryOdds, RaceType, RaceStatus } from '@/types';
+import type { KSPORaceResponse, KSPOEntryResponse, KSPOOddsResponse } from './kspoTypes';
 
 /**
  * KSPO 경주 데이터 → 내부 Race 타입
  */
-export function mapKSPORace(
-  raw: KSPORaceResponse,
-  type: RaceType
-): Race {
+export function mapKSPORace(raw: KSPORaceResponse, type: RaceType): Race {
   return {
     id: generateRaceId(type, raw.rcDate, raw.trkCd, raw.rcNo),
     type,
@@ -505,10 +466,7 @@ export function mapKSPOEntry(raw: KSPOEntryResponse): Entry {
 /**
  * KSPO 배당률 데이터 → 내부 EntryOdds 타입
  */
-export function mapKSPOOdds(
-  raw: KSPOOddsResponse,
-  name: string
-): EntryOdds {
+export function mapKSPOOdds(raw: KSPOOddsResponse, name: string): EntryOdds {
   return {
     number: parseInt(raw.entNo, 10),
     name,
@@ -521,12 +479,7 @@ export function mapKSPOOdds(
 // 헬퍼 함수
 // ─────────────────────────────────────────────────────────────
 
-function generateRaceId(
-  type: RaceType,
-  date: string,
-  venueCode: string,
-  raceNo: string
-): string {
+function generateRaceId(type: RaceType, date: string, venueCode: string, raceNo: string): string {
   const venue = mapVenueCode(venueCode);
   return `${type}-${date}-${venue}-${raceNo}`;
 }
@@ -536,9 +489,9 @@ function mapVenueCode(code: string): string {
     '01': 'changwon',
     '02': 'gwangmyeong',
     '03': 'misari',
-    'S': 'seoul',
-    'B': 'busan',
-    'J': 'jeju',
+    S: 'seoul',
+    B: 'busan',
+    J: 'jeju',
   };
   return venueMap[code] || code.toLowerCase();
 }
@@ -611,12 +564,12 @@ function filterValidResults(results: (string | null | undefined)[]): string[] {
 
 ### 4.2 엔드포인트별 캐싱
 
-| 엔드포인트 | s-maxage | revalidate | 이유 |
-|-----------|----------|------------|------|
-| `/races/{type}` | 30s | 30s | 잦은 갱신 필요 |
-| `/{id}/entries` | 60s | 60s | 상대적으로 안정 |
-| `/{id}/odds` | 0 (no-cache) | - | 실시간 데이터 |
-| `/{id}/results` | 300s | 300s | 확정 후 변경 없음 |
+| 엔드포인트      | s-maxage     | revalidate | 이유              |
+| --------------- | ------------ | ---------- | ----------------- |
+| `/races/{type}` | 30s          | 30s        | 잦은 갱신 필요    |
+| `/{id}/entries` | 60s          | 60s        | 상대적으로 안정   |
+| `/{id}/odds`    | 0 (no-cache) | -          | 실시간 데이터     |
+| `/{id}/results` | 300s         | 300s       | 확정 후 변경 없음 |
 
 ### 4.3 Cache-Control 헤더 설정
 
@@ -653,15 +606,8 @@ return NextResponse.json(data, {
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getOdds } from '@/lib/api-helpers/kspoClient';
-import {
-  createSuccessResponse,
-  createErrorResponse,
-} from '@/lib/utils/apiResponse';
-import {
-  ExternalAPIError,
-  ValidationError,
-  NotFoundError,
-} from '@/lib/errors';
+import { createSuccessResponse, createErrorResponse } from '@/lib/utils/apiResponse';
+import { ExternalAPIError, ValidationError, NotFoundError } from '@/lib/errors';
 
 export async function GET(
   request: NextRequest,
@@ -692,7 +638,6 @@ export async function GET(
         headers: getCacheHeaders('odds'),
       }
     );
-
   } catch (error) {
     // 에러 로깅
     console.error(`[API] GET /api/races/${params.type}/${params.id}/odds:`, error);
@@ -708,10 +653,9 @@ export async function GET(
     }
 
     if (error instanceof NotFoundError) {
-      return NextResponse.json(
-        createErrorResponse('RACE_NOT_FOUND', error.message),
-        { status: 404 }
-      );
+      return NextResponse.json(createErrorResponse('RACE_NOT_FOUND', error.message), {
+        status: 404,
+      });
     }
 
     if (error instanceof ExternalAPIError) {
@@ -725,10 +669,9 @@ export async function GET(
     }
 
     // 예상치 못한 에러
-    return NextResponse.json(
-      createErrorResponse('INTERNAL_ERROR', '서버 오류가 발생했습니다.'),
-      { status: 500 }
-    );
+    return NextResponse.json(createErrorResponse('INTERNAL_ERROR', '서버 오류가 발생했습니다.'), {
+      status: 500,
+    });
   }
 }
 ```
@@ -830,9 +773,7 @@ export function isValidDate(date: string): boolean {
 /**
  * 경주 ID 검증
  */
-export const RaceIdSchema = z.string().regex(
-  /^(horse|cycle|boat)-\d{8}-[a-z]+-\d+$/
-);
+export const RaceIdSchema = z.string().regex(/^(horse|cycle|boat)-\d{8}-[a-z]+-\d+$/);
 
 export function isValidRaceId(id: string): boolean {
   return RaceIdSchema.safeParse(id).success;
@@ -841,18 +782,12 @@ export function isValidRaceId(id: string): boolean {
 /**
  * 파라미터 검증 미들웨어
  */
-export function validateParams<T extends z.ZodSchema>(
-  schema: T,
-  params: unknown
-): z.infer<T> {
+export function validateParams<T extends z.ZodSchema>(schema: T, params: unknown): z.infer<T> {
   const result = schema.safeParse(params);
 
   if (!result.success) {
     const firstError = result.error.errors[0];
-    throw new ValidationError(
-      firstError.message,
-      firstError.path.join('.')
-    );
+    throw new ValidationError(firstError.message, firstError.path.join('.'));
   }
 
   return result.data;
@@ -870,8 +805,8 @@ import type { NextRequest } from 'next/server';
 // 간단한 메모리 기반 Rate Limiter (프로덕션에서는 Redis 권장)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
-const RATE_LIMIT = 100;  // 분당 요청 수
-const RATE_WINDOW = 60 * 1000;  // 1분
+const RATE_LIMIT = 100; // 분당 요청 수
+const RATE_WINDOW = 60 * 1000; // 1분
 
 export function middleware(request: NextRequest) {
   // API 경로만 Rate Limiting 적용
@@ -895,7 +830,10 @@ export function middleware(request: NextRequest) {
   // 헤더 설정
   const response = NextResponse.next();
   response.headers.set('X-RateLimit-Limit', RATE_LIMIT.toString());
-  response.headers.set('X-RateLimit-Remaining', Math.max(0, RATE_LIMIT - rateLimit.count).toString());
+  response.headers.set(
+    'X-RateLimit-Remaining',
+    Math.max(0, RATE_LIMIT - rateLimit.count).toString()
+  );
   response.headers.set('X-RateLimit-Reset', Math.ceil(rateLimit.resetTime / 1000).toString());
 
   // 한도 초과 시
@@ -994,9 +932,7 @@ describe('GET /api/races/horse', () => {
 
   it('should return 400 for invalid date format', async () => {
     // Given
-    const request = new NextRequest(
-      'https://racelab.kr/api/races/horse?date=25-11-2025'
-    );
+    const request = new NextRequest('https://racelab.kr/api/races/horse?date=25-11-2025');
 
     // When
     const response = await GET(request);
@@ -1067,20 +1003,14 @@ describe('mapKSPORace', () => {
 
 describe('mapKSPOOdds', () => {
   it('should parse valid odds values', () => {
-    const result = mapKSPOOdds(
-      { entNo: '1', oddsDansng: '2.5', oddsBoksng: '1.8' },
-      '선수1'
-    );
+    const result = mapKSPOOdds({ entNo: '1', oddsDansng: '2.5', oddsBoksng: '1.8' }, '선수1');
 
     expect(result.win).toBe(2.5);
     expect(result.place).toBe(1.8);
   });
 
   it('should return null for invalid odds', () => {
-    const result = mapKSPOOdds(
-      { entNo: '1', oddsDansng: '-', oddsBoksng: '' },
-      '선수1'
-    );
+    const result = mapKSPOOdds({ entNo: '1', oddsDansng: '-', oddsBoksng: '' }, '선수1');
 
     expect(result.win).toBeNull();
     expect(result.place).toBeNull();
@@ -1109,13 +1039,13 @@ describe('mapKSPOOdds', () => {
 
 ### B. 파일 명명 규칙
 
-| 유형 | 규칙 | 예시 |
-|------|------|------|
-| API Route | route.ts | `app/api/races/horse/route.ts` |
-| API Helper | camelCase | `kspoClient.ts` |
-| 매퍼 | mappers.ts | `mappers.ts` |
-| 테스트 | *.test.ts | `horse.test.ts` |
+| 유형       | 규칙       | 예시                           |
+| ---------- | ---------- | ------------------------------ |
+| API Route  | route.ts   | `app/api/races/horse/route.ts` |
+| API Helper | camelCase  | `kspoClient.ts`                |
+| 매퍼       | mappers.ts | `mappers.ts`                   |
+| 테스트     | \*.test.ts | `horse.test.ts`                |
 
 ---
 
-*이 문서는 백엔드 설계 변경 시 업데이트됩니다.*
+_이 문서는 백엔드 설계 변경 시 업데이트됩니다._

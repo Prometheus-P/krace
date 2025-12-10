@@ -18,7 +18,7 @@ describe('ui utilities', () => {
     it('should handle all race types exhaustively', () => {
       const raceTypes = ['horse', 'cycle', 'boat'] as const;
 
-      raceTypes.forEach(type => {
+      raceTypes.forEach((type) => {
         const emoji = getRaceTypeEmoji(type);
         expect(typeof emoji).toBe('string');
         expect(emoji.length).toBeGreaterThan(0);

@@ -6,7 +6,7 @@
 **Input**: User description: "유저 친화적 디자인 시스템 확립 - Material Design 3 (material.io) 적극 활용, 로고 업데이트, 애니메이션 디자인"
 **Clarified**: 2025-12-04 - API 활용 정의 (loading states, error handling, empty states, data mapping)
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Brand Identity Through Logo (Priority: P1)
 
@@ -119,29 +119,33 @@ A user accesses the application from different devices (mobile phone, tablet, de
 - How does the system handle rapid retry clicks? Debounce retry button (disable for 1 second after click).
 - What happens when skeleton is shown for extended period (>5s)? Add subtle "로딩 중..." text below skeleton.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
 #### Logo & Brand
+
 - **FR-001**: System MUST display the RaceLab SVG logo in the header with three-color balanced gate design (green roof #81C784, red core #E57373, blue base #64B5F6)
 - **FR-002**: System MUST provide logo variants: full logo (symbol + text), symbol only, and text-only for different contexts
 - **FR-003**: System MUST include hover animation for logo (subtle scale to 1.02x over 500ms)
 - **FR-004**: Logo MUST link to the home page from all pages
 
 #### Design Tokens (M3)
+
 - **FR-005**: System MUST use M3 (Material Design 3) design tokens for all colors, spacing, typography, and elevation values
 - **FR-006**: System MUST maintain race type color associations: Horse (#2d5a27 green), Cycle (#dc2626 red), Boat (#0369a1 blue) as semantic accents
 - **FR-007**: System MUST use Pretendard font family as the primary typeface with M3 type scale
 - **FR-008**: System MUST implement M3 elevation system with 5 levels (0-5) using appropriate shadows
 
 #### Components
+
 - **FR-009**: System MUST provide a minimum touch target size of 48x48dp for all interactive elements
 - **FR-010**: System MUST display visual feedback (ripple effect) within 100ms of user interaction
 - **FR-011**: System MUST provide consistent component APIs across all UI elements (props, variants, sizes)
 - **FR-012**: System MUST include loading, error, and empty states for all data-dependent components
 
 #### Animation & Motion
+
 - **FR-013**: System MUST use M3 standard easing curves (emphasized, standard, decelerate) for all animations
 - **FR-014**: System MUST implement card expansion animation (300ms duration, ease-out)
 - **FR-015**: System MUST provide skeleton loading animations with shimmer effect for async content
@@ -149,14 +153,17 @@ A user accesses the application from different devices (mobile phone, tablet, de
 - **FR-017**: System MUST provide button ripple effect on click/tap interaction
 
 #### Accessibility
+
 - **FR-018**: System MUST ensure all text meets WCAG AA contrast requirements (4.5:1 for body, 3:1 for large text)
 - **FR-019**: System MUST provide keyboard navigation support for all interactive components
 - **FR-020**: System MUST include focus indicators that are clearly visible (2px outline)
 
 #### Responsive
+
 - **FR-021**: System MUST support responsive breakpoints: mobile (default), tablet (md: 768px), desktop (lg: 1024px)
 
 #### API Data States
+
 - **FR-022**: System MUST display component-level skeleton UI with shimmer effect when data is loading (after 100ms delay)
 - **FR-023**: System MUST display inline error messages in Korean with retry action when API calls fail
 - **FR-024**: System MUST display contextual empty states with suggested actions when no data is available
@@ -170,7 +177,7 @@ A user accesses the application from different devices (mobile phone, tablet, de
 - **Animation**: A defined motion pattern with duration, easing, and trigger conditions
 - **Logo Asset**: SVG-based brand symbol with multiple variants (full, symbol, text) and states (default, hover)
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
@@ -222,15 +229,15 @@ A user accesses the application from different devices (mobile phone, tablet, de
 
 ### Standard Animations
 
-| Animation | Duration | Easing | Trigger |
-| --------- | -------- | ------ | ------- |
-| Button Ripple | 300ms | ease-out | Click/Tap |
-| Card Expansion | 300ms | ease-out | Click to expand |
-| Card Collapse | 250ms | ease-in | Click to collapse |
-| Skeleton Shimmer | 1.5s | linear | Continuous loop |
-| Logo Hover | 500ms | ease-in-out | Hover |
-| Page Transition | 200ms | ease | Navigation |
-| Chip Selection | 150ms | ease-out | Click/Tap |
+| Animation        | Duration | Easing      | Trigger           |
+| ---------------- | -------- | ----------- | ----------------- |
+| Button Ripple    | 300ms    | ease-out    | Click/Tap         |
+| Card Expansion   | 300ms    | ease-out    | Click to expand   |
+| Card Collapse    | 250ms    | ease-in     | Click to collapse |
+| Skeleton Shimmer | 1.5s     | linear      | Continuous loop   |
+| Logo Hover       | 500ms    | ease-in-out | Hover             |
+| Page Transition  | 200ms    | ease        | Navigation        |
+| Chip Selection   | 150ms    | ease-out    | Click/Tap         |
 
 ### Motion Principles
 
@@ -241,7 +248,7 @@ A user accesses the application from different devices (mobile phone, tablet, de
 
 ---
 
-## API Integration Patterns *(clarified)*
+## API Integration Patterns _(clarified)_
 
 This section defines how design system components integrate with API data from the KRace backend (see `API_README_v2.md` for full API documentation).
 
@@ -249,15 +256,16 @@ This section defines how design system components integrate with API data from t
 
 **Approach**: Component-level skeleton UI (recommended for 40-60대 user clarity)
 
-| Component Type | Skeleton Behavior |
-| -------------- | ----------------- |
-| RaceCard | Card shape with shimmer, race type color bar visible |
-| ResultTable | Table header static, rows show skeleton cells |
-| DividendDisplay | Amount placeholders with shimmer |
-| EntryList | List items with avatar/name placeholders |
-| SearchResults | Card grid with skeleton cards |
+| Component Type  | Skeleton Behavior                                    |
+| --------------- | ---------------------------------------------------- |
+| RaceCard        | Card shape with shimmer, race type color bar visible |
+| ResultTable     | Table header static, rows show skeleton cells        |
+| DividendDisplay | Amount placeholders with shimmer                     |
+| EntryList       | List items with avatar/name placeholders             |
+| SearchResults   | Card grid with skeleton cards                        |
 
 **Timing**:
+
 - 0-100ms: Component shows previous state or empty
 - 100ms+: Skeleton appears with shimmer animation
 - On data: Skeleton fades out (150ms), content fades in
@@ -275,6 +283,7 @@ This section defines how design system components integrate with API data from t
 ```
 
 **Requirements**:
+
 - Error message in Korean, clear and non-technical
 - Retry button uses primary action styling
 - Error state maintains component dimensions to prevent layout shift
@@ -284,13 +293,14 @@ This section defines how design system components integrate with API data from t
 
 **Approach**: Contextual messaging with suggested actions
 
-| Context | Message | Action |
-| ------- | ------- | ------ |
-| No search results | "검색 결과가 없습니다" | 필터 조정 제안 |
-| No races today | "오늘 경주 일정이 없습니다" | 다른 날짜 선택 링크 |
-| No dividends | "배당 정보 없음" | - |
+| Context           | Message                     | Action              |
+| ----------------- | --------------------------- | ------------------- |
+| No search results | "검색 결과가 없습니다"      | 필터 조정 제안      |
+| No races today    | "오늘 경주 일정이 없습니다" | 다른 날짜 선택 링크 |
+| No dividends      | "배당 정보 없음"            | -                   |
 
 **Requirements**:
+
 - Empty state uses M3 surface-variant background
 - Icon or illustration appropriate to context
 - Suggested action uses secondary button style
@@ -299,14 +309,15 @@ This section defines how design system components integrate with API data from t
 
 Components receive **mapped internal types** (not raw API responses):
 
-| API Source | Mapped Type | Display Component |
-| ---------- | ----------- | ----------------- |
-| Horse/Cycle/Boat schedules | `Race` | `RaceCard`, `RaceList` |
-| Entry APIs | `Entry` | `EntryTable`, `EntryCard` |
-| Result APIs | `HistoricalRace` | `ResultCard`, `ResultTable` |
-| Payoff APIs | `Dividend` | `DividendDisplay` |
+| API Source                 | Mapped Type      | Display Component           |
+| -------------------------- | ---------------- | --------------------------- |
+| Horse/Cycle/Boat schedules | `Race`           | `RaceCard`, `RaceList`      |
+| Entry APIs                 | `Entry`          | `EntryTable`, `EntryCard`   |
+| Result APIs                | `HistoricalRace` | `ResultCard`, `ResultTable` |
+| Payoff APIs                | `Dividend`       | `DividendDisplay`           |
 
 **Data Flow**:
+
 ```
 API Route → lib/api.ts → mappers.ts → Component Props
 ```
@@ -315,11 +326,11 @@ API Route → lib/api.ts → mappers.ts → Component Props
 
 Components automatically apply race-type styling based on the `raceType` prop:
 
-| Race Type | Accent Color | Badge | Skeleton Tint |
-| --------- | ------------ | ----- | ------------- |
-| horse | #2d5a27 (green) | 경마 | green-50 |
-| cycle | #dc2626 (red) | 경륜 | red-50 |
-| boat | #0369a1 (blue) | 경정 | blue-50 |
+| Race Type | Accent Color    | Badge | Skeleton Tint |
+| --------- | --------------- | ----- | ------------- |
+| horse     | #2d5a27 (green) | 경마  | green-50      |
+| cycle     | #dc2626 (red)   | 경륜  | red-50        |
+| boat      | #0369a1 (blue)  | 경정  | blue-50       |
 
 ### Refresh & Polling
 

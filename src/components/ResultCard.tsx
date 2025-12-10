@@ -60,7 +60,7 @@ export function ResultCard({
   'data-testid': testId = 'result-card',
 }: ResultCardProps) {
   const top3 = race.results.slice(0, 3);
-  const winDividend = race.dividends.find(d => d.type === 'win');
+  const winDividend = race.dividends.find((d) => d.type === 'win');
   const isCanceled = race.status === 'canceled';
 
   const borderColor = raceTypeColors[race.type];
@@ -78,7 +78,7 @@ export function ResultCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span
-              className={`text-xl ${raceTypeBgColors[race.type]} rounded-full w-8 h-8 flex items-center justify-center`}
+              className={`text-xl ${raceTypeBgColors[race.type]} flex h-8 w-8 items-center justify-center rounded-full`}
               data-testid="race-type-icon"
             >
               {raceTypeIcons[race.type]}
@@ -94,7 +94,7 @@ export function ResultCard({
           </div>
 
           {isCanceled && (
-            <span className="text-label-medium text-error bg-error-container px-2 py-1 rounded-m3-sm">
+            <span className="rounded-m3-sm bg-error-container px-2 py-1 text-label-medium text-error">
               취소
             </span>
           )}
@@ -110,12 +110,12 @@ export function ResultCard({
                 data-testid={`rank-${result.rank}`}
               >
                 <span
-                  className={`w-6 h-6 flex items-center justify-center rounded-full text-label-medium font-bold ${
+                  className={`flex h-6 w-6 items-center justify-center rounded-full text-label-medium font-bold ${
                     result.rank === 1
                       ? 'bg-amber-100 text-amber-800'
                       : result.rank === 2
-                      ? 'bg-gray-200 text-gray-700'
-                      : 'bg-orange-100 text-orange-800'
+                        ? 'bg-gray-200 text-gray-700'
+                        : 'bg-orange-100 text-orange-800'
                   }`}
                 >
                   {result.rank}
@@ -124,12 +124,10 @@ export function ResultCard({
                   {getFinisherDisplayName(result.name, result.entryNo)}
                 </span>
                 {result.jockey && (
-                  <span className="text-body-small text-on-surface-variant">
-                    {result.jockey}
-                  </span>
+                  <span className="text-body-small text-on-surface-variant">{result.jockey}</span>
                 )}
                 {result.time && (
-                  <span className="text-body-small text-on-surface-variant font-mono">
+                  <span className="font-mono text-body-small text-on-surface-variant">
                     {result.time}
                   </span>
                 )}
@@ -147,7 +145,7 @@ export function ResultCard({
 
         {/* Expanded Detail */}
         {expanded && !isCanceled && (
-          <div data-testid="result-detail" className="pt-3 border-t border-outline-variant">
+          <div data-testid="result-detail" className="border-t border-outline-variant pt-3">
             {/* All finishers */}
             <div className="space-y-1">
               {race.results.slice(3).map((result) => (
@@ -156,16 +154,14 @@ export function ResultCard({
                   className="flex items-center gap-3 py-1"
                   data-testid={`rank-${result.rank}`}
                 >
-                  <span className="w-6 h-6 flex items-center justify-center text-label-medium text-on-surface-variant">
+                  <span className="flex h-6 w-6 items-center justify-center text-label-medium text-on-surface-variant">
                     {result.rank}
                   </span>
                   <span className="flex-1 text-body-medium text-on-surface">
                     {getFinisherDisplayName(result.name, result.entryNo)}
                   </span>
                   {result.jockey && (
-                    <span className="text-body-small text-on-surface-variant">
-                      {result.jockey}
-                    </span>
+                    <span className="text-body-small text-on-surface-variant">{result.jockey}</span>
                   )}
                 </div>
               ))}

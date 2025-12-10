@@ -1,11 +1,38 @@
 // src/app/api/races/horse/route.ts
-import { fetchHorseRaceSchedules } from '@/lib/api';
+import { NextResponse } from 'next/server';
+import { getRacesByDateAndType } from '@/lib/services/raceService';
+import { ApiResponse } from '@/lib/utils/apiResponse';
 import { Race } from '@/types';
-import { handleApiRequest } from '@/lib/utils/apiResponse';
+import { getTodayYYYYMMDD } from '@/lib/utils/date';
 
-// ISR: Revalidate every 60 seconds for race schedules
-export const revalidate = 60;
+// Route handlers that read request.url must opt out of static rendering
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
-export async function GET(request: Request) {
-  return handleApiRequest<Race>(fetchHorseRaceSchedules, 'horse race', request);
+export async function GET(request: Request): Promise<NextResponse<ApiResponse<Race[]>>> {
+  try {
+    // Parse date from query params, default to today
+    const url = new URL(request.url);
+    const dateParam = url.searchParams.get('date');
+    const date = dateParam && /^\d{8}$/.test(dateParam) ? dateParam : getTodayYYYYMMDD();
+
+    // Call service
+    const races = await getRacesByDateAndType(date, 'horse');
+
+    return NextResponse.json({
+      success: true,
+      data: races,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('Error fetching horse races:', error);
+    return NextResponse.json({
+      success: false,
+      error: {
+        code: 'SERVER_ERROR',
+        message: error instanceof Error ? error.message : 'Failed to fetch horse races',
+      },
+      timestamp: new Date().toISOString(),
+    }, { status: 500 });
+  }
 }

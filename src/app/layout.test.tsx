@@ -6,7 +6,7 @@ import RootLayout from './layout';
 // Mock window.matchMedia for useReducedMotion hook
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: jest.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -54,7 +54,6 @@ jest.mock('next/script', () => {
   MockScript.displayName = 'MockScript';
   return MockScript;
 });
-
 
 describe('RootLayout', () => {
   const OLD_ENV = process.env;

@@ -76,12 +76,7 @@ describe('ResultsList', () => {
 
   it('calls onPageChange when pagination is clicked', async () => {
     const handlePageChange = jest.fn();
-    render(
-      <ResultsList
-        results={mockPaginatedResults}
-        onPageChange={handlePageChange}
-      />
-    );
+    render(<ResultsList results={mockPaginatedResults} onPageChange={handlePageChange} />);
 
     const nextButton = screen.getByRole('button', { name: /다음/ });
     await nextButton.click();

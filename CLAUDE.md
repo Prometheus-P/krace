@@ -42,11 +42,13 @@ npx playwright test -g "test name"
 ## Architecture
 
 ### Data Flow
+
 ```
 External APIs (KRA, KSPO) → lib/api.ts → lib/api-helpers/mappers.ts → API Routes → Components
 ```
 
 ### Key Directories
+
 - `src/app/` - Next.js App Router pages and API routes
 - `src/app/race/[id]/` - Race detail page
 - `src/app/api/races/` - Race data endpoints
@@ -64,6 +66,7 @@ External APIs (KRA, KSPO) → lib/api.ts → lib/api-helpers/mappers.ts → API 
 - `docs/` - Project documentation (business, technical, operations)
 
 ### API Response Pattern
+
 ```typescript
 {
   success: boolean,
@@ -74,11 +77,13 @@ External APIs (KRA, KSPO) → lib/api.ts → lib/api-helpers/mappers.ts → API 
 ```
 
 ### Testing Architecture
+
 - **UI Tests** (`jest.config.ui.js`): jsdom environment for components
 - **API Tests** (`jest.config.api.js`): node environment for routes
 - **E2E Tests** (`playwright.config.ts`): Multi-browser including mobile
 
 ### Race Type Colors
+
 - Horse (경마): `horse` color (#2d5a27 green)
 - Cycle (경륜): `cycle` color (#dc2626 red)
 - Boat (경정): `boat` color (#0369a1 blue)
@@ -98,6 +103,7 @@ This project follows strict TDD discipline per `docs/TDD_RULES.md`:
 ## Environment Variables
 
 Required in `.env.local`:
+
 - `KRA_API_KEY` - Korea Horse Racing Association API
 - `KSPO_API_KEY` - National Sports Promotion Foundation API (cycle & boat)
 - `NEXT_PUBLIC_SITE_URL` - Site URL for SEO
@@ -105,10 +111,13 @@ Required in `.env.local`:
 When API keys are missing, the app falls back to dummy data from `lib/api-helpers/dummy.ts`.
 
 ## Active Technologies
+
 - TypeScript 5.9 + Next.js 14.2 (App Router), React 18.3, Tailwind CSS 3.4 (001-race-results-history)
 - N/A (external API data, cached via Next.js fetch caching) (001-race-results-history)
 - TypeScript 5.9 + Next.js 14.2 (App Router), React 18.3, Tailwind CSS 3.4 + Tailwind CSS (styling), Pretendard (typography), existing M3 tokens in `src/styles/tokens.ts` (002-design-system)
 - N/A (design system - no data persistence) (002-design-system)
+- TypeScript 5.9.3 + Next.js 14.2.33, React 18.3.1, Tailwind CSS 3.4.0 (003-layout-dashboard-social)
 
 ## Recent Changes
+
 - 001-race-results-history: Added TypeScript 5.9 + Next.js 14.2 (App Router), React 18.3, Tailwind CSS 3.4

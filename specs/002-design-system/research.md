@@ -14,22 +14,23 @@
 
 **Specifications**:
 
-| Token | Cubic-Bezier | Use Case |
-|-------|--------------|----------|
-| Standard | `cubic-bezier(0.2, 0, 0, 1)` | Default animations |
-| Standard Accelerate | `cubic-bezier(0.3, 0, 1, 1)` | Elements exiting |
-| Standard Decelerate | `cubic-bezier(0, 0, 0, 1)` | Elements entering |
-| Emphasized | `cubic-bezier(0.2, 0, 0, 1)` | Important state changes |
-| Emphasized Accelerate | `cubic-bezier(0.3, 0, 0.8, 0.15)` | Exit with emphasis |
-| Emphasized Decelerate | `cubic-bezier(0.05, 0.7, 0.1, 1)` | Enter with emphasis |
+| Token                 | Cubic-Bezier                      | Use Case                |
+| --------------------- | --------------------------------- | ----------------------- |
+| Standard              | `cubic-bezier(0.2, 0, 0, 1)`      | Default animations      |
+| Standard Accelerate   | `cubic-bezier(0.3, 0, 1, 1)`      | Elements exiting        |
+| Standard Decelerate   | `cubic-bezier(0, 0, 0, 1)`        | Elements entering       |
+| Emphasized            | `cubic-bezier(0.2, 0, 0, 1)`      | Important state changes |
+| Emphasized Accelerate | `cubic-bezier(0.3, 0, 0.8, 0.15)` | Exit with emphasis      |
+| Emphasized Decelerate | `cubic-bezier(0.05, 0.7, 0.1, 1)` | Enter with emphasis     |
 
-| Duration Token | Value | Use Case |
-|----------------|-------|----------|
-| Short 1-4 | 50-200ms | Micro-interactions, ripples |
-| Medium 1-4 | 250-400ms | Component transitions |
-| Long 1-4 | 450-600ms | Complex transitions, page changes |
+| Duration Token | Value     | Use Case                          |
+| -------------- | --------- | --------------------------------- |
+| Short 1-4      | 50-200ms  | Micro-interactions, ripples       |
+| Medium 1-4     | 250-400ms | Component transitions             |
+| Long 1-4       | 450-600ms | Complex transitions, page changes |
 
 **Alternatives Considered**:
+
 - M3 Expressive Motion (physics-based): Too new (requires v1.13.0+), adds complexity
 - Custom easing: Would break M3 consistency
 
@@ -44,6 +45,7 @@
 **Rationale**: Pure CSS ripples are limited to center-origin only. JavaScript position tracking provides authentic M3 behavior where ripple originates from click/tap point.
 
 **Implementation Approach**:
+
 ```tsx
 // Ripple emerges from click point, not center
 const handleClick = (e: React.MouseEvent) => {
@@ -55,6 +57,7 @@ const handleClick = (e: React.MouseEvent) => {
 ```
 
 **CSS Animation**:
+
 ```css
 @keyframes ripple {
   from {
@@ -71,6 +74,7 @@ const handleClick = (e: React.MouseEvent) => {
 **Duration**: 300ms with ease-out easing per spec table
 
 **Alternatives Considered**:
+
 - Pure CSS `:active` ripple: Cannot track click position
 - M3-Ripple library: External dependency, prefer in-house
 - No ripple: Violates FR-010, FR-017 requirements
@@ -87,16 +91,17 @@ const handleClick = (e: React.MouseEvent) => {
 
 **Specifications**:
 
-| Level | Box Shadow |
-|-------|------------|
-| 0 | none |
-| 1 | `0px 1px 2px 0px rgb(0 0 0 / 30%), 0px 1px 3px 1px rgb(0 0 0 / 15%)` |
-| 2 | `0px 1px 2px 0px rgb(0 0 0 / 30%), 0px 2px 6px 2px rgb(0 0 0 / 15%)` |
-| 3 | `0px 1px 3px 0px rgb(0 0 0 / 30%), 0px 4px 8px 3px rgb(0 0 0 / 15%)` |
-| 4 | `0px 2px 3px 0px rgb(0 0 0 / 30%), 0px 6px 10px 4px rgb(0 0 0 / 15%)` |
-| 5 | `0px 4px 4px 0px rgb(0 0 0 / 30%), 0px 8px 12px 6px rgb(0 0 0 / 15%)` |
+| Level | Box Shadow                                                            |
+| ----- | --------------------------------------------------------------------- |
+| 0     | none                                                                  |
+| 1     | `0px 1px 2px 0px rgb(0 0 0 / 30%), 0px 1px 3px 1px rgb(0 0 0 / 15%)`  |
+| 2     | `0px 1px 2px 0px rgb(0 0 0 / 30%), 0px 2px 6px 2px rgb(0 0 0 / 15%)`  |
+| 3     | `0px 1px 3px 0px rgb(0 0 0 / 30%), 0px 4px 8px 3px rgb(0 0 0 / 15%)`  |
+| 4     | `0px 2px 3px 0px rgb(0 0 0 / 30%), 0px 6px 10px 4px rgb(0 0 0 / 15%)` |
+| 5     | `0px 4px 4px 0px rgb(0 0 0 / 30%), 0px 8px 12px 6px rgb(0 0 0 / 15%)` |
 
 **Component Mapping**:
+
 - Level 0: Flat surfaces (backgrounds)
 - Level 1: Cards at rest, elevated buttons
 - Level 2: Cards on hover, app bars
@@ -105,6 +110,7 @@ const handleClick = (e: React.MouseEvent) => {
 - Level 5: Modal overlays
 
 **Alternatives Considered**:
+
 - Single shadow: Less realistic, not M3 compliant
 - CSS `filter: drop-shadow()`: Performance impact, less control
 
@@ -119,6 +125,7 @@ const handleClick = (e: React.MouseEvent) => {
 **Rationale**: Shimmer effect provides visual feedback that content is loading without being distracting. Linear animation maintains M3's subtle motion principle.
 
 **Implementation**:
+
 ```css
 @keyframes shimmer {
   0% {
@@ -144,6 +151,7 @@ const handleClick = (e: React.MouseEvent) => {
 **Duration**: 1.5s continuous loop per spec table
 
 **Alternatives Considered**:
+
 - Pulse opacity: Less engaging
 - Spinner: Doesn't match content shape
 - No animation: Static gray blocks feel broken
@@ -157,6 +165,7 @@ const handleClick = (e: React.MouseEvent) => {
 **Rationale**: WCAG 2.1 Level AAA and M3 both specify 48dp minimum for touch targets. Extended hit areas (larger tap zone than visual element) improve accessibility for users with motor impairments.
 
 **Implementation**:
+
 ```css
 .touch-target {
   min-width: 48px;
@@ -173,6 +182,7 @@ const handleClick = (e: React.MouseEvent) => {
 ```
 
 **Alternatives Considered**:
+
 - 44x44dp (Apple HIG): Doesn't meet M3 spec
 - No extension: Harder for imprecise taps
 
@@ -185,9 +195,12 @@ const handleClick = (e: React.MouseEvent) => {
 **Rationale**: Accessibility requirement (FR-016). Users with vestibular disorders or motion sensitivity can disable animations system-wide.
 
 **Implementation**:
+
 ```css
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -196,6 +209,7 @@ const handleClick = (e: React.MouseEvent) => {
 ```
 
 **React Hook**:
+
 ```tsx
 function useReducedMotion(): boolean {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -216,6 +230,7 @@ function useReducedMotion(): boolean {
 ```
 
 **Alternatives Considered**:
+
 - User toggle only: Ignores system preference
 - No reduced motion support: Accessibility violation
 
@@ -228,6 +243,7 @@ function useReducedMotion(): boolean {
 **Rationale**: The logo HTML files contain the authoritative balanced gate design. Extract clean SVG without texture filters for web use.
 
 **Logo Structure**:
+
 ```svg
 <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
   <!-- Roof (Horse - Green) -->
@@ -251,6 +267,7 @@ function useReducedMotion(): boolean {
 ```
 
 **Variants Needed**:
+
 1. Full logo (symbol + text): Header, splash screens
 2. Symbol only: Favicon, small spaces
 3. Text only: Print contexts
@@ -270,12 +287,12 @@ Note: Logo uses lighter M3-friendly palette while race type colors use darker se
 
 All research topics resolved. No NEEDS CLARIFICATION items remain.
 
-| Topic | Decision | Impact |
-|-------|----------|--------|
-| Motion tokens | M3 standard curves | FR-013, FR-014 |
-| Ripple effect | JS position + CSS animation | FR-010, FR-017 |
-| Elevation | 5-level dual-shadow | FR-008 |
-| Skeleton | CSS shimmer | FR-015 |
-| Touch targets | 48dp + extended hit areas | FR-009, SC-001 |
-| Reduced motion | Media query + hook | FR-016 |
-| Logo | Extract SVG from HTML | FR-001, FR-002 |
+| Topic          | Decision                    | Impact         |
+| -------------- | --------------------------- | -------------- |
+| Motion tokens  | M3 standard curves          | FR-013, FR-014 |
+| Ripple effect  | JS position + CSS animation | FR-010, FR-017 |
+| Elevation      | 5-level dual-shadow         | FR-008         |
+| Skeleton       | CSS shimmer                 | FR-015         |
+| Touch targets  | 48dp + extended hit areas   | FR-009, SC-001 |
+| Reduced motion | Media query + hook          | FR-016         |
+| Logo           | Extract SVG from HTML       | FR-001, FR-002 |

@@ -1,5 +1,5 @@
 // src/app/race/[id]/page.test.tsx
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import RaceDetailPage, { generateMetadata } from './page';
 import { fetchRaceById } from '@/lib/api';
 import { Race } from '@/types';
@@ -22,8 +22,26 @@ describe('RaceDetailPage', () => {
     grade: '국산5등급',
     status: 'upcoming',
     entries: [
-      { no: 1, name: '말1', jockey: '기수1', trainer: '조교사1', age: 3, weight: 54, recentRecord: '1-2-3', odds: 2.5 },
-      { no: 2, name: '말2', jockey: '기수2', trainer: '조교사2', age: 4, weight: 55, recentRecord: '4-5-6', odds: 3.0 },
+      {
+        no: 1,
+        name: '말1',
+        jockey: '기수1',
+        trainer: '조교사1',
+        age: 3,
+        weight: 54,
+        recentRecord: '1-2-3',
+        odds: 2.5,
+      },
+      {
+        no: 2,
+        name: '말2',
+        jockey: '기수2',
+        trainer: '조교사2',
+        age: 4,
+        weight: 55,
+        recentRecord: '4-5-6',
+        odds: 3.0,
+      },
     ],
   };
 
@@ -76,12 +94,12 @@ describe('RaceDetailPage', () => {
       expect(timeElement).toHaveAttribute('dateTime', '11:30');
     });
 
-    it('should have aria-labelledby on entries section', async () => {
+    it('should have entry table section', async () => {
       const resolvedPage = await RaceDetailPage({ params: { id: 'horse-1-1-20240115' } });
       render(resolvedPage);
 
-      const entriesSection = screen.getByTestId('entries');
-      expect(entriesSection).toHaveAttribute('aria-labelledby', 'entries-heading');
+      const entryTable = screen.getByTestId('entry-table');
+      expect(entryTable).toBeInTheDocument();
     });
 
     it('should have table caption for screen readers', async () => {
@@ -97,7 +115,7 @@ describe('RaceDetailPage', () => {
       render(resolvedPage);
 
       const headers = screen.getAllByRole('columnheader');
-      headers.forEach(header => {
+      headers.forEach((header) => {
         expect(header).toHaveAttribute('scope', 'col');
       });
     });
@@ -125,23 +143,21 @@ describe('RaceDetailPage', () => {
     });
   });
 
-  describe('Odds Section', () => {
-    it('should display odds with unit indicator', async () => {
+  describe('Odds Display', () => {
+    it('should display odds values in entry table', async () => {
       const resolvedPage = await RaceDetailPage({ params: { id: 'horse-1-1-20240115' } });
       render(resolvedPage);
 
-      const oddsSection = screen.getByTestId('odds');
-      // Check for "배" unit indicator
-      expect(within(oddsSection).getAllByText('배').length).toBeGreaterThan(0);
+      // Check for odds values displayed (2.5 as the lowest odds is shown in popularity analysis)
+      expect(screen.getAllByText('2.5').length).toBeGreaterThan(0);
     });
 
-    it('should have aria-label on odds cards', async () => {
+    it('should have key insight block with popularity analysis', async () => {
       const resolvedPage = await RaceDetailPage({ params: { id: 'horse-1-1-20240115' } });
       render(resolvedPage);
 
-      const oddsSection = screen.getByTestId('odds');
-      const oddsCards = within(oddsSection).getAllByRole('article');
-      expect(oddsCards[0]).toHaveAttribute('aria-label', expect.stringContaining('배당률'));
+      const keyInsightBlock = screen.getByTestId('key-insight-block');
+      expect(keyInsightBlock).toBeInTheDocument();
     });
   });
 

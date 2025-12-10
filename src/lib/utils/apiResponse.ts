@@ -9,7 +9,9 @@ export interface ApiResponse<T> {
   error?: {
     code: string;
     message: string;
+    isRetryable?: boolean;
   };
+  warning?: string;
   timestamp: string;
 }
 
@@ -42,7 +44,8 @@ export async function handleApiRequest<T>(
   } catch (error: unknown) {
     console.error(`Error fetching ${apiName} schedules:`, error);
 
-    const errorMessage = error instanceof Error ? error.message : `Failed to fetch ${apiName} schedules`;
+    const errorMessage =
+      error instanceof Error ? error.message : `Failed to fetch ${apiName} schedules`;
     const errorResponse: ApiResponse<T[]> = {
       success: false,
       error: {

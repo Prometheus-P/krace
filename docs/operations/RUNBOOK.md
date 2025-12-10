@@ -21,19 +21,23 @@
 ## 매일 아침 (09:00)
 
 □ 서비스 상태 확인
-  - https://racelab.kr 접속 확인
-  - /api/health 엔드포인트 확인
+
+- https://racelab.kr 접속 확인
+- /api/health 엔드포인트 확인
 
 □ 모니터링 대시보드 확인
-  - 야간 에러 발생 여부
-  - 응답 시간 이상 여부
+
+- 야간 에러 발생 여부
+- 응답 시간 이상 여부
 
 □ 알림 채널 확인
-  - Slack #alerts 미처리 알림
+
+- Slack #alerts 미처리 알림
 
 □ 외부 API 상태 확인
-  - KSPO API 연동 상태
-  - KRA API 연동 상태
+
+- KSPO API 연동 상태
+- KRA API 연동 상태
 ```
 
 ### 헬스 체크 명령어
@@ -93,6 +97,7 @@ vercel logs [deployment-url] --follow
 ### 시나리오 1: 서비스 전면 장애
 
 **증상:**
+
 - 사이트 접속 불가 (5xx 에러)
 - 모든 API 요청 실패
 
@@ -121,7 +126,7 @@ vercel list --prod
 
 2. 최근 배포 문제인 경우:
    □ 이전 배포로 롤백
-     vercel promote [previous-deployment-url] --prod
+   vercel promote [previous-deployment-url] --prod
 
 3. DNS 문제인 경우:
    □ 도메인 레지스트라 확인
@@ -137,6 +142,7 @@ vercel list --prod
 ### 시나리오 2: KSPO API 장애
 
 **증상:**
+
 - 경주 정보 로딩 실패
 - "데이터를 불러올 수 없습니다" 에러
 
@@ -186,6 +192,7 @@ curl -s https://racelab.kr/api/health | jq '.checks[] | select(.name == "KSPO AP
 ### 시나리오 3: 높은 에러율 발생
 
 **증상:**
+
 - 에러율 5% 이상
 - 간헐적 5xx 에러
 
@@ -220,17 +227,17 @@ git log --oneline -10
 3. 원인별 대응
 
    a) 코드 버그인 경우:
-      □ 롤백 실행
-        vercel promote [previous-deployment-url] --prod
-      □ 핫픽스 준비
+   □ 롤백 실행
+   vercel promote [previous-deployment-url] --prod
+   □ 핫픽스 준비
 
    b) 외부 의존성 문제인 경우:
-      □ 해당 서비스 상태 확인
-      □ 타임아웃/재시도 설정 조정 검토
+   □ 해당 서비스 상태 확인
+   □ 타임아웃/재시도 설정 조정 검토
 
    c) 리소스 부족인 경우:
-      □ Vercel 함수 메모리/타임아웃 설정 확인
-      □ 필요시 설정 조정
+   □ Vercel 함수 메모리/타임아웃 설정 확인
+   □ 필요시 설정 조정
 
 4. 모니터링 강화
    □ 알림 임계치 일시적 하향 조정
@@ -242,6 +249,7 @@ git log --oneline -10
 ### 시나리오 4: 느린 응답 시간
 
 **증상:**
+
 - P95 응답 시간 > 2초
 - 사용자 불만 접수
 
@@ -294,6 +302,7 @@ curl -s https://racelab.kr/api/health | jq '.checks[].responseTime'
 ### 시나리오 5: 배포 후 장애
 
 **증상:**
+
 - 배포 직후 에러 발생
 - 새 기능 동작 안 함
 
@@ -412,6 +421,7 @@ vercel --prod
 ## 알림 대응 가이드
 
 ### Slack 알림 수신 시
+
 1. 알림 내용 확인
 2. 심각도 판단 (P1-P4)
 3. 해당 런북 섹션 참조하여 대응
@@ -419,11 +429,11 @@ vercel --prod
 
 ### 일반적인 알림 유형
 
-| 알림 | 대응 |
-|------|------|
-| High Error Rate | → 시나리오 3 참조 |
-| High Latency | → 시나리오 4 참조 |
-| External API Down | → 시나리오 2 참조 |
+| 알림              | 대응                     |
+| ----------------- | ------------------------ |
+| High Error Rate   | → 시나리오 3 참조        |
+| High Latency      | → 시나리오 4 참조        |
+| External API Down | → 시나리오 2 참조        |
 | Deployment Failed | → 배포 로그 확인, 재시도 |
 ```
 
@@ -502,19 +512,22 @@ curl -s "https://api.kspo.or.kr/races" -H "X-API-Key: $KSPO_API_KEY" | jq '. | l
 ## 정기 보안 점검 (월간)
 
 □ 의존성 취약점 스캔
-  pnpm audit
+pnpm audit
 
 □ 환경 변수 검토
-  - 불필요한 변수 제거
-  - 권한 최소화 원칙 확인
+
+- 불필요한 변수 제거
+- 권한 최소화 원칙 확인
 
 □ 접근 권한 검토
-  - Vercel 팀 멤버 확인
-  - GitHub 저장소 접근 권한 확인
+
+- Vercel 팀 멤버 확인
+- GitHub 저장소 접근 권한 확인
 
 □ API 키 로테이션 (분기별)
-  - KSPO API 키
-  - 기타 외부 서비스 키
+
+- KSPO API 키
+- 기타 외부 서비스 키
 ```
 
 ### 보안 이슈 대응
@@ -563,18 +576,18 @@ vercel env rm KSPO_API_KEY_OLD
 
 ### 내부 연락처
 
-| 역할 | Slack | 전화 |
-|------|-------|------|
-| Primary Oncall | @oncall-primary | - |
-| Tech Lead | @techlead | 010-xxxx-xxxx |
-| Engineering Manager | @em | 010-xxxx-xxxx |
+| 역할                | Slack           | 전화          |
+| ------------------- | --------------- | ------------- |
+| Primary Oncall      | @oncall-primary | -             |
+| Tech Lead           | @techlead       | 010-xxxx-xxxx |
+| Engineering Manager | @em             | 010-xxxx-xxxx |
 
 ### 외부 연락처
 
-| 서비스 | 연락처 | 비고 |
-|--------|--------|------|
-| Vercel Support | support@vercel.com | Enterprise |
-| KSPO 기술지원 | 02-xxxx-xxxx | 평일 09-18시 |
+| 서비스         | 연락처             | 비고         |
+| -------------- | ------------------ | ------------ |
+| Vercel Support | support@vercel.com | Enterprise   |
+| KSPO 기술지원  | 02-xxxx-xxxx       | 평일 09-18시 |
 
 ### 유용한 링크
 
