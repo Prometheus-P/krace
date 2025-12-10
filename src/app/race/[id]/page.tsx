@@ -6,7 +6,8 @@ import OddsDisplay from '@/components/OddsDisplay';
 import ResultsTable from '@/components/ResultsTable';
 import HorseEntryTable from '@/components/HorseEntryTable';
 import { RaceResult, Entry } from '@/types';
-import { RaceNotFound, BackNavigation, RaceHeader, EntriesSection } from './components';
+import { RaceNotFound, BackNavigation, EntriesSection } from './components';
+import { RaceSummaryCard } from '@/components/race-detail';
 
 type Props = {
   params: { id: string };
@@ -165,7 +166,7 @@ export default async function RaceDetailPage({ params }: Props) {
 
       <div className="space-y-6">
         <BackNavigation raceType={race.type} />
-        <RaceHeader race={race} />
+        <RaceSummaryCard race={race} />
         <EntriesSection race={race} />
         {race.type === 'horse' && detailedEntries.length > 0 && (
           <HorseEntryTable race={race} entries={detailedEntries} />
