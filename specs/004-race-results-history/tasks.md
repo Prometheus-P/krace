@@ -28,11 +28,11 @@ Based on plan.md project structure:
 
 **Purpose**: Project initialization, dependencies, and configuration
 
-- [ ] T001 Create directory structure: `src/lib/db/schema/`, `src/lib/db/queries/`, `src/ingestion/`, `db/migrations/`, `db/seeds/`
-- [ ] T002 Install dependencies: `drizzle-orm`, `pg`, `bull`, `ioredis`, `@types/pg` in package.json
-- [ ] T003 [P] Create drizzle.config.ts at project root
-- [ ] T004 [P] Update .env.example with DATABASE_URL, REDIS_URL, INGESTION_API_KEY variables
-- [ ] T005 [P] Create src/lib/db/client.ts with Drizzle client initialization
+- [X] T001 Create directory structure: `src/lib/db/schema/`, `src/lib/db/queries/`, `src/ingestion/`, `db/migrations/`, `db/seeds/`
+- [X] T002 Install dependencies: `drizzle-orm`, `pg`, `bull`, `ioredis`, `@types/pg` in package.json
+- [X] T003 [P] Create drizzle.config.ts at project root
+- [X] T004 [P] Update .env.example with DATABASE_URL, REDIS_URL, INGESTION_API_KEY variables
+- [X] T005 [P] Create src/lib/db/client.ts with Drizzle client initialization
 
 ---
 
@@ -44,28 +44,28 @@ Based on plan.md project structure:
 
 ### Schema Files
 
-- [ ] T006 [P] Create tracks schema in src/lib/db/schema/tracks.ts
-- [ ] T007 [P] Create races schema in src/lib/db/schema/races.ts
-- [ ] T008 [P] Create entries schema in src/lib/db/schema/entries.ts
-- [ ] T009 [P] Create oddsSnapshots schema in src/lib/db/schema/oddsSnapshots.ts
-- [ ] T010 [P] Create results schema in src/lib/db/schema/results.ts
-- [ ] T011 [P] Create ingestionFailures schema in src/lib/db/schema/ingestionFailures.ts
-- [ ] T012 Create schema index export in src/lib/db/schema/index.ts (depends on T006-T011)
+- [X] T006 [P] Create tracks schema in src/lib/db/schema/tracks.ts
+- [X] T007 [P] Create races schema in src/lib/db/schema/races.ts
+- [X] T008 [P] Create entries schema in src/lib/db/schema/entries.ts
+- [X] T009 [P] Create oddsSnapshots schema in src/lib/db/schema/oddsSnapshots.ts
+- [X] T010 [P] Create results schema in src/lib/db/schema/results.ts
+- [X] T011 [P] Create ingestionFailures schema in src/lib/db/schema/ingestionFailures.ts
+- [X] T012 Create schema index export in src/lib/db/schema/index.ts (depends on T006-T011)
 
 ### Type Definitions
 
-- [ ] T013 Create database type definitions in src/types/db.ts (RaceType, RaceStatus, etc.)
+- [X] T013 Create database type definitions in src/types/db.ts (RaceType, RaceStatus, etc.)
 
 ### Migration Files
 
-- [ ] T014 Create SQL migration db/migrations/001_init_schema.sql (tracks, races, entries, results, ingestion_failures)
-- [ ] T015 Create SQL migration db/migrations/002_timescale_hypertable.sql (odds_snapshots + compression policy)
-- [ ] T016 Create seed file db/seeds/tracks.sql (서울, 부산, 제주, 광명, 창원, 미사리)
+- [X] T014 Create SQL migration db/migrations/001_init_schema.sql (tracks, races, entries, results, ingestion_failures)
+- [X] T015 Create SQL migration db/migrations/002_timescale_hypertable.sql (odds_snapshots + compression policy)
+- [X] T016 Create seed file db/seeds/tracks.sql (서울, 부산, 제주, 광명, 창원, 미사리)
 
 ### Infrastructure
 
-- [ ] T017 [P] Create ingestion auth middleware in src/lib/api-helpers/ingestionAuth.ts
-- [ ] T018 [P] Create retry utility with exponential backoff in src/ingestion/utils/retry.ts
+- [X] T017 [P] Create ingestion auth middleware in src/lib/api-helpers/ingestionAuth.ts
+- [X] T018 [P] Create retry utility with exponential backoff in src/ingestion/utils/retry.ts
 
 **Checkpoint**: Database schema ready - user story implementation can now begin
 
@@ -82,26 +82,26 @@ Based on plan.md project structure:
 
 ### Tests for User Story 1
 
-- [ ] T019 [P] [US1] Unit test for schedulePoller in tests/unit/ingestion/schedulePoller.test.ts
-- [ ] T020 [P] [US1] Unit test for entryPoller in tests/unit/ingestion/entryPoller.test.ts
-- [ ] T021 [P] [US1] Unit test for resultPoller in tests/unit/ingestion/resultPoller.test.ts
-- [ ] T022 [P] [US1] Integration test for schedule ingestion in tests/integration/db/scheduleIngestion.test.ts
+- [X] T019 [P] [US1] Unit test for schedulePoller in tests/unit/ingestion/schedulePoller.test.ts
+- [X] T020 [P] [US1] Unit test for entryPoller in tests/unit/ingestion/entryPoller.test.ts
+- [X] T021 [P] [US1] Unit test for resultPoller in tests/unit/ingestion/resultPoller.test.ts
+- [X] T022 [P] [US1] Integration test for schedule ingestion in tests/integration/db/scheduleIngestion.test.ts
 
 ### Implementation for User Story 1
 
-- [ ] T023 [P] [US1] Create KRA API client wrapper in src/ingestion/clients/kraClient.ts
-- [ ] T024 [P] [US1] Create KSPO API client wrapper in src/ingestion/clients/kspoClient.ts
-- [ ] T025 [P] [US1] Create schedule mapper in src/ingestion/mappers/scheduleMapper.ts
-- [ ] T026 [P] [US1] Create entry mapper in src/ingestion/mappers/entryMapper.ts
-- [ ] T027 [P] [US1] Create result mapper in src/ingestion/mappers/resultMapper.ts
-- [ ] T028 [US1] Implement schedulePoller job in src/ingestion/jobs/schedulePoller.ts (depends on T023, T024, T025)
-- [ ] T029 [US1] Implement entryPoller job in src/ingestion/jobs/entryPoller.ts (depends on T023, T024, T026)
-- [ ] T030 [US1] Implement resultPoller job in src/ingestion/jobs/resultPoller.ts (depends on T023, T024, T027)
-- [ ] T031 [US1] Create API route POST /api/ingestion/trigger/schedules in src/app/api/ingestion/trigger/schedules/route.ts
-- [ ] T032 [US1] Create API route POST /api/ingestion/trigger/entries in src/app/api/ingestion/trigger/entries/route.ts
-- [ ] T033 [US1] Create API route POST /api/ingestion/trigger/results in src/app/api/ingestion/trigger/results/route.ts
-- [ ] T034 [US1] Add Vercel Cron config for daily schedule collection (06:00) in vercel.json
-- [ ] T035 [US1] Create cron route src/app/api/ingestion/cron/schedules/route.ts
+- [X] T023 [P] [US1] Create KRA API client wrapper in src/ingestion/clients/kraClient.ts
+- [X] T024 [P] [US1] Create KSPO API client wrapper in src/ingestion/clients/kspoClient.ts
+- [X] T025 [P] [US1] Create schedule mapper in src/ingestion/mappers/scheduleMapper.ts
+- [X] T026 [P] [US1] Create entry mapper in src/ingestion/mappers/entryMapper.ts
+- [X] T027 [P] [US1] Create result mapper in src/ingestion/mappers/resultMapper.ts
+- [X] T028 [US1] Implement schedulePoller job in src/ingestion/jobs/schedulePoller.ts (depends on T023, T024, T025)
+- [X] T029 [US1] Implement entryPoller job in src/ingestion/jobs/entryPoller.ts (depends on T023, T024, T026)
+- [X] T030 [US1] Implement resultPoller job in src/ingestion/jobs/resultPoller.ts (depends on T023, T024, T027)
+- [X] T031 [US1] Create API route POST /api/ingestion/trigger/schedules in src/app/api/ingestion/trigger/schedules/route.ts
+- [X] T032 [US1] Create API route POST /api/ingestion/trigger/entries in src/app/api/ingestion/trigger/entries/route.ts
+- [X] T033 [US1] Create API route POST /api/ingestion/trigger/results in src/app/api/ingestion/trigger/results/route.ts
+- [X] T034 [US1] Add Vercel Cron config for daily schedule collection (06:00) in vercel.json
+- [X] T035 [US1] Create cron route src/app/api/ingestion/cron/schedules/route.ts
 
 **Checkpoint**: US1 complete - 일정/출주표/결과 수집 기능 독립 테스트 가능
 
@@ -117,18 +117,18 @@ Based on plan.md project structure:
 
 ### Tests for User Story 2
 
-- [ ] T036 [P] [US2] Unit test for oddsPoller in tests/unit/ingestion/oddsPoller.test.ts
-- [ ] T037 [P] [US2] Unit test for smart scheduler in tests/unit/ingestion/smartScheduler.test.ts
-- [ ] T038 [P] [US2] Integration test for odds snapshots in tests/integration/db/oddsSnapshots.test.ts
+- [X] T036 [P] [US2] Unit test for oddsPoller in tests/unit/ingestion/oddsPoller.test.ts
+- [X] T037 [P] [US2] Unit test for smart scheduler in tests/unit/ingestion/smartScheduler.test.ts
+- [X] T038 [P] [US2] Integration test for odds snapshots in tests/integration/db/oddsSnapshots.test.ts
 
 ### Implementation for User Story 2
 
-- [ ] T039 [P] [US2] Create odds mapper in src/ingestion/mappers/oddsMapper.ts
-- [ ] T040 [US2] Create smart scheduler utility in src/ingestion/utils/smartScheduler.ts (variable intervals: 5min/1min/30sec)
-- [ ] T041 [US2] Implement oddsPoller job with variable intervals in src/ingestion/jobs/oddsPoller.ts (depends on T039, T040)
-- [ ] T042 [US2] Create API route POST /api/ingestion/trigger/odds in src/app/api/ingestion/trigger/odds/route.ts
-- [ ] T043 [US2] Add Vercel Cron config for odds collection (1-min interval) in vercel.json
-- [ ] T044 [US2] Create cron route src/app/api/ingestion/cron/odds/route.ts with smart scheduling
+- [X] T039 [P] [US2] Create odds mapper in src/ingestion/mappers/oddsMapper.ts
+- [X] T040 [US2] Create smart scheduler utility in src/ingestion/utils/smartScheduler.ts (variable intervals: 5min/1min/30sec)
+- [X] T041 [US2] Implement oddsPoller job with variable intervals in src/ingestion/jobs/oddsPoller.ts (depends on T039, T040)
+- [X] T042 [US2] Create API route POST /api/ingestion/trigger/odds in src/app/api/ingestion/trigger/odds/route.ts
+- [X] T043 [US2] Add Vercel Cron config for odds collection (1-min interval) in vercel.json
+- [X] T044 [US2] Create cron route src/app/api/ingestion/cron/odds/route.ts with smart scheduling
 
 **Checkpoint**: US2 complete - 배당률 시계열 수집 기능 독립 테스트 가능
 
@@ -144,16 +144,16 @@ Based on plan.md project structure:
 
 ### Tests for User Story 3
 
-- [ ] T045 [P] [US3] Unit test for race queries in tests/unit/db/raceQueries.test.ts
-- [ ] T046 [P] [US3] Unit test for odds queries in tests/unit/db/oddsQueries.test.ts
+- [X] T045 [P] [US3] Unit test for race queries in tests/unit/db/raceQueries.test.ts
+- [X] T046 [P] [US3] Unit test for odds queries in tests/unit/db/oddsQueries.test.ts
 
 ### Implementation for User Story 3
 
-- [ ] T047 [P] [US3] Create race query functions in src/lib/db/queries/races.ts (getRacesByDate, getRaceById, getRaceWithEntries)
-- [ ] T048 [P] [US3] Create entry query functions in src/lib/db/queries/entries.ts (getEntriesByRace, getEntryStats)
-- [ ] T049 [P] [US3] Create odds query functions in src/lib/db/queries/odds.ts (getOddsHistory, getOddsSummary, use continuous aggregate)
-- [ ] T050 [P] [US3] Create result query functions in src/lib/db/queries/results.ts (getResultsByRace, getHorseWinRate, getJockeyStats)
-- [ ] T051 [US3] Create query index file src/lib/db/queries/index.ts
+- [X] T047 [P] [US3] Create race query functions in src/lib/db/queries/races.ts (getRacesByDate, getRaceById, getRaceWithEntries)
+- [X] T048 [P] [US3] Create entry query functions in src/lib/db/queries/entries.ts (getEntriesByRace, getEntryStats)
+- [X] T049 [P] [US3] Create odds query functions in src/lib/db/queries/odds.ts (getOddsHistory, getOddsSummary, use continuous aggregate)
+- [X] T050 [P] [US3] Create result query functions in src/lib/db/queries/results.ts (getResultsByRace, getHorseWinRate, getJockeyStats)
+- [X] T051 [US3] Create query index file src/lib/db/queries/index.ts
 
 **Checkpoint**: US3 complete - 데이터 조회 기능 독립 테스트 가능
 
@@ -170,17 +170,17 @@ Based on plan.md project structure:
 
 ### Tests for User Story 4
 
-- [ ] T052 [P] [US4] Unit test for failure logger in tests/unit/ingestion/failureLogger.test.ts
-- [ ] T053 [P] [US4] Unit test for Slack notifier in tests/unit/ingestion/slackNotifier.test.ts
+- [X] T052 [P] [US4] Unit test for failure logger in tests/unit/ingestion/failureLogger.test.ts
+- [X] T053 [P] [US4] Unit test for Slack notifier in tests/unit/ingestion/slackNotifier.test.ts
 
 ### Implementation for User Story 4
 
-- [ ] T054 [P] [US4] Create failure logger in src/ingestion/utils/failureLogger.ts
-- [ ] T055 [P] [US4] Create Slack notification service in src/ingestion/services/slackNotifier.ts
-- [ ] T056 [US4] Update retry utility with failure logging in src/ingestion/utils/retry.ts (integrate failureLogger)
-- [ ] T057 [US4] Create API route GET /api/ingestion/failures in src/app/api/ingestion/failures/route.ts
-- [ ] T058 [US4] Create API route POST /api/ingestion/failures/[id]/retry in src/app/api/ingestion/failures/[id]/retry/route.ts
-- [ ] T059 [US4] Create failure recovery cron job in src/ingestion/jobs/failureRecovery.ts
+- [X] T054 [P] [US4] Create failure logger in src/ingestion/utils/failureLogger.ts
+- [X] T055 [P] [US4] Create Slack notification service in src/ingestion/services/slackNotifier.ts
+- [X] T056 [US4] Update retry utility with failure logging in src/ingestion/utils/retry.ts (integrate failureLogger)
+- [X] T057 [US4] Create API route GET /api/ingestion/failures in src/app/api/ingestion/failures/route.ts
+- [X] T058 [US4] Create API route POST /api/ingestion/failures/[id]/retry in src/app/api/ingestion/failures/[id]/retry/route.ts
+- [X] T059 [US4] Create failure recovery cron job in src/ingestion/jobs/failureRecovery.ts
 
 **Checkpoint**: US4 complete - 실패 복구 기능 독립 테스트 가능
 
@@ -195,13 +195,13 @@ Based on plan.md project structure:
 
 ### Tests for User Story 5
 
-- [ ] T060 [P] [US5] Unit test for status service in tests/unit/ingestion/statusService.test.ts
+- [X] T060 [P] [US5] Unit test for status service in tests/unit/ingestion/statusService.test.ts
 
 ### Implementation for User Story 5
 
-- [ ] T061 [US5] Create status aggregation service in src/ingestion/services/statusService.ts
-- [ ] T062 [US5] Create metrics tracking utility in src/ingestion/utils/metrics.ts
-- [ ] T063 [US5] Create API route GET /api/ingestion/status in src/app/api/ingestion/status/route.ts
+- [X] T061 [US5] Create status aggregation service in src/ingestion/services/statusService.ts
+- [X] T062 [US5] Create metrics tracking utility in src/ingestion/utils/metrics.ts
+- [X] T063 [US5] Create API route GET /api/ingestion/status in src/app/api/ingestion/status/route.ts
 
 **Checkpoint**: US5 complete - 모니터링 기능 독립 테스트 가능
 
@@ -211,12 +211,12 @@ Based on plan.md project structure:
 
 **Purpose**: Documentation, code quality, and final validation
 
-- [ ] T064 [P] Update quickstart.md with actual setup verification steps
-- [ ] T065 [P] Add JSDoc comments to all public functions in src/lib/db/ and src/ingestion/
-- [ ] T066 [P] Create README for ingestion module in src/ingestion/README.md
-- [ ] T067 Run all migrations on test database and validate
-- [ ] T068 Run quickstart.md validation (end-to-end test)
-- [ ] T069 Performance test: verify odds query < 100ms on 30-day data
+- [X] T064 [P] Update quickstart.md with actual setup verification steps
+- [X] T065 [P] Add JSDoc comments to all public functions in src/lib/db/ and src/ingestion/
+- [X] T066 [P] Create README for ingestion module in src/ingestion/README.md
+- [ ] T067 Run all migrations on test database and validate (MANUAL: requires DB)
+- [ ] T068 Run quickstart.md validation (end-to-end test) (MANUAL: requires environment)
+- [ ] T069 Performance test: verify odds query < 100ms on 30-day data (MANUAL: requires data)
 
 ---
 
