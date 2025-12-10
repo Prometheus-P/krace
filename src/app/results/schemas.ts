@@ -25,13 +25,25 @@ export const breadcrumbSchema = {
 export const collectionPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
+  '@id': `${baseUrl}/results#page`,
   name: '경주 결과 - 경마 경륜 경정 과거 기록 조회',
   description: '경마, 경륜, 경정 과거 경주 결과를 검색하고 분석하세요.',
   url: `${baseUrl}/results`,
+  inLanguage: 'ko-KR',
   isPartOf: {
     '@type': 'WebSite',
+    '@id': `${baseUrl}/#website`,
     name: 'RaceLab',
     url: baseUrl,
+  },
+  primaryImageOfPage: {
+    '@type': 'ImageObject',
+    url: `${baseUrl}/opengraph-image.svg`,
+    contentUrl: `${baseUrl}/opengraph-image.svg`,
+    caption: '경주 결과 - RaceLab 경마 경륜 경정 과거 기록 조회',
+    width: 1200,
+    height: 630,
+    encodingFormat: 'image/svg+xml',
   },
   about: [
     { '@type': 'Thing', name: '경마' },
@@ -40,6 +52,7 @@ export const collectionPageSchema = {
   ],
   provider: {
     '@type': 'Organization',
+    '@id': `${baseUrl}/#organization`,
     name: 'RaceLab',
     url: baseUrl,
   },

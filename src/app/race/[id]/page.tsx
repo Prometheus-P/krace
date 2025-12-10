@@ -125,10 +125,11 @@ export default async function RaceDetailPage({ params }: Props) {
     ],
   };
 
-  // JSON-LD SportsEvent schema
+  // JSON-LD SportsEvent schema with ImageObject for AI crawlers (Gemini, etc.)
   const sportsEventSchema = {
     '@context': 'https://schema.org',
     '@type': 'SportsEvent',
+    '@id': `${baseUrl}/race/${params.id}#event`,
     name: `${race.track} 제${race.raceNo}경주`,
     description: race.distance
       ? `${raceTypeKorean} ${race.distance}m 경주`
@@ -143,8 +144,26 @@ export default async function RaceDetailPage({ params }: Props) {
     location: {
       '@type': 'Place',
       name: race.track,
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: 'KR',
+      },
     },
     sport: raceTypeKorean,
+    image: {
+      '@type': 'ImageObject',
+      url: `${baseUrl}/opengraph-image.svg`,
+      contentUrl: `${baseUrl}/opengraph-image.svg`,
+      caption: `${race.track} 제${race.raceNo}경주 ${raceTypeKorean} 정보 - RaceLab`,
+      width: 1200,
+      height: 630,
+      encodingFormat: 'image/svg+xml',
+    },
+    organizer: {
+      '@type': 'Organization',
+      name: race.type === 'horse' ? '한국마사회 (KRA)' : '국민체육진흥공단 (KSPO)',
+      url: race.type === 'horse' ? 'https://www.kra.co.kr' : 'https://www.kspo.or.kr',
+    },
     competitor: race.entries.map((entry) => ({
       '@type': 'Person',
       name: entry.name,

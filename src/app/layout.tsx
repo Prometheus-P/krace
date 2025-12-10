@@ -87,24 +87,55 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
 
-  // JSON-LD structured data for Organization and WebSite
+  // JSON-LD structured data for Organization with ImageObject
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': `${baseUrl}/#organization`,
     name: 'RaceLab',
     url: baseUrl,
-    logo: `${baseUrl}/favicon.svg`,
+    logo: {
+      '@type': 'ImageObject',
+      '@id': `${baseUrl}/#logo`,
+      url: `${baseUrl}/racelab-logo.svg`,
+      contentUrl: `${baseUrl}/racelab-logo.svg`,
+      caption: 'RaceLab 로고 - 경마 경륜 경정 통합 정보 플랫폼',
+      width: 400,
+      height: 400,
+      encodingFormat: 'image/svg+xml',
+    },
+    image: {
+      '@type': 'ImageObject',
+      '@id': `${baseUrl}/#primaryImage`,
+      url: `${baseUrl}/opengraph-image.svg`,
+      contentUrl: `${baseUrl}/opengraph-image.svg`,
+      caption: 'RaceLab - 한국 경마, 경륜, 경정 통합 정보 플랫폼',
+      width: 1200,
+      height: 630,
+      encodingFormat: 'image/svg+xml',
+    },
     description: '한국 경마, 경륜, 경정 실시간 정보를 한눈에 제공하는 통합 플랫폼',
+    foundingDate: '2024',
+    areaServed: {
+      '@type': 'Country',
+      name: '대한민국',
+    },
+    knowsAbout: ['경마', '경륜', '경정', '배당률', '경주결과', 'KRA', 'KSPO'],
     sameAs: [],
   };
 
+  // JSON-LD for WebSite with image
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${baseUrl}/#website`,
     name: 'RaceLab - 경마 경륜 경정 통합 정보',
     url: baseUrl,
     description:
       '한국 경마, 경륜, 경정 실시간 정보를 한눈에. 출마표, 배당률, 경주결과를 무료로 제공합니다.',
+    publisher: { '@id': `${baseUrl}/#organization` },
+    image: { '@id': `${baseUrl}/#primaryImage` },
+    inLanguage: 'ko-KR',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -115,6 +146,49 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     },
   };
 
+  // JSON-LD for ImageGallery - main visual assets for AI crawlers
+  const imageGallerySchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ImageGallery',
+    '@id': `${baseUrl}/#imageGallery`,
+    name: 'RaceLab 이미지 갤러리',
+    description: '경마, 경륜, 경정 정보 플랫폼 RaceLab의 시각 자료',
+    url: baseUrl,
+    image: [
+      {
+        '@type': 'ImageObject',
+        name: 'RaceLab 오픈그래프 이미지',
+        url: `${baseUrl}/opengraph-image.svg`,
+        contentUrl: `${baseUrl}/opengraph-image.svg`,
+        caption: 'RaceLab - 경마 경륜 경정 통합 정보 플랫폼 대표 이미지',
+        width: 1200,
+        height: 630,
+        encodingFormat: 'image/svg+xml',
+      },
+      {
+        '@type': 'ImageObject',
+        name: 'RaceLab 로고',
+        url: `${baseUrl}/racelab-logo.svg`,
+        contentUrl: `${baseUrl}/racelab-logo.svg`,
+        caption: 'RaceLab 브랜드 로고',
+        width: 400,
+        height: 400,
+        encodingFormat: 'image/svg+xml',
+      },
+      {
+        '@type': 'ImageObject',
+        name: 'RaceLab 심볼',
+        url: `${baseUrl}/racelab-symbol.svg`,
+        contentUrl: `${baseUrl}/racelab-symbol.svg`,
+        caption: 'RaceLab 심볼 마크',
+        width: 200,
+        height: 200,
+        encodingFormat: 'image/svg+xml',
+      },
+    ],
+    publisher: { '@id': `${baseUrl}/#organization` },
+  };
+
   return (
     <html lang="ko">
       <head>
@@ -123,7 +197,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* RaceLab Design System V1.0 - Soft Coral (#E57373) as primary */}
         <meta name="theme-color" content="#E57373" />
 
-        {/* JSON-LD Structured Data */}
+        {/* JSON-LD Structured Data - Enhanced with ImageObject for AI crawlers */}
         <Script
           id="organization-schema"
           type="application/ld+json"
@@ -133,6 +207,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           id="website-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <Script
+          id="image-gallery-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(imageGallerySchema) }}
         />
 
         {/* Google Analytics Scripts */}
