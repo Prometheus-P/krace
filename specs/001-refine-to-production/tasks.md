@@ -232,7 +232,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - GA 이벤트 로깅 함수에 대한 유닛 테스트(Jest) 및 E2E 테스트(Playwright)가 추가되고 통과한다.
 - **Related Tasks**: `Task: 에러/장애 모니터링 시스템 연동`, `Task: 경주 상세 페이지 URL 패턴 및 Schema.org 적용`
 
-### Task: 에러/장애 모니터링 시스템 연동 (Sentry 예시) [X]
+### Task: 에러/장애 모니터링 시스템 연동 (Sentry 예시) [X] (Partial)
 - **Label**: `ops`, `enhancement`, `test`
 - **Description**: Sentry 또는 유사 서비스 하나를 Next.js 서버 에러 및 외부 API 호출 에러를 중앙에서 모니터링할 수 있도록 연동한다.
 - **Target Files/Directories**:
@@ -246,6 +246,9 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - 외부 API 호출 실패 시 Sentry로 에러가 기록됨을 확인한다.
     - 에러 로깅 함수에 대한 유닛 테스트(Jest)가 추가되고 통과한다.
 - **Related Tasks**: `Task: API 에러 처리 정책 구현`
+- **Implementation Note**: @sentry/nextjs SDK caused Next.js 14.2 build errors (clientModules undefined).
+  Implemented console-based error logging fallback in `errorLogger.ts`. Full Sentry integration deferred
+  until SDK compatibility is resolved. See PR #81 for details.
 
 ### Task: 경주 상세 페이지 URL 패턴 및 Schema.org 적용 [X]
 - **Label**: `seo`, `enhancement`, `test`

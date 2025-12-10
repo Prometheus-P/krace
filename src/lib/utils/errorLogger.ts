@@ -1,12 +1,17 @@
 // src/lib/utils/errorLogger.ts
-// Error logging utility with optional Sentry integration
+// Error logging utility with console fallback
 //
-// To enable Sentry:
+// SENTRY STATUS: Disabled due to Next.js 14.2 build incompatibility
+// The @sentry/nextjs SDK causes "clientModules undefined" errors during build.
+// See: https://github.com/Prometheus-P/racelab/pull/81
+//
+// To enable Sentry when compatible:
 // 1. Install: npm install @sentry/nextjs
 // 2. Set NEXT_PUBLIC_SENTRY_DSN in environment variables
-// 3. Uncomment the Sentry import and initialization below
+// 3. Import Sentry and update the functions below to use it
+//
+// Current behavior: All errors are logged to console with structured metadata
 
-// Sentry integration is currently disabled
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Sentry: any = null;
 
