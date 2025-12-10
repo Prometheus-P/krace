@@ -15,7 +15,7 @@ Phase 1의 목표는 **데이터 수집 파이프라인**과 **저장소 기초*
 1. **Database Schema**: PostgreSQL + TimescaleDB 테이블 설계 및 마이그레이션
 2. **Ingestion Pipeline**: KRA/KSPO API 폴링 워커 구현
 3. **Odds Snapshots**: 배당률 시계열 데이터 수집 로직
-4. **Historical Data**: 가능한 범위의 과거 데이터 수집
+4. **Historical Data**: 1년치 과거 데이터 백필 (~18M odds rows, ~1-2일 소요)
 
 ## User Scenarios & Testing _(mandatory)_
 
@@ -117,6 +117,9 @@ Phase 1의 목표는 **데이터 수집 파이프라인**과 **저장소 기초*
 - **NFR-003**: Data retention: raw odds snapshots compressed after 30 days
 - **NFR-004**: Ingestion worker MUST use Bull/Redis for job scheduling
 - **NFR-005**: System MUST send Slack notifications on ingestion failures
+- **NFR-006**: System MUST handle ~50,000 odds_snapshots rows/day (~1.5M/month); partition by week
+- **NFR-007**: All credentials (DB, API keys, Redis) MUST be stored in platform secrets manager (Vercel/Railway); no secrets in code or .env files committed to repo
+- **NFR-008**: System MUST expose essential metrics: ingestion success rate (%), API latency p95 (ms), Bull queue depth, data freshness (minutes since last successful ingestion per source)
 
 ### Key Entities
 
@@ -171,7 +174,7 @@ Phase 1의 목표는 **데이터 수집 파이프라인**과 **저장소 기초*
 - PostgreSQL 호스팅은 Supabase 또는 Railway 사용 예정
 - TimescaleDB는 PostgreSQL extension으로 설치 가능
 - Bull/Redis는 Upstash Redis 또는 Railway Redis 사용
-- 기존 Next.js API Routes와 별도로 Ingestion Worker 프로세스 필요 (cron job 또는 별도 서버)
+- Ingestion Worker는 Railway 또는 Render의 dedicated worker process로 배포 (Vercel 10s 타임아웃 회피, ~$5-10/mo)
 
 ## Design System
 
@@ -179,7 +182,13 @@ Phase 1의 목표는 **데이터 수집 파이프라인**과 **저장소 기초*
 
 ## Clarifications
 
-(추가 질문이 있으면 여기에 기록)
+### Session 2025-12-10
+
+- Q: What is the expected daily data volume for odds snapshots? → A: Medium (~50,000 rows/day)
+- Q: How should database credentials and API keys be managed? → A: Secrets manager (Vercel/Railway secrets)
+- Q: Where should the ingestion worker run? → A: Dedicated worker on Railway/Render
+- Q: Which metrics should be tracked for ingestion monitoring? → A: Essential (success rate, latency p95, queue depth, data freshness)
+- Q: How much historical data should be backfilled initially? → A: 1 year (~18M odds rows, ~1-2 day backfill)
 
 ---
 
