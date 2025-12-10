@@ -5,8 +5,8 @@
  */
 
 import { db } from '@/lib/db/client';
-import { races, entries, oddsSnapshots, results, ingestionFailures } from '@/lib/db/schema';
-import { eq, and, gte, lte, sql, count } from 'drizzle-orm';
+import { races, entries, results, ingestionFailures } from '@/lib/db/schema';
+import { eq, sql } from 'drizzle-orm';
 
 export interface IngestionStatus {
   date: string;
@@ -218,7 +218,7 @@ export async function getHealthCheck(): Promise<HealthCheck> {
     // Check database connectivity
     await db.execute(sql`SELECT 1`);
     databaseOk = true;
-  } catch (error) {
+  } catch {
     issues.push('Database connection failed');
   }
 

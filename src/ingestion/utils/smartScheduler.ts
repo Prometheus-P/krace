@@ -8,8 +8,6 @@
  * - T-5 to T-0: Every 30 seconds
  */
 
-import type { Race } from '@/lib/db/schema';
-
 /** Collection interval in milliseconds */
 const INTERVAL_5_MIN = 5 * 60 * 1000;
 const INTERVAL_1_MIN = 1 * 60 * 1000;

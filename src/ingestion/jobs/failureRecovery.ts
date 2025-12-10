@@ -9,7 +9,6 @@ import {
   getRetryableFailures,
   updateFailureStatus,
   incrementRetryCount,
-  type FailureStatus,
 } from '@/ingestion/utils/failureLogger';
 import {
   notifyRecoveryComplete,

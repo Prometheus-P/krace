@@ -5,8 +5,8 @@
  */
 
 import { db } from '@/lib/db/client';
-import { results, entries, races } from '@/lib/db/schema';
-import { eq, and, desc, sql } from 'drizzle-orm';
+import { results, entries } from '@/lib/db/schema';
+import { eq, and, sql } from 'drizzle-orm';
 import type { Result, Entry } from '@/lib/db/schema';
 
 /**

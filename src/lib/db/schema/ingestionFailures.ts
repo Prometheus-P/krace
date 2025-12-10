@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, text, integer, boolean, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, serial, varchar, text, integer, timestamp } from 'drizzle-orm/pg-core';
 
 /**
  * Ingestion Failures table - 수집 실패 로그
