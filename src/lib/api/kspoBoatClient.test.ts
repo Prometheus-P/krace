@@ -3,6 +3,7 @@
 import { fetchBoatRaceSchedules } from './kspoBoatClient';
 import { fetchApi } from './fetcher';
 import { mapKSPOBoatRaceInfoToRaces, KSPOBoatRaceInfoItem } from '../api-helpers/mappers';
+import { Race } from '@/types';
 
 // Mock dependencies
 jest.mock('./fetcher');
@@ -16,13 +17,14 @@ describe('kspoBoatClient', () => {
   const mockApiKey = 'TEST_KSPO_API_KEY';
   const mockRawItems: KSPOBoatRaceInfoItem[] = [
     {
-      rcDate: '20251209',
-      rcNo: '1',
-      meet: '미사리',
+      meet_nm: '미사리',
+      race_no: '1',
+      back_no: '1',
+      racer_nm: '선수1',
       // ... other KSPOBoatRaceInfoItem properties
     },
   ];
-  const mockMappedRaces: any[] = [{ id: 'boat-1-1-20251209', type: 'boat' }]; // Simplified Race object
+  const mockMappedRaces: Partial<Race>[] = [{ id: 'boat-1-1-20251209', type: 'boat' }]; // Simplified Race object
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -36,7 +38,7 @@ describe('kspoBoatClient', () => {
   describe('fetchBoatRaceSchedules', () => {
     it('should fetch KSPO boat race schedules and map them correctly', async () => {
       mockFetchApi.mockResolvedValueOnce(mockRawItems);
-      mockMapKSPOBoatRaceInfoToRaces.mockReturnValueOnce(mockMappedRaces);
+      mockMapKSPOBoatRaceInfoToRaces.mockReturnValueOnce(mockMappedRaces as Race[]);
 
       const result = await fetchBoatRaceSchedules(mockDate);
 

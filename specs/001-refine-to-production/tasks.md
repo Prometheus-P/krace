@@ -39,6 +39,17 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
 - **Acceptance Criteria**:
     - `Race` 타입 정의에 `date: string` 및 `meetCode: string` 필드가 추가된다.
     - `Race` 객체 생성 시 `id`가 `type-<meetCode>-<raceNo>-<date>` 형식으로 결정적으로 생성됨을 보장한다.
+    - **ID 형식 규격**:
+        - 형식: `{type}-{meetCode}-{raceNo}-{date}`
+        - 예시: `horse-1-5-20251210` (경마, 서울경마장, 5경주, 2024년 12월 10일)
+        - `type`: "horse" | "cycle" | "boat"
+        - `meetCode`: 경주장 식별자 ("1"=서울/광명/미사리, "2"=부산경남/창원, "3"=제주/부산)
+        - `raceNo`: 정수 문자열 (zero-padding 불필요)
+        - `date`: YYYYMMDD 형식 (하이픈 없음)
+    - **충돌 처리 정책**:
+        - 필수 필드(meet, rcNo, rcDate) 누락 시 폴백 ID 생성: `{type}-unknown-{timestamp}`
+        - 폴백 ID 생성 시 경고 로그 출력 (디버깅 용이)
+    - **결정성 테스트**: 동일 입력에 대해 항상 동일 ID 생성됨을 검증하는 스냅샷 테스트 추가
     - 해당 변경에 대한 유닛 테스트(Jest)가 추가되고 통과한다. (ID 생성 결정성, 필수 필드 포함 여부)
 - **Related Tasks**: `Task: 하위 도메인 타입 (Entry/Runner) 정리`, `Task: 외부 API 클라이언트 모듈 분리`
 
@@ -179,6 +190,12 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
 - **Acceptance Criteria**:
     - `KeyInsightBlock` 컴포넌트가 구현되고 경주 상세 페이지에 통합된다.
     - 인기 상위 3두의 정보가 요약 형태로 비교되어 표시된다.
+    - **인기 순위 결정 로직**:
+        - 인기 상위 3두 선정 시 단승 배당률 기준 낮은 순서로 정렬된다.
+        - 배당 미제공 시 최근 5회 성적 합계 기준 높은 순서로 정렬된다.
+        - 동점 시 출전번호 낮은 순서로 정렬된다.
+        - 데이터 없음 시 "인사이트 데이터 준비 중" 문구가 표시된다.
+    - 인기 순위 결정 로직에 대한 유닛 테스트가 추가된다.
     - `KeyInsightBlock` 컴포넌트에 대한 유닛 테스트(Jest)가 추가되고 통과한다.
 - **Related Tasks**: `Task: 경주 상세 페이지 기본 레이아웃 구성 (결과/배당 섹션)`
 

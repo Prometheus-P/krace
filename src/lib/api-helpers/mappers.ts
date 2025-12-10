@@ -5,6 +5,9 @@ import {
   HistoricalRace,
   HistoricalRaceResult,
   Dividend,
+  Racer,
+  Odds,
+  KSPOOddsResponse,
 } from '@/types';
 
 // Type definitions for raw API response items (legacy API214 format)

@@ -10,10 +10,20 @@ import {
   HistoricalRaceResult,
   Dividend,
   Racer,
-  RaceType,
 } from '@/types';
 import { generateRaceId } from '../utils/race';
 import { parseOddsValue } from '../utils/parser';
+
+// Import KRA types from main mappers module
+import type {
+  KRAHorseResultDetailItem,
+  KRAHorseRaceInfoItem,
+  KRAHorseEntryItem,
+  KRAHorseEntryDetailItem,
+  KRAHorseDividendSummaryItem,
+  KRA323EntryItem,
+  KRA299ResultItem,
+} from '../api-helpers/mappers';
 
 // Raw API response item interfaces for KSPO
 export interface KSPORaceItem {

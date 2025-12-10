@@ -86,16 +86,9 @@ export default async function RaceDetailPage({ params }: Props) {
   const idParts = race.id.split('-');
   const raceDate = idParts[idParts.length - 1] || '';
 
-  const horseEntryDetails = race.type === 'horse' ? await fetchHorseEntryDetail(raceDate) : [];
-  const detailedEntries: Entry[] = horseEntryDetails.map((detail) => ({
-    no: detail.entryNo,
-    name: detail.horseName,
-    trainer: detail.trainer,
-    jockey: detail.jockey,
-    age: detail.age ? parseInt(detail.age, 10) : undefined,
-    weight: detail.weight ? parseFloat(detail.weight) : undefined,
-    recentRecord: detail.recentRecord || undefined,
-  }));
+  // fetchHorseEntryDetail returns Entry[] directly (already transformed)
+  const detailedEntries: Entry[] =
+    race.type === 'horse' ? (await fetchHorseEntryDetail(raceDate)) || [] : [];
 
   const isFinished = race.status === 'finished';
   const results = getMockResults(race.status, race.entries);

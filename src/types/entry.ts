@@ -1,6 +1,6 @@
 // src/types/entry.ts
 
-import type { EntryStatus } from './index';
+// Note: EntryStatus is defined in index.ts for future use (e.g., tracking scratched entries)
 
 export interface Entry {
   no: number; // 번호 (마번/선수 번호)

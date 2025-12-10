@@ -11,6 +11,12 @@ export * from './oddsSnapshot';
 
 export type DividendType = 'win' | 'place' | 'quinella';
 
+export interface Dividend {
+  type: DividendType;
+  entries: number[]; // 해당 배당에 포함된 출전번호들
+  amount: number; // 배당금액 (원)
+}
+
 // Other types that remain in index.ts or will be moved
 export interface ResultsSearchParams {
   dateFrom?: string;

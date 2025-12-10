@@ -2,8 +2,8 @@
 
 import { fetchHorseRaceSchedules } from './kraClient';
 import { fetchApi } from './fetcher';
-import { mapKRA299ToRaces } from '../api-helpers/mappers';
-import { KRA299ResultItem } from '../api-helpers/mappers'; // Assuming KRA299ResultItem is exported from mappers
+import { mapKRA299ToRaces, KRA299ResultItem } from '../api-helpers/mappers';
+import { Race } from '@/types';
 
 // Mock dependencies
 jest.mock('./fetcher');
@@ -17,13 +17,13 @@ describe('kraClient', () => {
   const mockApiKey = 'TEST_KRA_API_KEY';
   const mockRawItems: KRA299ResultItem[] = [
     {
-      rcDate: '20251209',
-      rcNo: '1',
+      rcDate: 20251209,
+      rcNo: 1,
       meet: '서울',
       // ... other KRA299ResultItem properties
     },
   ];
-  const mockMappedRaces: any[] = [{ id: 'horse-1-1-20251209', type: 'horse' }]; // Simplified Race object
+  const mockMappedRaces: Partial<Race>[] = [{ id: 'horse-1-1-20251209', type: 'horse' }]; // Simplified Race object
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -37,7 +37,7 @@ describe('kraClient', () => {
   describe('fetchHorseRaceSchedules', () => {
     it('should fetch KRA race schedules and map them correctly', async () => {
       mockFetchApi.mockResolvedValueOnce(mockRawItems);
-      mockMapKRA299ToRaces.mockReturnValueOnce(mockMappedRaces);
+      mockMapKRA299ToRaces.mockReturnValueOnce(mockMappedRaces as Race[]);
 
       const result = await fetchHorseRaceSchedules(mockDate);
 

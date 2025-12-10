@@ -1,15 +1,9 @@
 // src/app/api/races/cycle/route.test.ts
-import { GET } from './route'; // The function we are testing
-import { fetchCycleRaceSchedules } from '@/lib/api'; // Mock this dependency
+import { GET } from './route';
+import * as raceService from '@/lib/services/raceService';
 import { Race } from '@/types';
-import { getTodayYYYYMMDD } from '@/lib/utils/date';
 
-// Mock the API client dependency
-jest.mock('@/lib/api', () => ({
-  fetchCycleRaceSchedules: jest.fn(),
-}));
-
-// Mock the date utility to control the date in tests
+jest.mock('@/lib/services/raceService');
 jest.mock('@/lib/utils/date', () => ({
   getTodayYYYYMMDD: jest.fn(() => '20240115'),
 }));
@@ -36,11 +30,8 @@ describe('GET /api/races/cycle', () => {
   };
 
   beforeEach(() => {
-    // Reset the mock before each test
-    (fetchCycleRaceSchedules as jest.Mock).mockClear();
-    (fetchCycleRaceSchedules as jest.Mock).mockResolvedValue(mockCycleRaces);
-    (getTodayYYYYMMDD as jest.Mock).mockClear();
-    (getTodayYYYYMMDD as jest.Mock).mockReturnValue('20240115');
+    jest.clearAllMocks();
+    (raceService.getRacesByDateAndType as jest.Mock).mockResolvedValue(mockCycleRaces);
   });
 
   it('should return cycle race schedules successfully', async () => {
@@ -54,13 +45,12 @@ describe('GET /api/races/cycle', () => {
     expect(jsonResponse.success).toBe(true);
     expect(jsonResponse.data).toEqual(mockCycleRaces);
     expect(jsonResponse).toHaveProperty('timestamp');
-    expect(fetchCycleRaceSchedules).toHaveBeenCalledTimes(1);
-    expect(fetchCycleRaceSchedules).toHaveBeenCalledWith('20240115');
-    expect(getTodayYYYYMMDD).toHaveBeenCalledTimes(1);
+    expect(raceService.getRacesByDateAndType).toHaveBeenCalledTimes(1);
+    expect(raceService.getRacesByDateAndType).toHaveBeenCalledWith('20240115', 'cycle');
   });
 
-  it('should handle errors from fetchCycleRaceSchedules', async () => {
-    (fetchCycleRaceSchedules as jest.Mock).mockRejectedValue(new Error('API error'));
+  it('should handle errors from service', async () => {
+    (raceService.getRacesByDateAndType as jest.Mock).mockRejectedValue(new Error('API error'));
 
     const response = await GET(createMockRequest());
 
@@ -77,6 +67,6 @@ describe('GET /api/races/cycle', () => {
   it('should use date from query parameter', async () => {
     await GET(createMockRequest('20251130'));
 
-    expect(fetchCycleRaceSchedules).toHaveBeenCalledWith('20251130');
+    expect(raceService.getRacesByDateAndType).toHaveBeenCalledWith('20251130', 'cycle');
   });
 });
