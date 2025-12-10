@@ -111,6 +111,7 @@ Required in `.env.local`:
 When API keys are missing, the app falls back to dummy data from `lib/api-helpers/dummy.ts`.
 
 ## Active Technologies
+- TypeScript 5.9 + Node.js 20 LTS (004-data-platform-phase1)
 
 - TypeScript 5.9 + Next.js 14.2 (App Router), React 18.3, Tailwind CSS 3.4 (001-race-results-history)
 - N/A (external API data, cached via Next.js fetch caching) (001-race-results-history)

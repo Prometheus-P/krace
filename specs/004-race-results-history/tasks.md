@@ -1,232 +1,222 @@
-# Tasks: Race Results History
+# Tasks: Data Platform Phase 1 (Ingestion + Storage)
 
-**Input**: Design documents from `/specs/001-race-results-history/`
-**Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/
+**Input**: Design documents from `/specs/004-race-results-history/`
+**Prerequisites**: plan.md ✅, spec.md ✅, research.md ✅, data-model.md ✅, contracts/ingestion-api.yaml ✅
 
-**Tests**: Included per constitution requirement (TDD NON-NEGOTIABLE)
+**Tests**: TDD approach per project constitution. Tests included for critical paths.
 
-**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+**Organization**: Tasks grouped by user story for independent implementation and testing.
 
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
 - **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
-- Include exact file paths in descriptions
 
 ## Path Conventions
 
-- Next.js App Router: `src/app/` for pages and API routes
-- Components: `src/components/`
-- Library: `src/lib/` and `src/lib/api-helpers/`
-- Types: `src/types/`
-- E2E tests: `e2e/`
+Based on plan.md project structure:
+- `src/lib/db/` - Database layer (Drizzle ORM)
+- `src/ingestion/` - Ingestion worker module
+- `src/app/api/ingestion/` - API routes
+- `db/migrations/` - SQL migrations
+- `tests/unit/ingestion/` - Unit tests
+- `tests/integration/db/` - Integration tests
 
 ---
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-**Purpose**: Type definitions and shared utilities needed by all stories
+**Purpose**: Project initialization, dependencies, and configuration
 
-- [x] T001 Add HistoricalRace, HistoricalRaceResult, Dividend types in src/types/index.ts
-- [x] T002 [P] Add ResultsSearchParams and PaginatedResults types in src/types/index.ts
-- [x] T003 [P] Add TRACKS constant with type-to-track mapping in src/lib/constants.ts
-- [x] T004 Add dummy historical race data generator in src/lib/api-helpers/dummy.ts
-
----
-
-## Phase 1.5: Material Design 3 (M3) Design System Setup
-
-**Purpose**: Establish M3 design tokens, typography, and component foundations for consistent UI
-
-**Design Decisions** (from spec.md Clarifications 2025-12-02):
-
-- Color: M3 neutral brand + semantic race colors (horse=green, cycle=red, boat=blue)
-- Components: M3 Elevated Cards for results, Filter Chips, Search Bar
-- Typography: Pretendard font with M3 Type Scale
-- Interaction: In-place card expansion (accordion style)
-- Theme: Light mode only (initial release)
-
-### Infrastructure
-
-- [x] T004a [P] Install Pretendard font and configure in src/app/layout.tsx
-- [x] T004b [P] Create M3 design tokens file in src/styles/tokens.ts (colors, spacing, elevation)
-- [x] T004c [P] Update tailwind.config.ts with M3 color palette and typography scale
-- [x] T004d [P] Create M3 type scale CSS classes in src/styles/typography.css
-
-### Tests (TDD - write first, ensure FAIL)
-
-- [x] T004e [P] Write failing test for M3Card component in src/components/ui/M3Card.test.tsx
-- [x] T004f [P] Write failing test for M3Chip component in src/components/ui/M3Chip.test.tsx
-- [x] T004g [P] Write failing test for useCardExpansion hook in src/hooks/useCardExpansion.test.ts
-
-### Base Components
-
-- [x] T004h [P] Create M3Card base component with elevation variants in src/components/ui/M3Card.tsx
-- [x] T004i [P] Create M3Chip component for filters in src/components/ui/M3Chip.tsx
-- [x] T004j [P] Create M3SearchBar component in src/components/ui/M3SearchBar.tsx
-- [x] T004k Create useCardExpansion hook for accordion behavior in src/hooks/useCardExpansion.ts
-
-**Checkpoint**: M3 design system ready - all UI components will use M3 tokens and patterns
+- [X] T001 Create directory structure: `src/lib/db/schema/`, `src/lib/db/queries/`, `src/ingestion/`, `db/migrations/`, `db/seeds/`
+- [X] T002 Install dependencies: `drizzle-orm`, `pg`, `bull`, `ioredis`, `@types/pg` in package.json
+- [X] T003 [P] Create drizzle.config.ts at project root
+- [X] T004 [P] Update .env.example with DATABASE_URL, REDIS_URL, INGESTION_API_KEY variables
+- [X] T005 [P] Create src/lib/db/client.ts with Drizzle client initialization
 
 ---
 
-## Phase 2: Foundational (Blocking Prerequisites)
+## Phase 2: Foundational (Database Schema - BLOCKING)
 
-**Purpose**: Core API and data fetching infrastructure that ALL user stories depend on
+**Purpose**: Core database schema that ALL user stories depend on
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-### Tests (TDD - write first, ensure FAIL)
+### Schema Files
 
-- [x] T005 [P] Write failing test for fetchHistoricalResults function in src/lib/api.test.ts
-- [x] T006 [P] Write failing test for mapHistoricalRaceResult mapper in src/lib/api-helpers/mappers.test.ts
-- [x] T007 [P] Write failing API route test for GET /api/results in src/app/api/results/route.test.ts
-- [x] T008 [P] Write failing API route test for GET /api/results/[id] in src/app/api/results/[id]/route.test.ts
+- [X] T006 [P] Create tracks schema in src/lib/db/schema/tracks.ts
+- [X] T007 [P] Create races schema in src/lib/db/schema/races.ts
+- [X] T008 [P] Create entries schema in src/lib/db/schema/entries.ts
+- [X] T009 [P] Create oddsSnapshots schema in src/lib/db/schema/oddsSnapshots.ts
+- [X] T010 [P] Create results schema in src/lib/db/schema/results.ts
+- [X] T011 [P] Create ingestionFailures schema in src/lib/db/schema/ingestionFailures.ts
+- [X] T012 Create schema index export in src/lib/db/schema/index.ts (depends on T006-T011)
 
-### Implementation
+### Type Definitions
 
-- [x] T009 Implement mapHistoricalRaceResult mapper function in src/lib/api-helpers/mappers.ts
-- [x] T010 Implement fetchHistoricalResults function in src/lib/api.ts
-- [x] T011 Implement GET /api/results route handler in src/app/api/results/route.ts
-- [x] T012 Implement GET /api/results/[id] route handler in src/app/api/results/[id]/route.ts
-- [x] T013 Add results link to Header navigation in src/components/Header.tsx
+- [X] T013 Create database type definitions in src/types/db.ts (RaceType, RaceStatus, etc.)
 
-**Checkpoint**: Foundation ready - API endpoints work, user story implementation can begin
+### Migration Files
 
----
+- [X] T014 Create SQL migration db/migrations/001_init_schema.sql (tracks, races, entries, results, ingestion_failures)
+- [X] T015 Create SQL migration db/migrations/002_timescale_hypertable.sql (odds_snapshots + compression policy)
+- [X] T016 Create seed file db/seeds/tracks.sql (서울, 부산, 제주, 광명, 창원, 미사리)
 
-## Phase 3: User Story 1 - Browse Recent Results (Priority: P1) 🎯 MVP
+### Infrastructure
 
-**Goal**: Users can view recent race results immediately upon page load with top 3 finishers and payouts
+- [X] T017 [P] Create ingestion auth middleware in src/lib/api-helpers/ingestionAuth.ts
+- [X] T018 [P] Create retry utility with exponential backoff in src/ingestion/utils/retry.ts
 
-**Independent Test**: Navigate to /results and verify race results display with positions and dividends
-
-### Tests (TDD - write first, ensure FAIL)
-
-- [x] T014 [P] [US1] Write failing test for ResultCard component in src/components/ResultCard.test.tsx
-- [x] T015 [P] [US1] Write failing test for ResultsList component in src/components/ResultsList.test.tsx
-- [x] T016 [P] [US1] Write failing test for results page in src/app/results/page.test.tsx
-- [x] T017 [P] [US1] Write failing E2E test for browse results in e2e/tests/results.spec.ts
-
-### Implementation
-
-- [x] T018 [P] [US1] Create ResultCard component (extends M3Card) displaying race summary in src/components/ResultCard.tsx
-- [x] T019 [P] [US1] Create DividendDisplay component for payout info in src/components/DividendDisplay.tsx
-- [x] T020 [US1] Create ResultsList component with pagination in src/components/ResultsList.tsx
-- [x] T021 [US1] Create Pagination component in src/components/Pagination.tsx
-- [x] T022 [US1] Implement results page with data fetching in src/app/results/page.tsx
-- [x] T023 [US1] Add loading skeleton for results page (M3 skeleton pattern) in src/components/Skeletons.tsx
-- [x] T024 [US1] Create results page object for E2E tests in e2e/pages/results.page.ts
-
-**Checkpoint**: User Story 1 complete - users can browse recent results with pagination
+**Checkpoint**: Database schema ready - user story implementation can now begin
 
 ---
 
-## Phase 4: User Story 2 - Filter by Date and Race Type (Priority: P2)
+## Phase 3: User Story 1 - 데이터 수집 자동화 (Priority: P1) 🎯 MVP
 
-**Goal**: Users can filter results by date range and race type (horse/cycle/boat)
+**Goal**: KRA/KSPO API에서 경주 데이터(일정, 출주표, 결과)를 자동 수집하여 DB에 저장
 
-**Independent Test**: Apply date and type filters, verify only matching results appear
+**Independent Test**: 
+- POST /api/ingestion/trigger/schedules 호출 시 races 테이블에 데이터 저장 확인
+- POST /api/ingestion/trigger/entries 호출 시 entries 테이블에 데이터 저장 확인
+- POST /api/ingestion/trigger/results 호출 시 results 테이블에 데이터 저장 확인
 
-### Tests (TDD - write first, ensure FAIL)
+### Tests for User Story 1
 
-- [x] T025 [P] [US2] Write failing test for DateRangeFilter component in src/components/DateRangeFilter.test.tsx
-- [x] T026 [P] [US2] Write failing test for RaceTypeFilter component in src/components/RaceTypeFilter.test.tsx
-- [x] T027 [P] [US2] Write failing test for ResultFilters component in src/components/ResultFilters.test.tsx
-- [x] T028 [P] [US2] Write failing E2E test for date/type filtering in e2e/tests/results.spec.ts
+- [X] T019 [P] [US1] Unit test for schedulePoller in tests/unit/ingestion/schedulePoller.test.ts
+- [X] T020 [P] [US1] Unit test for entryPoller in tests/unit/ingestion/entryPoller.test.ts
+- [X] T021 [P] [US1] Unit test for resultPoller in tests/unit/ingestion/resultPoller.test.ts
+- [X] T022 [P] [US1] Integration test for schedule ingestion in tests/integration/db/scheduleIngestion.test.ts
 
-### Implementation
+### Implementation for User Story 1
 
-- [x] T029 [P] [US2] Create DateRangeFilter component with date picker in src/components/DateRangeFilter.tsx
-- [x] T030 [P] [US2] Create RaceTypeFilter component (uses M3Chip) with multi-select in src/components/RaceTypeFilter.tsx
-- [x] T031 [US2] Create ResultFilters container component in src/components/ResultFilters.tsx
-- [x] T032 [US2] Integrate filters with URL state (searchParams) in src/app/results/page.tsx
-- [x] T033 [US2] Add filter clear functionality in src/components/ResultFilters.tsx
+- [X] T023 [P] [US1] Create KRA API client wrapper in src/ingestion/clients/kraClient.ts
+- [X] T024 [P] [US1] Create KSPO API client wrapper in src/ingestion/clients/kspoClient.ts
+- [X] T025 [P] [US1] Create schedule mapper in src/ingestion/mappers/scheduleMapper.ts
+- [X] T026 [P] [US1] Create entry mapper in src/ingestion/mappers/entryMapper.ts
+- [X] T027 [P] [US1] Create result mapper in src/ingestion/mappers/resultMapper.ts
+- [X] T028 [US1] Implement schedulePoller job in src/ingestion/jobs/schedulePoller.ts (depends on T023, T024, T025)
+- [X] T029 [US1] Implement entryPoller job in src/ingestion/jobs/entryPoller.ts (depends on T023, T024, T026)
+- [X] T030 [US1] Implement resultPoller job in src/ingestion/jobs/resultPoller.ts (depends on T023, T024, T027)
+- [X] T031 [US1] Create API route POST /api/ingestion/trigger/schedules in src/app/api/ingestion/trigger/schedules/route.ts
+- [X] T032 [US1] Create API route POST /api/ingestion/trigger/entries in src/app/api/ingestion/trigger/entries/route.ts
+- [X] T033 [US1] Create API route POST /api/ingestion/trigger/results in src/app/api/ingestion/trigger/results/route.ts
+- [X] T034 [US1] Add Vercel Cron config for daily schedule collection (06:00) in vercel.json
+- [X] T035 [US1] Create cron route src/app/api/ingestion/cron/schedules/route.ts
 
-**Checkpoint**: User Story 2 complete - users can filter by date and race type
-
----
-
-## Phase 5: User Story 3 - Filter by Track Location (Priority: P3)
-
-**Goal**: Users can filter results by specific track/venue
-
-**Independent Test**: Select track filter, verify only results from that track appear
-
-### Tests (TDD - write first, ensure FAIL)
-
-- [x] T034 [P] [US3] Write failing test for TrackFilter component in src/components/TrackFilter.test.tsx
-- [x] T035 [P] [US3] Write failing E2E test for track filtering in e2e/tests/results.spec.ts
-
-### Implementation
-
-- [x] T036 [US3] Create TrackFilter component with type-aware options in src/components/TrackFilter.tsx
-- [x] T037 [US3] Integrate TrackFilter with ResultFilters in src/components/ResultFilters.tsx
-- [x] T038 [US3] Update API route to handle track filter parameter in src/app/api/results/route.ts
-
-**Checkpoint**: User Story 3 complete - users can filter by track location
+**Checkpoint**: US1 complete - 일정/출주표/결과 수집 기능 독립 테스트 가능
 
 ---
 
-## Phase 6: User Story 4 - Search by Jockey/Rider Name (Priority: P4)
+## Phase 4: User Story 2 - 배당률 시계열 수집 (Priority: P1)
 
-**Goal**: Users can search for results featuring a specific jockey or rider
+**Goal**: 경주 시작 전 배당률을 시간대별로 수집하여 TimescaleDB 하이퍼테이블에 저장
 
-**Independent Test**: Enter jockey name, verify matching results appear with name highlighted
+**Independent Test**:
+- POST /api/ingestion/trigger/odds 호출 시 odds_snapshots 테이블에 시계열 데이터 저장 확인
+- 1분 Cron 내에서 30초 간격 수집 동작 확인
 
-### Tests (TDD - write first, ensure FAIL)
+### Tests for User Story 2
 
-- [x] T039 [P] [US4] Write failing test for ResultSearch component in src/components/ResultSearch.test.tsx
-- [x] T040 [P] [US4] Write failing test for name highlighting in ResultCard in src/components/ResultCard.test.tsx
-- [x] T041 [P] [US4] Write failing E2E test for jockey search in e2e/tests/results.spec.ts
+- [X] T036 [P] [US2] Unit test for oddsPoller in tests/unit/ingestion/oddsPoller.test.ts
+- [X] T037 [P] [US2] Unit test for smart scheduler in tests/unit/ingestion/smartScheduler.test.ts
+- [X] T038 [P] [US2] Integration test for odds snapshots in tests/integration/db/oddsSnapshots.test.ts
 
-### Implementation
+### Implementation for User Story 2
 
-- [x] T042 [US4] Create ResultSearch component (uses M3SearchBar) with debounced input in src/components/ResultSearch.tsx
-- [x] T043 [US4] Add search highlighting to ResultCard component in src/components/ResultCard.tsx
-- [x] T044 [US4] Integrate search with URL state in src/app/results/page.tsx
-- [x] T045 [US4] Create NoResults component with suggestions in src/components/NoResults.tsx
+- [X] T039 [P] [US2] Create odds mapper in src/ingestion/mappers/oddsMapper.ts
+- [X] T040 [US2] Create smart scheduler utility in src/ingestion/utils/smartScheduler.ts (variable intervals: 5min/1min/30sec)
+- [X] T041 [US2] Implement oddsPoller job with variable intervals in src/ingestion/jobs/oddsPoller.ts (depends on T039, T040)
+- [X] T042 [US2] Create API route POST /api/ingestion/trigger/odds in src/app/api/ingestion/trigger/odds/route.ts
+- [X] T043 [US2] Add Vercel Cron config for odds collection (1-min interval) in vercel.json
+- [X] T044 [US2] Create cron route src/app/api/ingestion/cron/odds/route.ts with smart scheduling
 
-**Checkpoint**: User Story 4 complete - users can search by jockey/rider name
+**Checkpoint**: US2 complete - 배당률 시계열 수집 기능 독립 테스트 가능
 
 ---
 
-## Phase 7: User Story 5 - View Detailed Race Result (Priority: P5)
+## Phase 5: User Story 3 - 데이터베이스 조회 (Priority: P2)
 
-**Goal**: Users can expand a race card to see full details including all finishers and complete dividends
+**Goal**: 저장된 경주 데이터를 SQL로 조회하여 분석 가능
 
-**Independent Test**: Click on race card, verify detailed view shows all finishers with complete info
+**Independent Test**:
+- SELECT * FROM races WHERE race_date = '2024-12-10' 쿼리 동작 확인
+- odds_snapshots 시계열 쿼리 성능 < 100ms 확인
 
-### Tests (TDD - write first, ensure FAIL)
+### Tests for User Story 3
 
-- [x] T046 [P] [US5] Write failing test for ResultDetail component in src/components/ResultDetail.test.tsx
-- [x] T047 [P] [US5] Write failing E2E test for detail expansion in e2e/tests/results.spec.ts
+- [X] T045 [P] [US3] Unit test for race queries in tests/unit/db/raceQueries.test.ts
+- [X] T046 [P] [US3] Unit test for odds queries in tests/unit/db/oddsQueries.test.ts
 
-### Implementation
+### Implementation for User Story 3
 
-- [x] T048 [US5] Create ResultDetail component with full finisher list in src/components/ResultDetail.tsx
-- [x] T049 [US5] Add expand/collapse functionality (uses useCardExpansion hook) to ResultCard in src/components/ResultCard.tsx
-- [x] T050 [US5] Display complete dividend breakdown in ResultDetail in src/components/ResultDetail.tsx
+- [X] T047 [P] [US3] Create race query functions in src/lib/db/queries/races.ts (getRacesByDate, getRaceById, getRaceWithEntries)
+- [X] T048 [P] [US3] Create entry query functions in src/lib/db/queries/entries.ts (getEntriesByRace, getEntryStats)
+- [X] T049 [P] [US3] Create odds query functions in src/lib/db/queries/odds.ts (getOddsHistory, getOddsSummary, use continuous aggregate)
+- [X] T050 [P] [US3] Create result query functions in src/lib/db/queries/results.ts (getResultsByRace, getHorseWinRate, getJockeyStats)
+- [X] T051 [US3] Create query index file src/lib/db/queries/index.ts
 
-**Checkpoint**: User Story 5 complete - users can view complete race details
+**Checkpoint**: US3 complete - 데이터 조회 기능 독립 테스트 가능
+
+---
+
+## Phase 6: User Story 4 - 수집 실패 복구 (Priority: P2)
+
+**Goal**: API 호출 실패 시 자동 재시도(exponential backoff) 및 Slack 알림
+
+**Independent Test**:
+- 5회 재시도 후 실패 시 ingestion_failures 테이블에 기록 확인
+- GET /api/ingestion/failures 로 실패 목록 조회 확인
+- POST /api/ingestion/failures/{id}/retry 로 수동 재시도 확인
+
+### Tests for User Story 4
+
+- [X] T052 [P] [US4] Unit test for failure logger in tests/unit/ingestion/failureLogger.test.ts
+- [X] T053 [P] [US4] Unit test for Slack notifier in tests/unit/ingestion/slackNotifier.test.ts
+
+### Implementation for User Story 4
+
+- [X] T054 [P] [US4] Create failure logger in src/ingestion/utils/failureLogger.ts
+- [X] T055 [P] [US4] Create Slack notification service in src/ingestion/services/slackNotifier.ts
+- [X] T056 [US4] Update retry utility with failure logging in src/ingestion/utils/retry.ts (integrate failureLogger)
+- [X] T057 [US4] Create API route GET /api/ingestion/failures in src/app/api/ingestion/failures/route.ts
+- [X] T058 [US4] Create API route POST /api/ingestion/failures/[id]/retry in src/app/api/ingestion/failures/[id]/retry/route.ts
+- [X] T059 [US4] Create failure recovery cron job in src/ingestion/jobs/failureRecovery.ts
+
+**Checkpoint**: US4 complete - 실패 복구 기능 독립 테스트 가능
+
+---
+
+## Phase 7: User Story 5 - 수집 현황 모니터링 (Priority: P3)
+
+**Goal**: 데이터 수집 현황을 API로 조회 가능
+
+**Independent Test**:
+- GET /api/ingestion/status 호출 시 금일 수집 건수, 성공률, 마지막 수집 시각 반환 확인
+
+### Tests for User Story 5
+
+- [X] T060 [P] [US5] Unit test for status service in tests/unit/ingestion/statusService.test.ts
+
+### Implementation for User Story 5
+
+- [X] T061 [US5] Create status aggregation service in src/ingestion/services/statusService.ts
+- [X] T062 [US5] Create metrics tracking utility in src/ingestion/utils/metrics.ts
+- [X] T063 [US5] Create API route GET /api/ingestion/status in src/app/api/ingestion/status/route.ts
+
+**Checkpoint**: US5 complete - 모니터링 기능 독립 테스트 가능
 
 ---
 
 ## Phase 8: Polish & Cross-Cutting Concerns
 
-**Purpose**: Error handling, edge cases, performance, and final validation
+**Purpose**: Documentation, code quality, and final validation
 
-- [x] T051 [P] Add error state handling for API failures in src/app/results/page.tsx
-- [x] T052 [P] Add empty state for no results found in src/components/NoResults.tsx
-- [x] T053 [P] Add canceled race visual indicator in src/components/ResultCard.tsx
-- [x] T054 Handle missing dividend data gracefully in src/components/DividendDisplay.tsx
-- [x] T054a [P] Handle missing finisher data (null name/position) gracefully in src/components/ResultCard.tsx
-- [x] T054b [P] Handle missing track info gracefully in src/components/ResultCard.tsx
-- [x] T054c [P] Add unit tests for missing data scenarios in src/components/ResultCard.test.tsx
-- [x] T055 Add mobile-responsive styles to all result components
-- [x] T056 Run full E2E test suite with npm run test:e2e
-- [x] T057 Validate quickstart.md scenarios manually
-- [x] T058 Update Header navigation active state for /results
+- [X] T064 [P] Update quickstart.md with actual setup verification steps
+- [X] T065 [P] Add JSDoc comments to all public functions in src/lib/db/ and src/ingestion/
+- [X] T066 [P] Create README for ingestion module in src/ingestion/README.md
+- [ ] T067 Run all migrations on test database and validate (MANUAL: requires DB)
+- [ ] T068 Run quickstart.md validation (end-to-end test) (MANUAL: requires environment)
+- [ ] T069 Performance test: verify odds query < 100ms on 30-day data (MANUAL: requires data)
 
 ---
 
@@ -234,83 +224,133 @@
 
 ### Phase Dependencies
 
-- **Setup (Phase 1)**: No dependencies - can start immediately
-- **M3 Design System (Phase 1.5)**: Depends on Setup - BLOCKS all UI components
-- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories (API side)
-- **User Stories (Phase 3-7)**: Depend on BOTH Phase 1.5 (M3) and Phase 2 (API) completion
-  - US1 (Browse) → US2 (Date/Type Filter) → US3 (Track Filter) → US4 (Search) → US5 (Detail)
-  - Each story builds on previous but remains independently testable
-  - All UI components MUST use M3 base components (M3Card, M3Chip, M3SearchBar)
-- **Polish (Phase 8)**: Depends on all user stories being complete
+```
+Phase 1 (Setup)
+    ↓
+Phase 2 (Foundational) ─── BLOCKS ALL USER STORIES
+    ↓
+┌───────────────────────────────────────────────────┐
+│  User Stories can proceed in parallel after P2    │
+│                                                   │
+│  Phase 3 (US1: P1) ──┐                           │
+│  Phase 4 (US2: P1) ──┼── Can run in parallel     │
+│  Phase 5 (US3: P2) ──┤                           │
+│  Phase 6 (US4: P2) ──┤                           │
+│  Phase 7 (US5: P3) ──┘                           │
+└───────────────────────────────────────────────────┘
+    ↓
+Phase 8 (Polish)
+```
 
 ### User Story Dependencies
 
-- **US1 (P1)**: Foundation only - MVP deliverable
-- **US2 (P2)**: Foundation + US1 components (uses ResultsList, ResultCard)
-- **US3 (P3)**: Foundation + US2 (extends ResultFilters)
-- **US4 (P4)**: Foundation + US1 (extends ResultCard for highlighting)
-- **US5 (P5)**: Foundation + US1 (extends ResultCard for expansion)
+| Story | Depends On | Can Parallel With |
+|-------|------------|-------------------|
+| US1 (P1) | Phase 2 only | US2, US3, US4, US5 |
+| US2 (P1) | Phase 2 only | US1, US3, US4, US5 |
+| US3 (P2) | Phase 2 only | US1, US2, US4, US5 |
+| US4 (P2) | Phase 2 only | US1, US2, US3, US5 |
+| US5 (P3) | Phase 2 only | US1, US2, US3, US4 |
 
 ### Within Each User Story
 
-1. Tests MUST be written and FAIL before implementation
-2. Components before page integration
-3. Simple components before composite components
-4. Core functionality before enhancements
-
-### Parallel Opportunities
-
-- All Setup tasks (T001-T004) can run in parallel
-- All Foundational tests (T005-T008) can run in parallel
-- Within each story, all test tasks marked [P] can run in parallel
-- Within each story, independent component tasks marked [P] can run in parallel
+1. Tests MUST be written and FAIL before implementation (TDD)
+2. Mappers/Utilities before Jobs
+3. Jobs before API Routes
+4. API Routes before Cron config
 
 ---
 
-## Parallel Example: User Story 1
+## Parallel Execution Examples
+
+### Phase 2: All Schema Files (6 tasks)
 
 ```bash
-# Launch all tests for User Story 1 together:
-Task T014: "Write failing test for ResultCard component"
-Task T015: "Write failing test for ResultsList component"
-Task T016: "Write failing test for results page"
-Task T017: "Write failing E2E test for browse results"
+# Launch all schema files in parallel:
+T006: "Create tracks schema in src/lib/db/schema/tracks.ts"
+T007: "Create races schema in src/lib/db/schema/races.ts"
+T008: "Create entries schema in src/lib/db/schema/entries.ts"
+T009: "Create oddsSnapshots schema in src/lib/db/schema/oddsSnapshots.ts"
+T010: "Create results schema in src/lib/db/schema/results.ts"
+T011: "Create ingestionFailures schema in src/lib/db/schema/ingestionFailures.ts"
+```
 
-# Launch parallel component creation:
-Task T018: "Create ResultCard component"
-Task T019: "Create DividendDisplay component"
+### User Story 1: Tests + API Clients + Mappers (8 tasks)
+
+```bash
+# Launch US1 tests in parallel:
+T019: "Unit test for schedulePoller"
+T020: "Unit test for entryPoller"
+T021: "Unit test for resultPoller"
+T022: "Integration test for schedule ingestion"
+
+# Launch US1 implementations in parallel:
+T023: "Create KRA API client wrapper"
+T024: "Create KSPO API client wrapper"
+T025: "Create schedule mapper"
+T026: "Create entry mapper"
+T027: "Create result mapper"
+```
+
+### Multiple User Stories in Parallel (Team Strategy)
+
+```bash
+# Developer A: US1 (일정/출주표/결과)
+T019-T035
+
+# Developer B: US2 (배당률 시계열)
+T036-T044
+
+# Developer C: US3 + US4 (조회 + 실패복구)
+T045-T059
 ```
 
 ---
 
 ## Implementation Strategy
 
-### MVP First (User Story 1 Only)
+### MVP First (US1 + US2 Only) - 권장
 
-1. Complete Phase 1: Setup (T001-T004)
-2. Complete Phase 2: Foundational (T005-T013)
-3. Complete Phase 3: User Story 1 (T014-T024)
-4. **STOP and VALIDATE**: Test at /results - users can browse recent results
-5. Deploy MVP if ready
+1. Complete Phase 1: Setup
+2. Complete Phase 2: Foundational (DB Schema)
+3. Complete Phase 3: User Story 1 (일정/출주표/결과 수집)
+4. Complete Phase 4: User Story 2 (배당률 시계열)
+5. **STOP and VALIDATE**: 데이터 수집 파이프라인 독립 테스트
+6. Deploy to staging
 
-### Incremental Delivery
+### Full Implementation
 
-1. Setup + Foundational → API works
-2. Add US1 → Browse results works → Deploy MVP!
-3. Add US2 → Date/type filtering works → Deploy
-4. Add US3 → Track filtering works → Deploy
-5. Add US4 → Jockey search works → Deploy
-6. Add US5 → Detail view works → Deploy
-7. Polish → Error handling, edge cases → Final deploy
+1. Setup + Foundational → Foundation ready
+2. US1 (일정 수집) → Test → Checkpoint
+3. US2 (배당률) → Test → Checkpoint  
+4. US3 (조회) → Test → Checkpoint
+5. US4 (실패복구) → Test → Checkpoint
+6. US5 (모니터링) → Test → Checkpoint
+7. Polish → Final validation → Deploy
+
+---
+
+## Task Summary
+
+| Phase | Task Count | Parallel Tasks |
+|-------|------------|----------------|
+| Setup | 5 | 3 |
+| Foundational | 13 | 8 |
+| US1 (P1) | 17 | 9 |
+| US2 (P1) | 9 | 4 |
+| US3 (P2) | 7 | 6 |
+| US4 (P2) | 8 | 4 |
+| US5 (P3) | 4 | 1 |
+| Polish | 6 | 3 |
+| **Total** | **69** | **38 (55%)** |
 
 ---
 
 ## Notes
 
-- [P] tasks = different files, no dependencies within phase
-- [Story] label (US1-US5) maps task to specific user story
-- TDD required per constitution: tests fail first, then implement
-- Commit after each task following constitution commit convention
-- `chore(structure):` for setup/structure tasks
-- `feat(behavior):` for implementation tasks
-- `test:` for test-only tasks
+- [P] tasks = different files, no dependencies
+- [US#] label maps task to specific user story
+- Each user story independently completable and testable
+- TDD: Verify tests fail before implementing
+- Commit after each task or logical group
+- Stop at any checkpoint to validate story independently
