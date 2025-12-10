@@ -190,8 +190,9 @@ describe('Header Component', () => {
       render(<Header />);
 
       const menuButton = screen.getByRole('button', { name: '메뉴 열기' });
-      expect(menuButton.className).toContain('min-h-[44px]');
-      expect(menuButton.className).toContain('min-w-[44px]');
+      // Uses design token classes for touch target sizes
+      expect(menuButton.className).toContain('min-h-touch');
+      expect(menuButton.className).toContain('min-w-touch');
     });
   });
 });

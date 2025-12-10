@@ -1,70 +1,96 @@
 // src/lib/utils/errorLogger.test.ts
 
-import { logError, logApiError, initErrorLogger, ErrorSeverity } from './errorLogger';
-
-// Mock Sentry
-jest.mock('@sentry/nextjs', () => ({
-  init: jest.fn(),
-  captureException: jest.fn(),
-  captureMessage: jest.fn(),
-  setTag: jest.fn(),
-  setContext: jest.fn(),
-  withScope: jest.fn((callback) => callback({ setTag: jest.fn(), setContext: jest.fn() })),
-}));
-
-import * as Sentry from '@sentry/nextjs';
+import {
+  logError,
+  logApiError,
+  logExternalApiError,
+  initErrorLogger,
+  ErrorSeverity,
+} from './errorLogger';
 
 describe('errorLogger', () => {
+  let consoleErrorSpy: jest.SpyInstance;
+  let consoleWarnSpy: jest.SpyInstance;
+  let consoleInfoSpy: jest.SpyInstance;
+
   beforeEach(() => {
-    jest.clearAllMocks();
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    consoleInfoSpy = jest.spyOn(console, 'info').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleErrorSpy.mockRestore();
+    consoleWarnSpy.mockRestore();
+    consoleInfoSpy.mockRestore();
   });
 
   describe('initErrorLogger', () => {
-    it('should initialize Sentry with DSN', () => {
-      const dsn = 'https://test@sentry.io/123';
-      initErrorLogger(dsn);
+    it('should log info message when Sentry is not available', () => {
+      initErrorLogger('https://test@sentry.io/123');
 
-      expect(Sentry.init).toHaveBeenCalledWith(
-        expect.objectContaining({
-          dsn,
-        })
-      );
-    });
-
-    it('should initialize with environment setting', () => {
-      const dsn = 'https://test@sentry.io/123';
-      initErrorLogger(dsn, { environment: 'production' });
-
-      expect(Sentry.init).toHaveBeenCalledWith(
-        expect.objectContaining({
-          dsn,
-          environment: 'production',
-        })
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        '[ErrorLogger] Sentry not available, using console fallback'
       );
     });
   });
 
   describe('logError', () => {
-    it('should capture exception with Sentry', () => {
+    it('should log error to console with ERROR severity', () => {
       const error = new Error('Test error');
       logError(error);
 
-      expect(Sentry.captureException).toHaveBeenCalledWith(error);
+      expect(consoleErrorSpy).toHaveBeenCalled();
+      const [prefix, message] = consoleErrorSpy.mock.calls[0];
+      expect(prefix).toBe('[ERROR]');
+      expect(message).toBe('Test error');
     });
 
-    it('should include context when provided', () => {
+    it('should log error to console with FATAL severity', () => {
+      const error = new Error('Fatal error');
+      logError(error, { severity: ErrorSeverity.FATAL });
+
+      expect(consoleErrorSpy).toHaveBeenCalled();
+      const [prefix] = consoleErrorSpy.mock.calls[0];
+      expect(prefix).toBe('[FATAL]');
+    });
+
+    it('should log warning to console with WARNING severity', () => {
+      const error = new Error('Warning message');
+      logError(error, { severity: ErrorSeverity.WARNING });
+
+      expect(consoleWarnSpy).toHaveBeenCalled();
+      const [prefix] = consoleWarnSpy.mock.calls[0];
+      expect(prefix).toBe('[WARNING]');
+    });
+
+    it('should log string messages', () => {
+      logError('String error message');
+
+      expect(consoleErrorSpy).toHaveBeenCalled();
+      const [prefix, message] = consoleErrorSpy.mock.calls[0];
+      expect(prefix).toBe('[ERROR]');
+      expect(message).toBe('String error message');
+    });
+
+    it('should include context in log data', () => {
       const error = new Error('Test error');
       const context = { userId: '123', action: 'fetchRaces' };
       logError(error, { context });
 
-      expect(Sentry.withScope).toHaveBeenCalled();
+      expect(consoleErrorSpy).toHaveBeenCalled();
+      const logData = consoleErrorSpy.mock.calls[0][3];
+      expect(logData.context).toEqual(context);
     });
 
-    it('should set severity level', () => {
-      const error = new Error('Critical error');
-      logError(error, { severity: ErrorSeverity.ERROR });
+    it('should include tags in log data', () => {
+      const error = new Error('Test error');
+      const tags = { component: 'RaceList', action: 'fetch' };
+      logError(error, { tags });
 
-      expect(Sentry.withScope).toHaveBeenCalled();
+      expect(consoleErrorSpy).toHaveBeenCalled();
+      const logData = consoleErrorSpy.mock.calls[0][3];
+      expect(logData.tags).toEqual(tags);
     });
   });
 
@@ -77,21 +103,32 @@ describe('errorLogger', () => {
         statusCode: 408,
       });
 
-      expect(Sentry.withScope).toHaveBeenCalled();
+      expect(consoleWarnSpy).toHaveBeenCalled();
     });
 
-    it('should include response time when provided', () => {
-      const error = new Error('Slow API');
+    it('should use ERROR severity for 5xx status codes', () => {
+      const error = new Error('Server error');
       logApiError(error, {
         endpoint: '/api/races/horse',
         method: 'GET',
-        responseTime: 5000,
+        statusCode: 500,
       });
 
-      expect(Sentry.withScope).toHaveBeenCalled();
+      expect(consoleErrorSpy).toHaveBeenCalled();
     });
 
-    it('should tag external API errors correctly', () => {
+    it('should use WARNING severity for non-5xx status codes', () => {
+      const error = new Error('Not found');
+      logApiError(error, {
+        endpoint: '/api/races/horse',
+        method: 'GET',
+        statusCode: 404,
+      });
+
+      expect(consoleWarnSpy).toHaveBeenCalled();
+    });
+
+    it('should include API provider tag for external APIs', () => {
       const error = new Error('KRA API failed');
       logApiError(error, {
         endpoint: 'https://kra.api.go.kr/races',
@@ -100,7 +137,39 @@ describe('errorLogger', () => {
         apiProvider: 'KRA',
       });
 
-      expect(Sentry.withScope).toHaveBeenCalled();
+      expect(consoleWarnSpy).toHaveBeenCalled();
+      const logData = consoleWarnSpy.mock.calls[0][3];
+      expect(logData.tags['api.provider']).toBe('KRA');
+      expect(logData.tags['api.type']).toBe('external');
+    });
+  });
+
+  describe('logExternalApiError', () => {
+    it('should log KRA API errors', () => {
+      const error = new Error('KRA API timeout');
+      logExternalApiError(error, 'KRA', '/races/today', 5000);
+
+      expect(consoleWarnSpy).toHaveBeenCalled();
+      const logData = consoleWarnSpy.mock.calls[0][3];
+      expect(logData.tags['api.provider']).toBe('KRA');
+    });
+
+    it('should log KSPO Cycle API errors', () => {
+      const error = new Error('KSPO API error');
+      logExternalApiError(error, 'KSPO_CYCLE', '/cycle/races');
+
+      expect(consoleWarnSpy).toHaveBeenCalled();
+      const logData = consoleWarnSpy.mock.calls[0][3];
+      expect(logData.tags['api.provider']).toBe('KSPO_CYCLE');
+    });
+
+    it('should log KSPO Boat API errors', () => {
+      const error = new Error('KSPO Boat API error');
+      logExternalApiError(error, 'KSPO_BOAT', '/boat/races');
+
+      expect(consoleWarnSpy).toHaveBeenCalled();
+      const logData = consoleWarnSpy.mock.calls[0][3];
+      expect(logData.tags['api.provider']).toBe('KSPO_BOAT');
     });
   });
 

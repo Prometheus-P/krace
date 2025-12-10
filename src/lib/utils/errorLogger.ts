@@ -1,7 +1,14 @@
 // src/lib/utils/errorLogger.ts
-// Error logging utility for Sentry integration
+// Error logging utility with optional Sentry integration
+//
+// To enable Sentry:
+// 1. Install: npm install @sentry/nextjs
+// 2. Set NEXT_PUBLIC_SENTRY_DSN in environment variables
+// 3. Uncomment the Sentry import and initialization below
 
-import * as Sentry from '@sentry/nextjs';
+// Sentry integration is currently disabled
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Sentry: any = null;
 
 /**
  * Error severity levels
@@ -57,58 +64,64 @@ export interface ApiErrorOptions {
  * Initialize error logger (Sentry)
  */
 export function initErrorLogger(dsn: string, options: ErrorLoggerOptions = {}): void {
-  Sentry.init({
-    dsn,
-    environment: options.environment || process.env.NODE_ENV,
-    release: options.release,
-    tracesSampleRate: options.tracesSampleRate ?? 0.1,
-    // Only capture unhandled errors
-    integrations: (integrations) =>
-      integrations.filter((integration) => integration.name !== 'Breadcrumbs'),
-  });
+  if (Sentry && Sentry.init) {
+    Sentry.init({
+      dsn,
+      environment: options.environment || process.env.NODE_ENV,
+      release: options.release,
+      tracesSampleRate: options.tracesSampleRate ?? 0.1,
+      integrations: (integrations: { name: string }[]) =>
+        integrations.filter((integration) => integration.name !== 'Breadcrumbs'),
+    });
+  } else {
+    console.info('[ErrorLogger] Sentry not available, using console fallback');
+  }
 }
 
 /**
- * Log an error to Sentry
+ * Log an error to Sentry or console
  */
-export function logError(
-  error: Error | string,
-  options: LogErrorOptions = {}
-): void {
+export function logError(error: Error | string, options: LogErrorOptions = {}): void {
   const { severity = ErrorSeverity.ERROR, context, tags } = options;
 
-  Sentry.withScope((scope) => {
-    // Set severity level
-    scope.setTag('severity', severity);
+  if (Sentry && Sentry.withScope) {
+    Sentry.withScope((scope: { setTag: (key: string, value: string) => void; setContext: (name: string, ctx: object) => void }) => {
+      scope.setTag('severity', severity);
 
-    // Set custom tags
-    if (tags) {
-      Object.entries(tags).forEach(([key, value]) => {
-        scope.setTag(key, value);
-      });
-    }
+      if (tags) {
+        Object.entries(tags).forEach(([key, value]) => {
+          scope.setTag(key, value);
+        });
+      }
 
-    // Set context
-    if (context) {
-      scope.setContext('error_context', context);
-    }
+      if (context) {
+        scope.setContext('error_context', context);
+      }
 
-    // Capture the error
+      if (typeof error === 'string') {
+        Sentry.captureMessage(error, severity);
+      } else {
+        Sentry.captureException(error);
+      }
+    });
+  } else {
+    // Fallback to console logging
+    const logData = { severity, tags, context };
+    const consoleMethod =
+      severity === 'error' || severity === 'fatal' ? console.error : console.warn;
+
     if (typeof error === 'string') {
-      Sentry.captureMessage(error, severity as Sentry.SeverityLevel);
+      consoleMethod(`[${severity.toUpperCase()}]`, error, logData);
     } else {
-      Sentry.captureException(error);
+      consoleMethod(`[${severity.toUpperCase()}]`, error.message, error, logData);
     }
-  });
+  }
 }
 
 /**
  * Log an API error with additional API-specific context
  */
-export function logApiError(
-  error: Error | string,
-  apiOptions: ApiErrorOptions
-): void {
+export function logApiError(error: Error | string, apiOptions: ApiErrorOptions): void {
   const {
     endpoint,
     method,

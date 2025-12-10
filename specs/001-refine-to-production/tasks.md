@@ -64,7 +64,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - 해당 변경에 대한 유닛 테스트(Jest)가 추가되고 통과한다.
 - **Related Tasks**: `Task: Race 도메인 타입 확장 (ID 및 필수 필드)`
 
-### Task: 도메인 타입 파일 분리 및 매핑 레이어 구현
+### Task: 도메인 타입 파일 분리 및 매핑 레이어 구현 [X]
 - **Label**: `refactor`, `enhancement`, `test`
 - **Description**: `src/types` 디렉토리 하위에 도메인 중심의 타입 정의 파일을 분리 생성하고, 외부 API raw 응답 타입과 내부 도메인 타입을 분리하며 매핑 레이어를 명시적으로 구현한다.
 - **Target Files/Directories**:
@@ -114,7 +114,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - 분리된 클라이언트 모듈에 대한 유닛 테스트가 추가되고 통과한다.
 - **Related Tasks**: `Task: 외부 API 클라이언트 모듈 분리 (KRA)`, `Task: 외부 API 클라이언트 모듈 분리 (KSPO 경륜)`
 
-### Task: RaceService 레이어 추가 및 기존 Route 핸들러 리팩토링
+### Task: RaceService 레이어 추가 및 기존 Route 핸들러 리팩토링 [X]
 - **Label**: `refactor`, `enhancement`, `test`
 - **Description**: `src/lib/services/raceService.ts` (혹은 디렉토리)를 생성하여 고수준 도메인 함수를 제공하고, 기존 `src/app/api/races/.../route.ts` 및 `src/app/api/results/.../route.ts` 핸들러들이 `RaceService`를 호출하도록 수정한다. Route 핸들러의 역할은 파라미터 검증, 서비스 호출, 에러 변환으로 제한한다.
 - **Target Files/Directories**:
@@ -127,7 +127,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - `RaceService` 및 관련 Route 핸들러에 대한 유닛/통합 테스트가 추가되고 통과한다.
 - **Related Tasks**: `Task: 외부 API 클라이언트 모듈 분리 (KRA)`, `Task: 외부 API 클라이언트 모듈 분리 (KSPO 경륜)`, `Task: 외부 API 클라이언트 모듈 분리 (KSPO 경정)`
 
-### Task: API 에러 처리 정책 구현
+### Task: API 에러 처리 정책 구현 [X]
 - **Label**: `enhancement`, `test`
 - **Description**: 외부 API 오류, 타임아웃, null 응답 시 일관된 기본값/에러 메시지를 반환하도록 에러 처리 로직을 구현한다. "데이터 제공 기관(API) 지연으로 최신 정보가 표시되지 않을 수 있다"는 메시지를 프론트에 전달할 수 있게 한다.
 - **Target Files/Directories**:
@@ -142,7 +142,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
 
 ## Workstream 3: UI/UX (User Interface/User Experience)
 
-### Task: 경주 상세 페이지 기본 레이아웃 구성 (상단 요약 카드)
+### Task: 경주 상세 페이지 기본 레이아웃 구성 (상단 요약 카드) [X]
 - **Label**: `enhancement`, `refactor`, `test`
 - **Description**: 경주 상세 페이지 (`src/app/race/[id]/page.tsx`)에 종목, 경주장, 회차, 등급, 거리, 출발 시간, 상태를 한눈에 보여주는 `상단 요약 카드` 컴포넌트를 구현한다.
 - **Target Files/Directories**:
@@ -154,7 +154,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - `RaceSummaryCard` 컴포넌트에 대한 유닛 테스트(Jest)가 추가되고 통과한다.
 - **Related Tasks**: `Task: 경주 상세 페이지 기본 레이아웃 구성 (출전표 테이블)`, `Task: RaceService 레이어 추가 및 기존 Route 핸들러 리팩토링`
 
-### Task: 경주 상세 페이지 기본 레이아웃 구성 (통합 출전표 테이블)
+### Task: 경주 상세 페이지 기본 레이아웃 구성 (통합 출전표 테이블) [X]
 - **Label**: `enhancement`, `refactor`, `test`
 - **Description**: 경주 상세 페이지에 번호, 마/선수 이름, 기수/조교사/모터/보트, 부담중량/기록, 최근 성적, 배당(단승/복승/쌍승)을 하나의 테이블로 보여주는 `통합 출전표 테이블` 컴포넌트를 구현한다. 현재의 중복되는 섹션은 제거한다.
 - **Target Files/Directories**:
@@ -168,7 +168,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - 기존 `HorseEntryTable.tsx`는 `EntryTable.tsx`로 통합되거나 참조하는 형태로 수정된다.
 - **Related Tasks**: `Task: 경주 상세 페이지 기본 레이아웃 구성 (상단 요약 카드)`
 
-### Task: 경주 상세 페이지 기본 레이아웃 구성 (결과/배당 섹션)
+### Task: 경주 상세 페이지 기본 레이아웃 구성 (결과/배당 섹션) [X]
 - **Label**: `enhancement`, `refactor`, `test`
 - **Description**: 경주 상세 페이지에 착순 순서대로 순위, 번호, 이름, 배당금(단승/복승/쌍승/삼쌍 등)을 테이블로 정리하는 `결과/배당 섹션` 컴포넌트를 구현한다. 값이 없는 경우(`아직 결과 미집계`, `복승 미발매`) 적절한 문구를 표시한다.
 - **Target Files/Directories**:
@@ -181,7 +181,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - `RaceResultsOdds` 컴포넌트에 대한 유닛 테스트(Jest)가 추가되고 통과한다.
 - **Related Tasks**: `Task: 경주 상세 페이지 기본 레이아웃 구성 (통합 출전표 테이블)`
 
-### Task: 경주 상세 페이지 기본 레이아웃 구성 (핵심 인사이트 블록)
+### Task: 경주 상세 페이지 기본 레이아웃 구성 (핵심 인사이트 블록) [X]
 - **Label**: `enhancement`, `test`
 - **Description**: 경주 상세 페이지에 인기 상위 3두(또는 선수)의 배당, 최근 성적, 실제 결과를 한눈에 비교하는 요약 카드인 `핵심 인사이트 블록` 컴포넌트를 구현한다.
 - **Target Files/Directories**:
@@ -199,7 +199,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - `KeyInsightBlock` 컴포넌트에 대한 유닛 테스트(Jest)가 추가되고 통과한다.
 - **Related Tasks**: `Task: 경주 상세 페이지 기본 레이아웃 구성 (결과/배당 섹션)`
 
-### Task: 로딩/에러/빈 상태 UX 적용 (Skeleton/Shimmer/Snackbar)
+### Task: 로딩/에러/빈 상태 UX 적용 (Skeleton/Shimmer/Snackbar) [X]
 - **Label**: `enhancement`, `test`
 - **Description**: 경주 상세 페이지에 디자인 시스템에 정의된 `Skeleton`/`Shimmer`/`Snackbar`를 활용하여 일관된 로딩, 에러, 빈 상태 UX를 적용한다. 로딩 시 섹션별 Skeleton 유지, 에러 시 재시도 버튼 포함 에러 컴포넌트 표시.
 - **Target Files/Directories**:
@@ -215,7 +215,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
 
 ## Workstream 4: 관측/SEO (Observability/SEO)
 
-### Task: GA4 및 Search Console 연동 문서화 및 이벤트 구현
+### Task: GA4 및 Search Console 연동 문서화 및 이벤트 구현 [X]
 - **Label**: `ops`, `seo`, `enhancement`, `test`
 - **Description**: `NEXT_PUBLIC_GA_ID`, `Search Console` 설정을 `ENVIRONMENT.md`에 문서화하고, `tab_click` 및 `race_detail_view` 최소 이벤트를 구현한다.
 - **Target Files/Directories**:
@@ -232,7 +232,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - GA 이벤트 로깅 함수에 대한 유닛 테스트(Jest) 및 E2E 테스트(Playwright)가 추가되고 통과한다.
 - **Related Tasks**: `Task: 에러/장애 모니터링 시스템 연동`, `Task: 경주 상세 페이지 URL 패턴 및 Schema.org 적용`
 
-### Task: 에러/장애 모니터링 시스템 연동 (Sentry 예시)
+### Task: 에러/장애 모니터링 시스템 연동 (Sentry 예시) [X]
 - **Label**: `ops`, `enhancement`, `test`
 - **Description**: Sentry 또는 유사 서비스 하나를 Next.js 서버 에러 및 외부 API 호출 에러를 중앙에서 모니터링할 수 있도록 연동한다.
 - **Target Files/Directories**:
@@ -247,7 +247,7 @@ This document outlines the detailed tasks for the v1.4 Refine Cycle, categorized
     - 에러 로깅 함수에 대한 유닛 테스트(Jest)가 추가되고 통과한다.
 - **Related Tasks**: `Task: API 에러 처리 정책 구현`
 
-### Task: 경주 상세 페이지 URL 패턴 및 Schema.org 적용
+### Task: 경주 상세 페이지 URL 패턴 및 Schema.org 적용 [X]
 - **Label**: `seo`, `enhancement`, `test`
 - **Description**: 경주 상세 페이지 URL 패턴을 "type/date/track/raceNo" 위주로 읽기 좋게 정리하고, `head` 메타에 `schema.org SportsEvent`를 적용한다.
 - **Target Files/Directories**:
