@@ -186,7 +186,32 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID; // 의도적 노출
    NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
    ```
 
-### 3.4 Google AdSense 설정
+#### 커스텀 이벤트 구현
+
+RaceLab은 다음 GA4 커스텀 이벤트를 추적합니다:
+
+| 이벤트명           | 트리거 시점      | 파라미터                                  |
+| ------------------ | ---------------- | ----------------------------------------- |
+| `tab_click`        | 탭 전환 클릭 시  | `race_type`: 'horse' \| 'cycle' \| 'boat' |
+| `race_detail_view` | 경주 상세 조회시 | `race_id`, `race_type`, `track`, `race_no` |
+
+이벤트 트래킹 유틸리티: `src/lib/utils/ga.ts`
+
+### 3.4 Google Search Console 설정
+
+1. [Google Search Console](https://search.google.com/search-console/) 접속
+2. 속성 추가 > URL 접두사 > `https://racelab.kr` 입력
+3. HTML 태그 인증 방법 선택
+4. 메타 태그의 `content` 값 복사
+5. `src/app/layout.tsx`의 `metadata.verification.google` 업데이트:
+   ```typescript
+   verification: {
+     google: 'your-verification-code', // 여기에 입력
+   }
+   ```
+6. 배포 후 Search Console에서 인증 확인
+
+### 3.5 Google AdSense 설정
 
 1. [Google AdSense](https://www.google.com/adsense/) 가입
 2. 사이트 추가 및 승인 대기
