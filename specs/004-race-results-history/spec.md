@@ -1,191 +1,188 @@
-# Feature Specification: Race Results History
+# Feature Specification: Data Platform Phase 1 (Ingestion + Storage)
 
-**Feature Branch**: `001-race-results-history`
-**Created**: 2025-12-02
+**Feature Branch**: `004-data-platform-phase1`
+**Created**: 2025-12-10
 **Status**: Draft
-**Input**: User description: "Race results history - Allow users to search and view historical race results for horse, cycle, and boat racing. Users should be able to filter by date range, race type, track location, and search for specific jockeys/riders. Display past race results with finishing positions, times, and dividend payouts."
+**Reference**: `docs/data-platform-spec.md` (전체 데이터 플랫폼 스펙)
+
+## Overview
+
+RaceLab을 "정보 뷰어"에서 "데이터 플랫폼"으로 전환하기 위한 Phase 1 구현입니다.
+Phase 1의 목표는 **데이터 수집 파이프라인**과 **저장소 기초**를 구축하는 것입니다.
+
+### Phase 1 범위
+
+1. **Database Schema**: PostgreSQL + TimescaleDB 테이블 설계 및 마이그레이션
+2. **Ingestion Pipeline**: KRA/KSPO API 폴링 워커 구현
+3. **Odds Snapshots**: 배당률 시계열 데이터 수집 로직
+4. **Historical Data**: 가능한 범위의 과거 데이터 수집
 
 ## User Scenarios & Testing _(mandatory)_
 
-### User Story 1 - Browse Recent Results (Priority: P1)
+### User Story 1 - 데이터 수집 자동화 (Priority: P1)
 
-A user wants to quickly see race results from today or recent days without complex filtering. They open the results page and immediately see the most recent completed races across all types, with the ability to scroll through results chronologically.
+시스템 운영자가 KRA/KSPO API에서 경주 데이터를 자동으로 수집하여 데이터베이스에 저장합니다.
 
-**Why this priority**: This is the core value proposition - users need immediate access to recent results without friction. Most users visit to check results from races that just finished.
-
-**Independent Test**: Can be fully tested by navigating to the results page and verifying recent race results are displayed with finishing positions and payouts.
+**Why this priority**: 데이터 축적 없이는 분석 기능(Phase 2+)을 구현할 수 없습니다. 데이터 수집은 전체 플랫폼의 기초입니다.
 
 **Acceptance Scenarios**:
 
-1. **Given** a user navigates to the results page, **When** the page loads, **Then** they see completed races from today (or most recent race day if no races today) sorted by most recent first
-2. **Given** race results are displayed, **When** a user views a race card, **Then** they see race type icon, track name, race number, date/time, top 3 finishers with positions, and payout amounts
-3. **Given** multiple races exist, **When** the user scrolls, **Then** additional results load progressively (pagination or infinite scroll)
+1. **Given** 스케줄러가 실행 중일 때, **When** 매일 06:00이 되면, **Then** 당일 경주 일정이 `races` 테이블에 저장된다
+2. **Given** 경주 시작 2시간 전일 때, **When** 폴러가 실행되면, **Then** 출주표가 `entries` 테이블에 저장된다
+3. **Given** 경주 종료 후 5분이 지났을 때, **When** 폴러가 실행되면, **Then** 결과가 `results` 테이블에 저장된다
 
 ---
 
-### User Story 2 - Filter by Date and Race Type (Priority: P2)
+### User Story 2 - 배당률 시계열 수집 (Priority: P1)
 
-A user wants to find results from a specific day or filter by their preferred race type (horse, cycle, or boat). They use filter controls to narrow down results to exactly what they're looking for.
+시스템이 경주 시작 전 배당률을 시간대별로 수집하여 시계열 데이터로 저장합니다.
 
-**Why this priority**: Filtering is essential for users who follow specific race types or want to look up results from a particular date. This enables targeted research beyond just browsing recent results.
-
-**Independent Test**: Can be fully tested by applying date range and race type filters and verifying only matching results appear.
+**Why this priority**: Odds 변동 분석(Odds Radar)은 Phase 2 핵심 기능이며, 이를 위해 시계열 데이터가 필수입니다.
 
 **Acceptance Scenarios**:
 
-1. **Given** a user is on the results page, **When** they select a date range (single date or range), **Then** only results from that period are displayed
-2. **Given** a user selects a race type filter (horse, cycle, or boat), **When** the filter is applied, **Then** only results of that race type appear
-3. **Given** multiple filters are applied, **When** the user views results, **Then** results match ALL selected filter criteria
-4. **Given** a user has applied filters, **When** they clear filters, **Then** all recent results are shown again
+1. **Given** 경주 시작 60분 전부터, **When** 5분 간격으로 폴러가 실행되면, **Then** 배당률이 `odds_snapshots` 테이블에 저장된다
+2. **Given** 경주 시작 15분 전부터, **When** 1분 간격으로 폴러가 실행되면, **Then** 더 촘촘한 배당률이 저장된다
+3. **Given** 경주 시작 5분 전부터, **When** 30초 간격으로 폴러가 실행되면, **Then** 막판 배당 변동이 캡처된다
 
 ---
 
-### User Story 3 - Filter by Track Location (Priority: P3)
+### User Story 3 - 데이터베이스 조회 (Priority: P2)
 
-A user wants to see results from a specific track location (e.g., Seoul Racecourse, Gwangmyeong Velodrome). They select a track from the available options to view only races from that venue.
+개발자/분석가가 저장된 경주 데이터를 SQL로 조회하여 분석할 수 있습니다.
 
-**Why this priority**: Track-specific filtering is important for local fans or those who follow specific venues, but is less commonly used than date/type filtering.
-
-**Independent Test**: Can be fully tested by selecting a track filter and verifying only results from that track are displayed.
+**Why this priority**: Phase 2 Insights 기능 개발을 위해 데이터 접근이 필요합니다.
 
 **Acceptance Scenarios**:
 
-1. **Given** a user selects a track filter, **When** the filter is applied, **Then** only results from that track are shown
-2. **Given** a user has selected a race type, **When** they view track filter options, **Then** only tracks relevant to that race type are shown (e.g., selecting "horse" shows Seoul/Busan/Jeju only)
+1. **Given** 데이터가 수집되었을 때, **When** `SELECT * FROM races WHERE race_date = '2024-12-10'` 실행, **Then** 해당 날짜의 모든 경주가 반환된다
+2. **Given** 배당 데이터가 수집되었을 때, **When** `SELECT * FROM odds_snapshots WHERE race_id = 'horse-1-3-20241210'` 실행, **Then** 해당 경주의 모든 배당 스냅샷이 시간순으로 반환된다
+3. **Given** 결과 데이터가 저장되었을 때, **When** 말별 승률 집계 쿼리 실행, **Then** 정확한 통계가 계산된다
 
 ---
 
-### User Story 4 - Search by Jockey/Rider Name (Priority: P4)
+### User Story 4 - 수집 실패 복구 (Priority: P2)
 
-A user wants to find race results featuring a specific jockey (horse racing) or rider (cycle/boat racing). They enter a name in the search field to find all races where that person participated.
+시스템 운영자가 API 호출 실패 시 자동 재시도 및 알림을 받습니다.
 
-**Why this priority**: Name search is a power-user feature for tracking specific athletes' performance history. Less common than browsing/filtering but valuable for dedicated followers.
-
-**Independent Test**: Can be fully tested by entering a jockey/rider name and verifying results show only races featuring that person.
+**Why this priority**: 데이터 완결성을 위해 수집 실패 대응이 필요합니다.
 
 **Acceptance Scenarios**:
 
-1. **Given** a user enters a jockey/rider name, **When** they submit the search, **Then** results show all races where that person participated
-2. **Given** search results are displayed, **When** a user views a result, **Then** the searched person is highlighted in the results
-3. **Given** a partial name is entered, **When** search is submitted, **Then** results include partial matches (e.g., "김" matches "김기수", "김선수")
-4. **Given** no matches are found, **When** search completes, **Then** a clear "no results found" message is displayed with suggestions
+1. **Given** API 호출이 실패했을 때, **When** 재시도 정책이 적용되면, **Then** Exponential backoff (1s, 2s, 4s, 8s, max 5회)로 재시도한다
+2. **Given** 5회 재시도 후에도 실패했을 때, **When** 실패가 확정되면, **Then** `ingestion_failures` 테이블에 기록되고 Slack 알림이 발송된다
+3. **Given** 실패한 수집 건이 있을 때, **When** 수동 재실행 명령을 실행하면, **Then** 해당 건이 다시 수집된다
 
 ---
 
-### User Story 5 - View Detailed Race Result (Priority: P5)
+### User Story 5 - 수집 현황 모니터링 (Priority: P3)
 
-A user wants to see complete details for a specific race, including all finishers, times, margins, and complete dividend information. They tap/click on a race card to expand and view full details.
+시스템 운영자가 데이터 수집 현황을 대시보드에서 확인합니다.
 
-**Why this priority**: Detailed view is important for analysis but secondary to the main browsing/filtering flow. Users first find races through other stories, then dive into details.
-
-**Independent Test**: Can be fully tested by clicking on a race result card and verifying all detailed information is displayed.
+**Why this priority**: 운영 안정성을 위해 모니터링이 필요하지만, 핵심 기능 구현 후 추가합니다.
 
 **Acceptance Scenarios**:
 
-1. **Given** a user clicks on a race result card, **When** the detail view opens, **Then** they see all finishers (not just top 3) with position, number, name, and time
-2. **Given** the detail view is open, **When** viewing horse racing results, **Then** jockey and trainer names are displayed for each entry
-3. **Given** the detail view is open, **When** viewing dividend section, **Then** all payout types are shown (win, place, quinella) with amounts
+1. **Given** 수집 워커가 실행 중일 때, **When** 모니터링 대시보드를 확인하면, **Then** 금일 수집 건수, 성공률, 마지막 수집 시각이 표시된다
+2. **Given** 수집 실패가 발생했을 때, **When** 대시보드를 확인하면, **Then** 실패 건수와 실패 사유가 표시된다
 
 ---
 
 ### Edge Cases
 
-- What happens when no races occurred on the selected date? Display a clear message with suggestion to try another date or date range.
-- What happens when external data source is unavailable? Show cached results if available with a notice about data freshness, or display an error message with retry option.
-- What happens when searching for a jockey/rider with a very common name? Display results with additional context (track, date) to differentiate matches.
-- How does the system handle races that were canceled? Display canceled races with appropriate visual indicator but exclude from default results view.
-- What happens with partial data (e.g., missing dividend info)? Display available data with "unavailable" indicator for missing fields rather than hiding the entire result.
+- API Rate Limit 도달 시? → 요청 간격을 늘리고 캐싱 강화, 알림 발송
+- 경주 취소/연기 시? → `races.status`를 `canceled`/`postponed`로 업데이트
+- 동일 데이터 중복 수집 시? → UPSERT 로직으로 중복 방지
+- TimescaleDB 하이퍼테이블 파티션 문제 시? → 자동 파티셔닝 및 압축 정책으로 대응
 
 ## Requirements _(mandatory)_
 
 ### Functional Requirements
 
-- **FR-001**: System MUST display completed race results with finishing positions (rank), entry numbers, and entry names
-- **FR-002**: System MUST show dividend payout amounts for win, place, and quinella bets
-- **FR-003**: System MUST allow filtering results by single date or date range (up to 90 days in the past)
-- **FR-004**: System MUST allow filtering by race type (horse, cycle, boat) with multi-select capability
-- **FR-005**: System MUST allow filtering by track location with options appropriate to the selected race type(s)
-- **FR-006**: System MUST support searching by jockey/rider name with case-insensitive substring match (e.g., "김" matches "김기수", "박김수")
-- **FR-007**: System MUST display race time/record for each finishing entry where available
-- **FR-008**: System MUST indicate the race type visually using the established color scheme (horse=green, cycle=red, boat=blue)
-- **FR-009**: System MUST paginate results to maintain performance (20 results per page default)
-- **FR-010**: System MUST persist filter/search state in the URL for shareability and back-button support
-- **FR-011**: System MUST display horse racing results with jockey and trainer information
-- **FR-012**: System MUST handle missing or incomplete data gracefully without breaking the display
+- **FR-001**: System MUST store race schedules in `races` table with fields: id, race_type, track_id, race_no, race_date, start_time, distance, grade, status
+- **FR-002**: System MUST store entry information in `entries` table with fields: race_id, entry_no, name, jockey_id, horse_id, trainer_id, etc.
+- **FR-003**: System MUST store odds snapshots in `odds_snapshots` hypertable with fields: time, race_id, entry_no, odds_win, odds_place, pool_total
+- **FR-004**: System MUST store race results in `results` table with fields: race_id, entry_no, finish_position, time, dividend_win, dividend_place
+- **FR-005**: System MUST poll KRA API for horse racing data (schedules, entries, odds, results)
+- **FR-006**: System MUST poll KSPO API for cycle and boat racing data
+- **FR-007**: System MUST implement odds collection at variable intervals: 5min (T-60~T-15), 1min (T-15~T-5), 30sec (T-5~T)
+- **FR-008**: System MUST retry failed API calls with exponential backoff (max 5 retries)
+- **FR-009**: System MUST log all ingestion failures to `ingestion_failures` table
+- **FR-010**: System MUST support manual re-ingestion of failed records
+
+### Non-Functional Requirements
+
+- **NFR-001**: Database MUST use PostgreSQL 15+ with TimescaleDB extension
+- **NFR-002**: Odds snapshots table MUST use TimescaleDB hypertable with automatic partitioning
+- **NFR-003**: Data retention: raw odds snapshots compressed after 30 days
+- **NFR-004**: Ingestion worker MUST use Bull/Redis for job scheduling
+- **NFR-005**: System MUST send Slack notifications on ingestion failures
 
 ### Key Entities
 
-- **Historical Race**: A completed race with all result data captured - includes race metadata (type, track, date, time, distance, grade) and list of finishers with their results
-- **Race Result Entry**: A single participant's result in a race - includes finishing position, entry number, name, time/record, and for horse racing: jockey and trainer
-- **Dividend**: Payout information for a race - includes win (단승), place (복승), and quinella (쌍승) amounts with the entry numbers involved
-- **Track**: A venue where races occur - categorized by race type with Korean name and code (e.g., Seoul=1, Busan=2 for horse racing)
+- **Track**: 경기장 정보 (code, name, race_type, location)
+- **Race**: 경주 정보 (id, race_type, track_id, race_no, race_date, start_time, distance, grade, status)
+- **Entry**: 출전 정보 (race_id, entry_no, name, jockey, trainer, horse_id, etc.)
+- **OddsSnapshot**: 배당률 시계열 (time, race_id, entry_no, odds_win, odds_place, pool_total)
+- **Result**: 경주 결과 (race_id, entry_no, finish_position, time, dividend)
+- **IngestionFailure**: 수집 실패 로그 (source, endpoint, error, retry_count, created_at)
 
 ## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
-- **SC-001**: Users can find results for a specific race within 30 seconds measured from first filter interaction to target result visible on screen
-- **SC-002**: Results page loads initial content within 2 seconds on standard connections
-- **SC-003**: Filter/search operations return results within 1 second
-- **SC-004**: 90% of users successfully complete a search for specific race results on first attempt
-- **SC-005**: System displays accurate results matching the official KSPO/KRA data sources
-- **SC-006**: Mobile users can effectively browse and filter results (touch-friendly interface)
-- **SC-007**: Feature supports result history for at least 90 days of past races
+- **SC-001**: 당일 경주 일정 수집 성공률 99% 이상
+- **SC-002**: 배당률 스냅샷 수집 완결성: 경주당 최소 20개 스냅샷
+- **SC-003**: 결과 수집 지연: 경주 종료 후 10분 이내
+- **SC-004**: 데이터베이스 쿼리 성능: 1일 데이터 조회 < 100ms
+- **SC-005**: TimescaleDB 압축 후 스토리지 절감률 70% 이상
+- **SC-006**: 수집 실패 시 알림 발송: 실패 후 1분 이내
+
+## Technical Context
+
+**Language/Version**: TypeScript 5.9 + Node.js 20 LTS
+**Primary Dependencies**:
+- Next.js 14.2 (기존 프로젝트)
+- Bull (Job Queue)
+- Redis (Queue Backend)
+- pg (PostgreSQL Client)
+- @timescale/hypertable (TimescaleDB)
+
+**Storage**:
+- PostgreSQL 15 + TimescaleDB extension
+- Redis (Bull Queue)
+
+**Testing**:
+- Jest (Unit/Integration)
+- Playwright (E2E)
+
+**Target Platform**: Vercel (Next.js) + Supabase/Railway (PostgreSQL)
+
+**Performance Goals**:
+- API 폴링: 초당 10건 이상 처리
+- 배당 스냅샷 삽입: 초당 100건 이상
+
+**Constraints**:
+- KRA/KSPO API Rate Limit 준수
+- Vercel Serverless Function 10초 타임아웃 고려
 
 ## Assumptions
 
-- Historical race data is available through the existing KRA and KSPO public APIs (same endpoints used for live data but with past dates)
-- The existing API rate limits (1,000 calls/day) are sufficient for historical queries with appropriate caching
-- Users primarily access results on mobile devices, consistent with the project's mobile-first design principle
-- Date range of 90 days provides sufficient history for typical user needs while managing data volume
-- Search functionality works on Korean names as the primary use case
+- PostgreSQL 호스팅은 Supabase 또는 Railway 사용 예정
+- TimescaleDB는 PostgreSQL extension으로 설치 가능
+- Bull/Redis는 Upstash Redis 또는 Railway Redis 사용
+- 기존 Next.js API Routes와 별도로 Ingestion Worker 프로세스 필요 (cron job 또는 별도 서버)
 
 ## Design System
 
-### Material Design 3 (M3) Adoption
-
-This feature adopts Material Design 3 as the foundational design system, customized for the Korean racing industry audience.
-
-**Color Strategy**:
-
-- **Primary Brand**: M3 neutral/professional palette for app-wide consistency
-- **Semantic Race Colors**: Established race type colors preserved as accent colors
-  - Horse (경마): Green `#2d5a27` - 전통적 경마 색상
-  - Cycle (경륜): Red `#dc2626` - 역동적 경륜 색상
-  - Boat (경정): Blue `#0369a1` - 해양 경정 색상
-- **Target Audience**: 경마/경륜/경정 소비자층 (40-60대 남성 중심) - 가독성과 신뢰감 우선
-
-**Typography**: M3 Type Scale with Pretendard font family
-
-- **Font**: Pretendard (한국어 최적화, 숫자 가독성 우수)
-- **Weights**: 400 (Regular), 500 (Medium), 600 (SemiBold), 700 (Bold)
-- **Scale**: Display (36-57px), Headline (24-32px), Body (14-16px), Label (12-14px)
-- **Line Height**: 1.5 for body text (40-60대 가독성 고려)
-
-**Components**: M3 components adapted for touch-friendly mobile racing data display
-
-- **Result Cards**: M3 Elevated Cards - 각 경주 결과를 독립 카드로 표시, 큰 터치 영역 (min 48px touch target)
-- **Filters**: M3 Filter Chips - 레이스 타입/트랙 필터링
-- **Search**: M3 Search Bar - 기수/선수 검색
-- **Navigation**: M3 Top App Bar + Navigation Rail (tablet+)
-
-**Motion & Interaction**:
-
-- **Card Expansion**: In-place expansion (아코디언 스타일) - 카드 클릭 시 제자리에서 확장하여 상세 정보 표시
-- **Transition**: M3 standard easing (300ms) - 부드러운 확장/축소 애니메이션
-- **Context Preservation**: 페이지 이동 없이 현재 스크롤 위치 유지 (40-60대 사용자 친화적)
-
-**Theme**:
-
-- **Initial Release**: Light mode only - 40-60대 사용자층 친화적, 안정성 우선
-- **Future**: 다크 모드 추후 확장 가능 (prefers-color-scheme 기반)
+기존 RaceLab 디자인 시스템 유지. 이 Phase에서는 UI 변경 없음 (백엔드 인프라 구축에 집중).
 
 ## Clarifications
 
-### Session 2025-12-02
+(추가 질문이 있으면 여기에 기록)
 
-- Q: M3 색상 시스템과 기존 레이스 타입 색상 통합 방식? → A: Option B - M3를 기본 브랜드로 사용하고, 레이스 색상(green/red/blue)은 시맨틱 악센트로 유지. 경마/경륜/경정 소비자층에 맞는 색상 적용
-- Q: 경주 결과 표시에 사용할 M3 컴포넌트? → A: Option B - M3 Cards (Elevated)를 메인 결과 컨테이너로 사용. 40-60대 사용자 터치 친화적, 경주별 명확한 구분
-- Q: 한국어 최적화 폰트 선택? → A: Option B - Pretendard. 한국어 최적화, 숫자(배당금/순위) 가독성 우수, M3 Type Scale과 조화
-- Q: 카드 상세 정보 표시 인터랙션? → A: Option A - In-place Expansion (아코디언). 페이지 이동 없이 제자리 확장, 컨텍스트 유지
-- Q: 다크 모드 지원 전략? → A: Option A - Light Only (초기 출시). 40-60대 사용자층 친화적, 복잡도 감소, 추후 확장
+---
+
+**Reference Documents**:
+- [Data Platform Spec](../../docs/data-platform-spec.md) - 전체 데이터 플랫폼 아키텍처
+- [Technical Design](../../docs/technical/TECHNICAL_DESIGN.md) - 기존 시스템 아키텍처
