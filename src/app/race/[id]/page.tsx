@@ -18,11 +18,11 @@ export async function generateMetadata(
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
 
   if (!race) {
-    return { title: '경주 정보 - KRace' };
+    return { title: '경주 정보 - RaceLab' };
   }
 
   const raceTypeKorean = race.type === 'horse' ? '경마' : race.type === 'cycle' ? '경륜' : '경정';
-  const title = `${race.track} 제${race.raceNo}경주 - KRace`;
+  const title = `${race.track} 제${race.raceNo}경주 - RaceLab`;
   const description = `${race.track} 제${race.raceNo}경주 ${raceTypeKorean} 상세 정보, 출전표, 배당률, 경주 결과를 확인하세요.`;
 
   return {
@@ -33,7 +33,7 @@ export async function generateMetadata(
       description,
       type: 'website',
       url: `${baseUrl}/race/${params.id}`,
-      siteName: 'KRace',
+      siteName: 'RaceLab',
       locale: 'ko_KR',
       images: [
         {

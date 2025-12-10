@@ -168,7 +168,7 @@ describe('RaceDetailPage', () => {
     it('should generate correct metadata for a race', async () => {
       const metadata = await generateMetadata({ params: { id: 'horse-1-1-20240115' } }, mockParent);
 
-      expect(metadata.title).toBe('서울 제1경주 - KRace');
+      expect(metadata.title).toBe('서울 제1경주 - RaceLab');
       expect(metadata.description).toContain('서울 제1경주 경마 상세 정보');
     });
 
@@ -177,7 +177,7 @@ describe('RaceDetailPage', () => {
 
       const metadata = await generateMetadata({ params: { id: 'invalid-id' } }, mockParent);
 
-      expect(metadata.title).toBe('경주 정보 - KRace');
+      expect(metadata.title).toBe('경주 정보 - RaceLab');
     });
   });
 });

@@ -7,6 +7,13 @@ import { ResultsSkeleton } from '@/components/Skeletons';
 import { ResultsListClient } from '@/components/ResultsListClient';
 import { HistoricalRace, PaginatedResults } from '@/types';
 import { ApiResponse } from '@/lib/utils/apiResponse';
+import { breadcrumbSchema, collectionPageSchema, faqSchema } from './schemas';
+import {
+  GlossarySection,
+  HowToSection,
+  AnalysisGuideSection,
+  ComparisonSection,
+} from './components';
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
 
@@ -52,7 +59,7 @@ interface ResultsPageProps {
 }
 
 async function fetchResults(searchParams: SearchParams): Promise<PaginatedResults<HistoricalRace>> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
+  const apiBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
   const params = new URLSearchParams();
 
   if (searchParams.dateFrom) params.set('dateFrom', searchParams.dateFrom);
@@ -62,7 +69,7 @@ async function fetchResults(searchParams: SearchParams): Promise<PaginatedResult
   if (searchParams.jockey) params.set('jockey', searchParams.jockey);
   if (searchParams.page) params.set('page', searchParams.page);
 
-  const url = `${baseUrl}/api/results?${params.toString()}`;
+  const url = `${apiBaseUrl}/api/results?${params.toString()}`;
 
   const response = await fetch(url, {
     next: { revalidate: 300 }, // 5 minutes
@@ -83,7 +90,6 @@ async function fetchResults(searchParams: SearchParams): Promise<PaginatedResult
 
 async function ResultsContent({ searchParams }: { searchParams: SearchParams }) {
   const results = await fetchResults(searchParams);
-
   return <ResultsListClient results={results} />;
 }
 
@@ -93,144 +99,41 @@ function FiltersSkeleton() {
   );
 }
 
-export default async function ResultsPage({ searchParams }: ResultsPageProps) {
-  const params = await searchParams;
+function PageHeader() {
+  return (
+    <div className="space-y-4">
+      <div>
+        <p className="text-label-large uppercase tracking-wide text-primary">
+          racelab.kr 데이터 플랫폼
+        </p>
+        <h1 className="text-headline-large font-semibold text-on-surface">경주 결과</h1>
+        <p className="max-w-3xl text-body-large text-on-surface-variant">
+          경마 · 경륜 · 경정 팬들이 한눈에 결과를 확인하고 분석할 수 있도록 racelab.kr API를 그대로
+          노출합니다. 필터를 조합해 입문자도 원하는 데이터 뷰를 쉽게 만들 수 있어요.
+        </p>
+      </div>
 
-  // JSON-LD BreadcrumbList schema
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: '홈',
-        item: baseUrl,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: '경주 결과',
-        item: `${baseUrl}/results`,
-      },
-    ],
-  };
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="rounded-xl border border-outline-variant bg-surface p-4">
+          <p className="text-label-medium text-on-surface-variant">데이터 출처</p>
+          <p className="text-title-medium text-on-surface">공공데이터포털 KRA · KSPO</p>
+        </div>
+        <div className="rounded-xl border border-outline-variant bg-surface p-4">
+          <p className="text-label-medium text-on-surface-variant">엔드포인트</p>
+          <p className="font-mono text-title-medium text-on-surface">GET /api/results</p>
+        </div>
+        <div className="rounded-xl border border-outline-variant bg-surface p-4">
+          <p className="text-label-medium text-on-surface-variant">갱신 주기</p>
+          <p className="text-title-medium text-on-surface">60초 캐시 · CI 안정화용 Mock</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-  // JSON-LD CollectionPage schema for search results
-  const collectionPageSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: '경주 결과 - 경마 경륜 경정 과거 기록 조회',
-    description: '경마, 경륜, 경정 과거 경주 결과를 검색하고 분석하세요.',
-    url: `${baseUrl}/results`,
-    isPartOf: {
-      '@type': 'WebSite',
-      name: 'RaceLab',
-      url: baseUrl,
-    },
-    about: [
-      { '@type': 'Thing', name: '경마' },
-      { '@type': 'Thing', name: '경륜' },
-      { '@type': 'Thing', name: '경정' },
-    ],
-    provider: {
-      '@type': 'Organization',
-      name: 'RaceLab',
-      url: baseUrl,
-    },
-  };
-
-  // JSON-LD FAQPage schema for common questions (확장된 FAQ - 10개 이상)
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '경마 결과는 어디서 확인할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'RaceLab에서 경마, 경륜, 경정의 모든 경주 결과를 무료로 확인할 수 있습니다. 날짜별, 경기장별로 필터링하여 원하는 경주 결과를 쉽게 찾을 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '과거 경주 배당금은 어떻게 조회하나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '경주 결과 페이지에서 날짜 필터를 사용하여 과거 경주를 검색하면 각 경주의 배당금 정보를 확인할 수 있습니다. 단승, 복승, 쌍승 등 다양한 베팅 유형별 배당금이 제공됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '경마와 경륜의 차이점은 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '경마는 말과 기수가 함께 달리는 경주로 한국마사회(KRA)에서 주관하며, 경륜은 사이클 선수가 트랙에서 경쟁하는 경주로 국민체육진흥공단(KSPO)에서 주관합니다. 경마는 서울, 부산, 제주에서, 경륜은 광명에서 개최됩니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '경정이란 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '경정은 모터보트를 이용한 수상 경주 스포츠입니다. 국민체육진흥공단(KSPO)에서 주관하며 미사리경정공원에서 개최됩니다. 선수들은 600m 코스를 3바퀴 돌아 순위를 결정합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '단승식과 복승식의 차이는 무엇인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '단승식은 1위를 정확히 맞추는 방식이고, 복승식은 1~2위를 순서 상관없이 맞추는 방식입니다. 단승식이 더 쉽지만 배당률이 낮고, 복승식은 난이도가 높아 배당률이 더 높습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '배당률은 언제 확정되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '배당률은 경주 시작 직전까지 변동되며, 경주가 종료되면 최종 배당률이 확정됩니다. RaceLab에서는 실시간 배당률과 확정 배당률 모두 확인할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '경주 결과는 얼마나 빨리 업데이트되나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'RaceLab의 경주 결과는 경주 종료 후 즉시 업데이트됩니다. 공공데이터포털 API를 통해 실시간으로 데이터를 가져오며, 60초 간격으로 캐시를 갱신합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '특정 기수의 성적만 조회할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, 가능합니다. 경주 결과 페이지에서 기수 이름으로 필터링하여 특정 기수의 모든 경주 기록을 조회할 수 있습니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'RaceLab 데이터의 출처는 어디인가요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'RaceLab의 모든 데이터는 공공데이터포털(data.go.kr)을 통해 제공되는 한국마사회(KRA)와 국민체육진흥공단(KSPO)의 공식 데이터를 사용합니다.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '모바일에서도 경주 결과를 확인할 수 있나요?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: '네, RaceLab은 반응형 웹사이트로 제작되어 스마트폰, 태블릿 등 모든 기기에서 최적화된 화면으로 경주 결과를 확인할 수 있습니다.',
-        },
-      },
-    ],
-  };
-
+function JsonLdScripts() {
   return (
     <>
-      {/* JSON-LD Structured Data */}
       <Script
         id="breadcrumb-schema"
         type="application/ld+json"
@@ -246,46 +149,27 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+    </>
+  );
+}
+
+export default async function ResultsPage({ searchParams }: ResultsPageProps) {
+  const params = await searchParams;
+
+  return (
+    <>
+      <JsonLdScripts />
 
       <div className="space-y-6 py-6 lg:py-8">
-        {/* Page Header */}
-        <div className="space-y-4">
-          <div>
-            <p className="text-label-large uppercase tracking-wide text-primary">
-              racelab.kr 데이터 플랫폼
-            </p>
-            <h1 className="text-headline-large font-semibold text-on-surface">경주 결과</h1>
-            <p className="max-w-3xl text-body-large text-on-surface-variant">
-              경마 · 경륜 · 경정 팬들이 한눈에 결과를 확인하고 분석할 수 있도록 racelab.kr API를
-              그대로 노출합니다. 필터를 조합해 입문자도 원하는 데이터 뷰를 쉽게 만들 수 있어요.
-            </p>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-xl border border-outline-variant bg-surface p-4">
-              <p className="text-label-medium text-on-surface-variant">데이터 출처</p>
-              <p className="text-title-medium text-on-surface">공공데이터포털 KRA · KSPO</p>
-            </div>
-            <div className="rounded-xl border border-outline-variant bg-surface p-4">
-              <p className="text-label-medium text-on-surface-variant">엔드포인트</p>
-              <p className="font-mono text-title-medium text-on-surface">GET /api/results</p>
-            </div>
-            <div className="rounded-xl border border-outline-variant bg-surface p-4">
-              <p className="text-label-medium text-on-surface-variant">갱신 주기</p>
-              <p className="text-title-medium text-on-surface">60초 캐시 · CI 안정화용 Mock</p>
-            </div>
-          </div>
-        </div>
+        <PageHeader />
 
         <div className="grid gap-6 lg:grid-cols-[320px,minmax(0,1fr)]">
-          {/* Filters */}
           <aside className="h-fit lg:sticky lg:top-6">
             <Suspense fallback={<FiltersSkeleton />}>
               <ResultFiltersClient />
             </Suspense>
           </aside>
 
-          {/* Results */}
           <section className="min-h-[320px]">
             <Suspense fallback={<ResultsSkeleton />}>
               <ResultsContent searchParams={params} />
@@ -293,298 +177,10 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           </section>
         </div>
 
-        {/* GEO 최적화: 용어 사전 섹션 */}
-        <section
-          aria-labelledby="glossary-heading"
-          className="mt-8 rounded-xl border border-outline-variant bg-surface p-6"
-        >
-          <h2 id="glossary-heading" className="mb-4 text-title-large font-semibold text-on-surface">
-            경주 용어 사전
-          </h2>
-          <p className="mb-6 text-body-medium text-on-surface-variant">
-            경마, 경륜, 경정에서 자주 사용되는 용어를 알아보세요.
-          </p>
-          <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-lg bg-surface-container p-3">
-              <dt className="font-semibold text-on-surface">단승식 (Win)</dt>
-              <dd className="mt-1 text-sm text-on-surface-variant">
-                1위를 정확히 맞추는 베팅 방식
-              </dd>
-            </div>
-            <div className="rounded-lg bg-surface-container p-3">
-              <dt className="font-semibold text-on-surface">복승식 (Place)</dt>
-              <dd className="mt-1 text-sm text-on-surface-variant">
-                1~2위를 순서 상관없이 맞추는 방식
-              </dd>
-            </div>
-            <div className="rounded-lg bg-surface-container p-3">
-              <dt className="font-semibold text-on-surface">쌍승식 (Quinella)</dt>
-              <dd className="mt-1 text-sm text-on-surface-variant">1~2위를 순서대로 맞추는 방식</dd>
-            </div>
-            <div className="rounded-lg bg-surface-container p-3">
-              <dt className="font-semibold text-on-surface">배당률 (Odds)</dt>
-              <dd className="mt-1 text-sm text-on-surface-variant">베팅 금액 대비 수익 비율</dd>
-            </div>
-            <div className="rounded-lg bg-surface-container p-3">
-              <dt className="font-semibold text-on-surface">기수 (Jockey)</dt>
-              <dd className="mt-1 text-sm text-on-surface-variant">경마에서 말을 조종하는 선수</dd>
-            </div>
-            <div className="rounded-lg bg-surface-container p-3">
-              <dt className="font-semibold text-on-surface">출마표</dt>
-              <dd className="mt-1 text-sm text-on-surface-variant">
-                경주에 출전하는 마필/선수 목록
-              </dd>
-            </div>
-            <div className="rounded-lg bg-surface-container p-3">
-              <dt className="font-semibold text-on-surface">마체중</dt>
-              <dd className="mt-1 text-sm text-on-surface-variant">경주마의 현재 체중 (kg)</dd>
-            </div>
-            <div className="rounded-lg bg-surface-container p-3">
-              <dt className="font-semibold text-on-surface">부담중량</dt>
-              <dd className="mt-1 text-sm text-on-surface-variant">기수와 안장 등의 총 무게</dd>
-            </div>
-            <div className="rounded-lg bg-surface-container p-3">
-              <dt className="font-semibold text-on-surface">착차 (Time Diff)</dt>
-              <dd className="mt-1 text-sm text-on-surface-variant">1위와의 시간 차이</dd>
-            </div>
-          </dl>
-        </section>
-
-        {/* GEO 최적화: How-to 가이드 */}
-        <section
-          aria-labelledby="howto-heading"
-          className="mt-6 rounded-xl border border-outline-variant bg-surface p-6"
-        >
-          <h2 id="howto-heading" className="mb-4 text-title-large font-semibold text-on-surface">
-            경주 결과 조회 방법
-          </h2>
-          <ol className="space-y-4">
-            <li className="flex gap-4">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary font-semibold text-on-primary">
-                1
-              </span>
-              <div>
-                <h3 className="font-semibold text-on-surface">날짜 선택</h3>
-                <p className="text-sm text-on-surface-variant">
-                  조회하고 싶은 경주 날짜를 선택합니다. 기본값은 오늘입니다.
-                </p>
-              </div>
-            </li>
-            <li className="flex gap-4">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary font-semibold text-on-primary">
-                2
-              </span>
-              <div>
-                <h3 className="font-semibold text-on-surface">경주 유형 필터</h3>
-                <p className="text-sm text-on-surface-variant">
-                  경마, 경륜, 경정 중 원하는 경주 유형을 선택합니다.
-                </p>
-              </div>
-            </li>
-            <li className="flex gap-4">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary font-semibold text-on-primary">
-                3
-              </span>
-              <div>
-                <h3 className="font-semibold text-on-surface">경기장 선택 (선택사항)</h3>
-                <p className="text-sm text-on-surface-variant">
-                  서울, 부산경남, 제주, 광명, 미사리 중 특정 경기장을 선택할 수 있습니다.
-                </p>
-              </div>
-            </li>
-            <li className="flex gap-4">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary font-semibold text-on-primary">
-                4
-              </span>
-              <div>
-                <h3 className="font-semibold text-on-surface">결과 확인</h3>
-                <p className="text-sm text-on-surface-variant">
-                  순위, 기록 시간, 배당금 등 상세 결과를 확인합니다.
-                </p>
-              </div>
-            </li>
-          </ol>
-        </section>
-
-        {/* GEO 최적화: 결과 분석 가이드 */}
-        <section
-          aria-labelledby="analysis-guide-heading"
-          className="mt-6 rounded-xl border border-outline-variant bg-surface p-6"
-        >
-          <h2
-            id="analysis-guide-heading"
-            className="mb-4 text-title-large font-semibold text-on-surface"
-          >
-            경주 결과 분석 가이드
-          </h2>
-          <p className="mb-6 text-body-medium text-on-surface-variant">
-            과거 경주 결과를 활용하여 다음 경주를 분석하는 방법을 알아보세요.
-          </p>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* 기록 분석 요소 */}
-            <div>
-              <h3 className="mb-3 text-title-medium font-semibold text-on-surface">
-                주요 분석 요소
-              </h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <caption className="sr-only">경주 결과 분석 요소</caption>
-                  <thead>
-                    <tr className="border-b border-outline-variant">
-                      <th scope="col" className="px-3 py-2 text-left font-semibold text-on-surface">
-                        분석 항목
-                      </th>
-                      <th scope="col" className="px-3 py-2 text-left font-semibold text-on-surface">
-                        확인 포인트
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-outline-variant">
-                    <tr>
-                      <td className="px-3 py-2 font-medium text-on-surface">기록 시간</td>
-                      <td className="px-3 py-2 text-on-surface-variant">
-                        동일 거리 대비 기록 비교
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-3 py-2 font-medium text-on-surface">착차</td>
-                      <td className="px-3 py-2 text-on-surface-variant">1위와의 시간 차이 추세</td>
-                    </tr>
-                    <tr>
-                      <td className="px-3 py-2 font-medium text-on-surface">연속 성적</td>
-                      <td className="px-3 py-2 text-on-surface-variant">최근 5경주 순위 패턴</td>
-                    </tr>
-                    <tr>
-                      <td className="px-3 py-2 font-medium text-on-surface">경기장별 성적</td>
-                      <td className="px-3 py-2 text-on-surface-variant">트랙 적성 확인</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* 배당률 분석 */}
-            <div>
-              <h3 className="mb-3 text-title-medium font-semibold text-on-surface">
-                배당률 활용 팁
-              </h3>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-2 text-sm">
-                  <span aria-hidden="true" className="mt-0.5 text-primary">
-                    ●
-                  </span>
-                  <div>
-                    <strong className="text-on-surface">인기마 분석:</strong>
-                    <span className="text-on-surface-variant"> 낮은 배당률 = 대중의 높은 기대</span>
-                  </div>
-                </li>
-                <li className="flex items-start gap-2 text-sm">
-                  <span aria-hidden="true" className="mt-0.5 text-primary">
-                    ●
-                  </span>
-                  <div>
-                    <strong className="text-on-surface">이변 가능성:</strong>
-                    <span className="text-on-surface-variant">
-                      {' '}
-                      높은 배당률 마필의 최근 상승세 체크
-                    </span>
-                  </div>
-                </li>
-                <li className="flex items-start gap-2 text-sm">
-                  <span aria-hidden="true" className="mt-0.5 text-primary">
-                    ●
-                  </span>
-                  <div>
-                    <strong className="text-on-surface">배당 변동:</strong>
-                    <span className="text-on-surface-variant">
-                      {' '}
-                      급격한 배당 변화는 내부 정보 가능성
-                    </span>
-                  </div>
-                </li>
-                <li className="flex items-start gap-2 text-sm">
-                  <span aria-hidden="true" className="mt-0.5 text-primary">
-                    ●
-                  </span>
-                  <div>
-                    <strong className="text-on-surface">적중률 vs 회수율:</strong>
-                    <span className="text-on-surface-variant"> 장기적 수익을 위한 밸런스 고려</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* GEO 최적화: 종목별 특성 비교 */}
-        <section
-          aria-labelledby="comparison-heading"
-          className="mt-6 rounded-xl border border-outline-variant bg-surface p-6"
-        >
-          <h2
-            id="comparison-heading"
-            className="mb-4 text-title-large font-semibold text-on-surface"
-          >
-            종목별 특성 비교
-          </h2>
-          <p className="mb-6 text-body-medium text-on-surface-variant">
-            경마, 경륜, 경정의 결과 분석 시 고려해야 할 종목별 특성입니다.
-          </p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <caption className="sr-only">종목별 특성 비교표</caption>
-              <thead>
-                <tr className="border-b border-outline-variant bg-surface-container">
-                  <th scope="col" className="px-4 py-3 text-left font-semibold text-on-surface">
-                    특성
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left font-semibold text-horse">
-                    경마
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left font-semibold text-cycle">
-                    경륜
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left font-semibold text-boat">
-                    경정
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-outline-variant">
-                <tr>
-                  <td className="px-4 py-3 font-medium text-on-surface">핵심 변수</td>
-                  <td className="px-4 py-3 text-on-surface-variant">마필 컨디션, 기수 실력</td>
-                  <td className="px-4 py-3 text-on-surface-variant">선수 컨디션, 작전</td>
-                  <td className="px-4 py-3 text-on-surface-variant">모터 상태, 코스 위치</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 font-medium text-on-surface">날씨 영향</td>
-                  <td className="px-4 py-3 text-on-surface-variant">높음 (트랙 상태)</td>
-                  <td className="px-4 py-3 text-on-surface-variant">중간 (실내)</td>
-                  <td className="px-4 py-3 text-on-surface-variant">매우 높음 (수면 상태)</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 font-medium text-on-surface">이변 빈도</td>
-                  <td className="px-4 py-3 text-on-surface-variant">중간</td>
-                  <td className="px-4 py-3 text-on-surface-variant">높음 (낙차 등)</td>
-                  <td className="px-4 py-3 text-on-surface-variant">높음 (전복 등)</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 font-medium text-on-surface">분석 난이도</td>
-                  <td className="px-4 py-3 text-on-surface-variant">중간</td>
-                  <td className="px-4 py-3 text-on-surface-variant">높음</td>
-                  <td className="px-4 py-3 text-on-surface-variant">높음</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 font-medium text-on-surface">평균 경주 시간</td>
-                  <td className="px-4 py-3 text-on-surface-variant">1분 ~ 2분 30초</td>
-                  <td className="px-4 py-3 text-on-surface-variant">2분 ~ 3분</td>
-                  <td className="px-4 py-3 text-on-surface-variant">1분 40초 ~ 2분</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <GlossarySection />
+        <HowToSection />
+        <AnalysisGuideSection />
+        <ComparisonSection />
       </div>
     </>
   );

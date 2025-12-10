@@ -1,94 +1,105 @@
-# Implementation Plan: Race Results History
+# Implementation Plan: [FEATURE]
 
-**Branch**: `001-race-results-history` | **Date**: 2025-12-02 | **Spec**: [spec.md](./spec.md)
-**Input**: Feature specification from `/specs/001-race-results-history/spec.md`
+**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+
+**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
 ## Summary
 
-Enable users to search and view historical race results for horse, cycle, and boat racing with filtering by date range, race type, track location, and jockey/rider name search. Display finishing positions, times, and dividend payouts. Implementation leverages existing KRA/KSPO public APIs with the same endpoints used for live data but querying past dates.
+[Extract from feature spec: primary requirement + technical approach from research]
 
 ## Technical Context
 
-**Language/Version**: TypeScript 5.9
-**Primary Dependencies**: Next.js 14.2 (App Router), React 18.3, Tailwind CSS 3.4
-**Storage**: N/A (external API data, cached via Next.js fetch caching)
-**Testing**: Jest 30 (UI + API), Playwright 1.56 (E2E)
-**Target Platform**: Web (mobile-first responsive, desktop supported)
-**Project Type**: Web application (Next.js monolith)
-**Performance Goals**: Initial load <2s, filter/search <1s response
-**Constraints**: API rate limit 1,000 calls/day (requires caching), 90-day history window
-**Scale/Scope**: Single new page (/results), 3-5 new API routes, 5-8 new components
+<!--
+  ACTION REQUIRED: Replace the content in this section with the technical details
+  for the project. The structure here is presented in advisory capacity to guide
+  the iteration process.
+-->
+
+**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
+**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Project Type**: [single/web/mobile - determines source structure]  
+**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
+**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Constitution Check
 
 _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle                            | Status  | Evidence/Notes                                                            |
-| ------------------------------------ | ------- | ------------------------------------------------------------------------- |
-| I. TDD (NON-NEGOTIABLE)              | ✅ PASS | Tasks will follow Red-Green-Refactor; tests written before implementation |
-| II. Structural-Behavioral Separation | ✅ PASS | Commits will separate structure from behavior per convention              |
-| III. Simplicity First                | ✅ PASS | Direct API calls with caching; no complex patterns needed                 |
-| IV. Clear Data Flow                  | ✅ PASS | External APIs → lib/api.ts → mappers → API Routes → Components            |
-| V. Mobile-First Design               | ✅ PASS | Mobile viewport primary, race type colors enforced                        |
-
-**Gate Result**: PASSED - All constitution principles satisfied. No violations requiring justification.
+[Gates determined based on constitution file]
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/001-race-results-history/
-├── plan.md              # This file
-├── spec.md              # Feature specification
-├── research.md          # Phase 0 output
-├── data-model.md        # Phase 1 output
-├── quickstart.md        # Phase 1 output
-├── contracts/           # Phase 1 output (API schemas)
-├── checklists/          # Quality checklists
-│   └── requirements.md  # Spec quality checklist
-└── tasks.md             # Phase 2 output (/speckit.tasks)
+specs/[###-feature]/
+├── plan.md              # This file (/speckit.plan command output)
+├── research.md          # Phase 0 output (/speckit.plan command)
+├── data-model.md        # Phase 1 output (/speckit.plan command)
+├── quickstart.md        # Phase 1 output (/speckit.plan command)
+├── contracts/           # Phase 1 output (/speckit.plan command)
+└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
 ```
 
 ### Source Code (repository root)
 
-```text
-src/
-├── app/
-│   ├── results/                    # NEW: Results history page
-│   │   └── page.tsx                # Main results page with filters
-│   └── api/
-│       └── results/                # NEW: Results API routes
-│           ├── route.ts            # GET /api/results (paginated list)
-│           └── [id]/
-│               └── route.ts        # GET /api/results/[id] (single result detail)
-├── components/
-│   ├── ResultCard.tsx              # NEW: Race result summary card
-│   ├── ResultDetail.tsx            # NEW: Expanded result view
-│   ├── ResultFilters.tsx           # NEW: Filter controls (date, type, track)
-│   ├── ResultSearch.tsx            # NEW: Jockey/rider name search
-│   └── ResultsTable.tsx            # EXISTING: May extend for history view
-├── lib/
-│   ├── api.ts                      # EXTEND: Add historical results fetching
-│   └── api-helpers/
-│       ├── mappers.ts              # EXTEND: Add result history mappers
-│       └── dummy.ts                # EXTEND: Add dummy historical data
-└── types/
-    └── index.ts                    # EXTEND: Add HistoricalRace, SearchParams types
+<!--
+  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
+  for this feature. Delete unused options and expand the chosen structure with
+  real paths (e.g., apps/admin, packages/something). The delivered plan must
+  not include Option labels.
+-->
 
-e2e/
-├── pages/
-│   └── results.page.ts             # NEW: Results page object
+```text
+# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+src/
+├── models/
+├── services/
+├── cli/
+└── lib/
+
+tests/
+├── contract/
+├── integration/
+└── unit/
+
+# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+backend/
+├── src/
+│   ├── models/
+│   ├── services/
+│   └── api/
 └── tests/
-    └── results.spec.ts             # NEW: Results E2E tests
+
+frontend/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   └── services/
+└── tests/
+
+# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+api/
+└── [same as backend above]
+
+ios/ or android/
+└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
-**Structure Decision**: Follows existing Next.js App Router pattern. New `/results` page route and `/api/results` API routes. Components follow existing naming conventions. Extends existing lib/api.ts and types rather than creating new files.
+**Structure Decision**: [Document the selected structure and reference the real
+directories captured above]
 
 ## Complexity Tracking
 
-> No violations requiring justification. Implementation uses established patterns.
+> **Fill ONLY if Constitution Check has violations that must be justified**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-| --------- | ---------- | ------------------------------------ |
-| N/A       | N/A        | N/A                                  |
+| Violation                  | Why Needed         | Simpler Alternative Rejected Because |
+| -------------------------- | ------------------ | ------------------------------------ |
+| [e.g., 4th project]        | [current need]     | [why 3 projects insufficient]        |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient]  |

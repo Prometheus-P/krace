@@ -63,7 +63,7 @@ test.describe('Race Detail Page', () => {
     // Check page title
     const title = await page.title();
     expect(title).toContain('경주');
-    expect(title).toContain('KRace');
+    expect(title).toContain('RaceLab');
 
     // Check meta description
     const metaDescription = page.locator('meta[name="description"]');
