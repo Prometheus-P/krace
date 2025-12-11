@@ -1,0 +1,128 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://racelab.kr/schemas/metadata.json",
+  "title": "Race Page Metadata Schema",
+  "description": "SEO metadata structure for race detail pages",
+  "type": "object",
+  "required": ["title", "description", "canonical", "openGraph"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 60,
+      "description": "Page title for search results",
+      "examples": [
+        "서울 제1경주 배당률 & 결과 - RaceLab",
+        "2025-12-11 부산 제3경주 결과 - RaceLab"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 50,
+      "maxLength": 160,
+      "description": "Meta description for search results"
+    },
+    "canonical": {
+      "type": "string",
+      "format": "uri",
+      "description": "Canonical URL for the page"
+    },
+    "openGraph": {
+      "$ref": "#/definitions/OpenGraph"
+    },
+    "twitter": {
+      "$ref": "#/definitions/Twitter"
+    },
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Keywords for the page (optional)"
+    }
+  },
+  "definitions": {
+    "OpenGraph": {
+      "type": "object",
+      "required": ["title", "description", "type", "url", "siteName", "locale"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "type": {
+          "const": "website"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "siteName": {
+          "const": "RaceLab"
+        },
+        "locale": {
+          "const": "ko_KR"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["url", "width", "height", "alt"],
+            "properties": {
+              "url": { "type": "string", "format": "uri" },
+              "width": { "type": "integer", "minimum": 200 },
+              "height": { "type": "integer", "minimum": 200 },
+              "alt": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "Twitter": {
+      "type": "object",
+      "properties": {
+        "card": {
+          "enum": ["summary", "summary_large_image"]
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 160
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "title": "서울 제1경주 배당률 & 결과 - RaceLab",
+      "description": "2025-12-11 서울경마공원 제1경주 경마 출주표, 배당률, 경주 결과를 확인하세요. 한국마사회(KRA) 공식 데이터.",
+      "canonical": "https://racelab.kr/race/horse-sel-20251211-01",
+      "openGraph": {
+        "title": "서울 제1경주 배당률 & 결과 - RaceLab",
+        "description": "2025-12-11 서울경마공원 제1경주 경마 출주표, 배당률, 경주 결과를 확인하세요.",
+        "type": "website",
+        "url": "https://racelab.kr/race/horse-sel-20251211-01",
+        "siteName": "RaceLab",
+        "locale": "ko_KR",
+        "images": [
+          {
+            "url": "https://racelab.kr/opengraph-image.svg",
+            "width": 1200,
+            "height": 630,
+            "alt": "서울 제1경주 배당률 & 결과 - RaceLab"
+          }
+        ]
+      },
+      "twitter": {
+        "card": "summary_large_image",
+        "title": "서울 제1경주 배당률 & 결과 - RaceLab",
+        "description": "2025-12-11 서울경마공원 제1경주 경마 출주표, 배당률, 경주 결과를 확인하세요."
+      }
+    }
+  ]
+}
