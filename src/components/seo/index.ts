@@ -2,3 +2,4 @@
 export { default as RaceJsonLd } from './RaceJsonLd';
 export { default as BreadcrumbJsonLd } from './BreadcrumbJsonLd';
 export { default as FAQJsonLd } from './FAQJsonLd';
+export { default as AISummary } from './AISummary';

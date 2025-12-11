@@ -19,6 +19,7 @@ const customJestConfig = {
     '**/src/components/**/*.test.tsx',
     '**/src/app/**/*.test.tsx',
     '**/src/hooks/**/*.test.ts',
+    '**/tests/unit/components/**/*.test.tsx',
   ],
 };
 

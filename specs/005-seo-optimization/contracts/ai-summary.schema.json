@@ -1,0 +1,157 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://racelab.kr/schemas/ai-summary.json",
+  "title": "AI Summary Schema",
+  "description": "Plain-text summary structure for LLM parsing (GEO optimization)",
+  "type": "object",
+  "required": ["raceInfo", "status", "dataSource"],
+  "properties": {
+    "raceInfo": {
+      "type": "string",
+      "description": "Race identification string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}\\s.+\\s제\\d+경주\\s(경마|경륜|경정)",
+      "examples": [
+        "2025-12-11 서울 제1경주 경마",
+        "2025-12-11 광명 제5경주 경륜"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["경주 예정", "진행 중", "경주 종료", "취소됨", "연기됨"],
+      "description": "Race status in Korean"
+    },
+    "distance": {
+      "type": "string",
+      "pattern": "^\\d+m$",
+      "description": "Race distance (optional)",
+      "examples": ["1600m", "2000m"]
+    },
+    "results": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/definitions/ResultEntry"
+      },
+      "description": "Top 3 finishers (only for finished races)"
+    },
+    "dividends": {
+      "type": "object",
+      "properties": {
+        "win": {
+          "type": "string",
+          "pattern": "^\\d+원$",
+          "description": "단승 배당금"
+        },
+        "place": {
+          "type": "string",
+          "pattern": "^\\d+원$",
+          "description": "복승 배당금"
+        },
+        "quinella": {
+          "type": "string",
+          "pattern": "^\\d+원$",
+          "description": "쌍승 배당금"
+        }
+      }
+    },
+    "dataSource": {
+      "type": "string",
+      "enum": [
+        "한국마사회 (KRA) 공식 데이터",
+        "국민체육진흥공단 (KSPO) 공식 데이터"
+      ],
+      "description": "Official data source attribution for E-E-A-T"
+    },
+    "lastUpdated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    }
+  },
+  "definitions": {
+    "ResultEntry": {
+      "type": "object",
+      "required": ["rank", "name"],
+      "properties": {
+        "rank": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3,
+          "description": "Finish position (1-3)"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Horse or athlete name"
+        },
+        "odds": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Winning odds multiplier"
+        },
+        "jockey": {
+          "type": "string",
+          "description": "Jockey name (horse racing only)"
+        },
+        "time": {
+          "type": "string",
+          "pattern": "^\\d+:\\d{2}\\.\\d$",
+          "description": "Finish time",
+          "examples": ["1:38.5", "2:01.3"]
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "raceInfo": "2025-12-11 서울 제1경주 경마",
+      "status": "경주 종료",
+      "distance": "1600m",
+      "results": [
+        {
+          "rank": 1,
+          "name": "스피드킹",
+          "odds": 3.5,
+          "jockey": "김철수",
+          "time": "1:38.5"
+        },
+        {
+          "rank": 2,
+          "name": "골든에이스",
+          "odds": 5.2,
+          "jockey": "박영희"
+        },
+        {
+          "rank": 3,
+          "name": "썬더볼트",
+          "odds": 8.1,
+          "jockey": "이민수"
+        }
+      ],
+      "dividends": {
+        "win": "3500원",
+        "place": "1200원",
+        "quinella": "5600원"
+      },
+      "dataSource": "한국마사회 (KRA) 공식 데이터",
+      "lastUpdated": "2025-12-11T11:05:00+09:00"
+    },
+    {
+      "raceInfo": "2025-12-11 광명 제5경주 경륜",
+      "status": "경주 예정",
+      "distance": "2000m",
+      "dataSource": "국민체육진흥공단 (KSPO) 공식 데이터"
+    }
+  ],
+  "outputFormat": {
+    "description": "Plain text format for LLM parsing",
+    "template": [
+      "경주 정보: {raceInfo} ({distance})",
+      "상태: {status}",
+      "경주 결과: 1착 {results[0].name} (배당 {results[0].odds}배, 기수: {results[0].jockey}), 2착 {results[1].name}, 3착 {results[2].name}",
+      "배당금: 단승 {dividends.win}, 복승 {dividends.place}, 쌍승 {dividends.quinella}",
+      "데이터 출처: {dataSource}"
+    ],
+    "example": "경주 정보: 2025-12-11 서울 제1경주 경마 (1600m)\n경주 결과: 1착 스피드킹 (배당 3.5배, 기수: 김철수), 2착 골든에이스, 3착 썬더볼트\n배당금: 단승 3,500원, 복승 1,200원, 쌍승 5,600원\n데이터 출처: 한국마사회 (KRA) 공식 데이터"
+  }
+}

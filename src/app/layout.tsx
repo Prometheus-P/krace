@@ -1,12 +1,36 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import Script from 'next/script';
+import { Noto_Sans_KR, Exo_2 } from 'next/font/google';
 import './globals.css';
 import '@/styles/typography.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Analytics } from '@vercel/analytics/react';
 import { HeaderSkeleton } from '@/components/Skeletons';
+
+// Noto Sans KR - Primary font for Korean text (optimized for 50-60 demographic)
+// next/font/google automatically:
+// - Self-hosts the font (no external requests)
+// - Applies display: swap (prevents FOIT)
+// - Creates optimal subsets for Korean
+// - Preloads the font for LCP optimization
+const notoSansKR = Noto_Sans_KR({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  variable: '--font-noto-sans-kr',
+  preload: true,
+});
+
+// Exo 2 - Brand font for logos and headings
+const exo2 = Exo_2({
+  subsets: ['latin'],
+  weight: ['700', '900'],
+  display: 'swap',
+  variable: '--font-exo-2',
+  preload: false, // Lower priority than main font
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://racelab.kr'),
@@ -190,7 +214,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   };
 
   return (
-    <html lang="ko">
+    <html lang="ko" className={`${notoSansKR.variable} ${exo2.variable}`}>
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/icon.svg" />
@@ -233,7 +257,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       </head>
       {/* RaceLab Design System V1.0 - 순백 배경 (#FFFFFF) */}
-      <body className="flex min-h-screen flex-col bg-white text-on-surface">
+      <body className={`flex min-h-screen flex-col bg-white text-on-surface font-sans ${notoSansKR.className}`}>
         <Suspense fallback={<HeaderSkeleton />}>
           <Header />
         </Suspense>

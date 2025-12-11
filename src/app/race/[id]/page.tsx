@@ -5,6 +5,8 @@ import Script from 'next/script';
 import { RaceResult, Dividend } from '@/types';
 import { RaceNotFound, BackNavigation } from './components';
 import { RaceSummaryCard, EntryTable, RaceResultsOdds, KeyInsightBlock } from '@/components/race-detail';
+import { generateRaceMetadata, generateSportsEventSchema, generateBreadcrumbListSchema } from '@/lib/seo';
+import { AISummary } from '@/components/seo';
 
 type Props = {
   params: { id: string };
@@ -15,41 +17,20 @@ export async function generateMetadata(
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
   const race = await fetchRaceById(params.id);
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
 
   if (!race) {
     return { title: '경주 정보 - RaceLab' };
   }
 
-  const raceTypeKorean = race.type === 'horse' ? '경마' : race.type === 'cycle' ? '경륜' : '경정';
-  const title = `${race.track} 제${race.raceNo}경주 - RaceLab`;
-  const description = `${race.track} 제${race.raceNo}경주 ${raceTypeKorean} 상세 정보, 출전표, 배당률, 경주 결과를 확인하세요.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: 'website',
-      url: `${baseUrl}/race/${params.id}`,
-      siteName: 'RaceLab',
-      locale: 'ko_KR',
-      images: [
-        {
-          url: `${baseUrl}/opengraph-image.svg`,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
-  };
+  // Use centralized SEO metadata generator with canonical URL
+  return generateRaceMetadata({
+    id: race.id,
+    type: race.type,
+    track: race.track,
+    raceNo: race.raceNo,
+    date: race.date,
+    distance: race.distance,
+  });
 }
 
 // Mock results for demonstration (will be replaced with API data)
@@ -100,56 +81,17 @@ export default async function RaceDetailPage({ params }: Props) {
   // Race type in Korean
   const raceTypeKorean = race.type === 'horse' ? '경마' : race.type === 'cycle' ? '경륜' : '경정';
 
-  // JSON-LD BreadcrumbList schema
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: '홈',
-        item: baseUrl,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: raceTypeKorean,
-        item: `${baseUrl}/?tab=${race.type}`,
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: `${race.track} 제${race.raceNo}경주`,
-      },
-    ],
-  };
+  // JSON-LD BreadcrumbList schema (FR-008) using centralized utility
+  const breadcrumbSchema = generateBreadcrumbListSchema([
+    { name: '홈', url: '/' },
+    { name: raceTypeKorean, url: `/?tab=${race.type}` },
+    { name: `${race.track} 제${race.raceNo}경주`, url: `/race/${race.id}` },
+  ]);
 
-  // JSON-LD SportsEvent schema with ImageObject for AI crawlers (Gemini, etc.)
+  // JSON-LD SportsEvent schema using centralized utility with ImageObject for AI crawlers
+  const sportsEventSchemaBase = generateSportsEventSchema(race, results);
   const sportsEventSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'SportsEvent',
-    '@id': `${baseUrl}/race/${params.id}#event`,
-    name: `${race.track} 제${race.raceNo}경주`,
-    description: race.distance
-      ? `${raceTypeKorean} ${race.distance}m 경주`
-      : `${raceTypeKorean} 경주`,
-    startDate: new Date().toISOString().split('T')[0] + 'T' + race.startTime + ':00',
-    eventStatus:
-      race.status === 'finished'
-        ? 'https://schema.org/EventCompleted'
-        : race.status === 'live'
-          ? 'https://schema.org/EventLive'
-          : 'https://schema.org/EventScheduled',
-    location: {
-      '@type': 'Place',
-      name: race.track,
-      address: {
-        '@type': 'PostalAddress',
-        addressCountry: 'KR',
-      },
-    },
-    sport: raceTypeKorean,
+    ...sportsEventSchemaBase,
     image: {
       '@type': 'ImageObject',
       url: `${baseUrl}/opengraph-image.svg`,
@@ -159,16 +101,6 @@ export default async function RaceDetailPage({ params }: Props) {
       height: 630,
       encodingFormat: 'image/svg+xml',
     },
-    organizer: {
-      '@type': 'Organization',
-      name: race.type === 'horse' ? '한국마사회 (KRA)' : '국민체육진흥공단 (KSPO)',
-      url: race.type === 'horse' ? 'https://www.kra.co.kr' : 'https://www.kspo.or.kr',
-    },
-    competitor: race.entries.map((entry) => ({
-      '@type': 'Person',
-      name: entry.name,
-      ...(entry.jockey && { coach: { '@type': 'Person', name: entry.jockey } }),
-    })),
   };
 
   return (
@@ -184,6 +116,9 @@ export default async function RaceDetailPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(sportsEventSchema) }}
       />
+
+      {/* AI Summary for LLM parsing (sr-only) */}
+      <AISummary race={race} results={results} dividends={dividends} />
 
       <div className="space-y-6">
         <BackNavigation raceType={race.type} />

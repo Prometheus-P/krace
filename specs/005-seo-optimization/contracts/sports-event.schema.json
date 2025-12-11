@@ -1,0 +1,236 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://racelab.kr/schemas/sports-event.json",
+  "title": "SportsEvent JSON-LD Schema",
+  "description": "Schema.org SportsEvent structured data for race pages",
+  "type": "object",
+  "required": ["@context", "@type", "name", "startDate", "location", "organizer"],
+  "properties": {
+    "@context": {
+      "const": "https://schema.org"
+    },
+    "@type": {
+      "const": "SportsEvent"
+    },
+    "@id": {
+      "type": "string",
+      "format": "uri",
+      "description": "Unique identifier URI for the event"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Race name in Korean, e.g., '서울 제1경주'"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Race description including type and distance"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Race start time in ISO 8601 format with KST timezone"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Race end time (optional)"
+    },
+    "eventStatus": {
+      "type": "string",
+      "enum": [
+        "https://schema.org/EventScheduled",
+        "https://schema.org/EventCancelled",
+        "https://schema.org/EventPostponed",
+        "https://schema.org/EventRescheduled"
+      ],
+      "default": "https://schema.org/EventScheduled"
+    },
+    "location": {
+      "$ref": "#/definitions/Place"
+    },
+    "organizer": {
+      "$ref": "#/definitions/Organization"
+    },
+    "sport": {
+      "type": "string",
+      "enum": ["경마", "경륜", "경정"],
+      "description": "Sport type in Korean"
+    },
+    "competitor": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          { "$ref": "#/definitions/HorseCompetitor" },
+          { "$ref": "#/definitions/PersonCompetitor" }
+        ]
+      }
+    },
+    "image": {
+      "$ref": "#/definitions/ImageObject"
+    },
+    "subEvent": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/definitions/SubEvent"
+      },
+      "description": "Race results (top 3 finishers)"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "definitions": {
+    "Place": {
+      "type": "object",
+      "required": ["@type", "name"],
+      "properties": {
+        "@type": { "const": "Place" },
+        "name": {
+          "type": "string",
+          "description": "Track name in Korean"
+        },
+        "address": {
+          "type": "object",
+          "required": ["@type", "addressCountry"],
+          "properties": {
+            "@type": { "const": "PostalAddress" },
+            "addressCountry": { "const": "KR" },
+            "addressRegion": { "type": "string" },
+            "addressLocality": { "type": "string" }
+          }
+        }
+      }
+    },
+    "Organization": {
+      "type": "object",
+      "required": ["@type", "name"],
+      "properties": {
+        "@type": { "const": "Organization" },
+        "name": {
+          "type": "string",
+          "enum": ["한국마사회", "한국마사회 (KRA)", "국민체육진흥공단", "국민체육진흥공단 (KSPO)"]
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "HorseCompetitor": {
+      "type": "object",
+      "required": ["@type", "name"],
+      "properties": {
+        "@type": { "const": "Thing" },
+        "name": {
+          "type": "string",
+          "description": "Horse name"
+        },
+        "identifier": {
+          "type": "string",
+          "description": "Entry number"
+        },
+        "athlete": {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "Person" },
+            "name": { "type": "string", "description": "Jockey name" }
+          }
+        }
+      }
+    },
+    "PersonCompetitor": {
+      "type": "object",
+      "required": ["@type", "name"],
+      "properties": {
+        "@type": { "const": "Person" },
+        "name": {
+          "type": "string",
+          "description": "Athlete name"
+        },
+        "identifier": {
+          "type": "string",
+          "description": "Entry number"
+        }
+      }
+    },
+    "ImageObject": {
+      "type": "object",
+      "required": ["@type", "url"],
+      "properties": {
+        "@type": { "const": "ImageObject" },
+        "url": { "type": "string", "format": "uri" },
+        "contentUrl": { "type": "string", "format": "uri" },
+        "caption": { "type": "string" },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" },
+        "encodingFormat": { "type": "string" }
+      }
+    },
+    "SubEvent": {
+      "type": "object",
+      "required": ["@type", "name"],
+      "properties": {
+        "@type": { "const": "Event" },
+        "name": {
+          "type": "string",
+          "pattern": "^[1-3]착$",
+          "description": "Finish position: 1착, 2착, 3착"
+        },
+        "description": {
+          "type": "string",
+          "description": "Winner info with odds"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsEvent",
+      "@id": "https://racelab.kr/race/horse-sel-20251211-01#event",
+      "name": "서울 제1경주",
+      "description": "경마 1600m 경주",
+      "startDate": "2025-12-11T10:30:00+09:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "location": {
+        "@type": "Place",
+        "name": "서울경마공원",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "KR",
+          "addressRegion": "경기도"
+        }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "한국마사회 (KRA)",
+        "url": "https://kra.co.kr"
+      },
+      "sport": "경마",
+      "competitor": [
+        {
+          "@type": "Thing",
+          "name": "스피드킹",
+          "identifier": "1",
+          "athlete": {
+            "@type": "Person",
+            "name": "김철수"
+          }
+        }
+      ],
+      "subEvent": [
+        {
+          "@type": "Event",
+          "name": "1착",
+          "description": "스피드킹 (배당률: 3.5배)"
+        }
+      ]
+    }
+  ]
+}

@@ -2,8 +2,23 @@
 /* RaceLab Design System V1.0 Typography */
 /* Font: Noto Sans KR (50-60대 사용자 최적화) */
 
-/* Google Fonts - Noto Sans KR + Exo 2 (브랜드) */
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+/*
+ * PERFORMANCE OPTIMIZATION (US5):
+ * - Removed blocking @import for Google Fonts
+ * - Fonts are now loaded via next/font/google in layout.tsx
+ * - This improves LCP by eliminating render-blocking requests
+ * - CSS variables are set via next/font: --font-noto-sans-kr, --font-exo-2
+ */
+
+/* =============================================================================
+   Font Family Variables (set by next/font in layout.tsx)
+   ============================================================================= */
+
+:root {
+  /* Fallback font stack using CSS variables from next/font */
+  --rl-font-sans: var(--font-noto-sans-kr), 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --rl-font-brand: var(--font-exo-2), 'Exo 2', var(--rl-font-sans);
+}
 
 /* =============================================================================
    RaceLab Type Scale Classes
@@ -11,12 +26,7 @@
 
 /* Display - 대형 타이틀 */
 .rl-display-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 32px;
   line-height: 40px;
   letter-spacing: -0.5px;
@@ -24,12 +34,7 @@
 }
 
 .rl-display-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 28px;
   line-height: 36px;
   letter-spacing: -0.25px;
@@ -37,12 +42,7 @@
 }
 
 .rl-display-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 24px;
   line-height: 32px;
   letter-spacing: 0;
@@ -51,12 +51,7 @@
 
 /* Headline - H1/H2 (24pt~28pt for 50-60대) */
 .rl-headline-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 28px;
   line-height: 36px;
   letter-spacing: 0;
@@ -64,12 +59,7 @@
 }
 
 .rl-headline-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 24px;
   line-height: 32px;
   letter-spacing: 0;
@@ -77,12 +67,7 @@
 }
 
 .rl-headline-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 22px;
   line-height: 28px;
   letter-spacing: 0;
@@ -91,12 +76,7 @@
 
 /* Title */
 .rl-title-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 20px;
   line-height: 28px;
   letter-spacing: 0;
@@ -104,12 +84,7 @@
 }
 
 .rl-title-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 18px;
   line-height: 26px;
   letter-spacing: 0.1px;
@@ -117,12 +92,7 @@
 }
 
 .rl-title-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.1px;
@@ -131,12 +101,7 @@
 
 /* Body - 본문 (16pt~18pt for 50-60대) */
 .rl-body-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 18px;
   line-height: 28px;
   letter-spacing: 0.25px;
@@ -144,12 +109,7 @@
 }
 
 .rl-body-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.25px;
@@ -157,12 +117,7 @@
 }
 
 .rl-body-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 14px;
   line-height: 22px;
   letter-spacing: 0.4px;
@@ -171,12 +126,7 @@
 
 /* Data - 배당률, 적중률 등 핵심 숫자 (가장 두껍게) */
 .rl-data-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 22px;
   line-height: 28px;
   letter-spacing: 0;
@@ -185,12 +135,7 @@
 }
 
 .rl-data-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 20px;
   line-height: 26px;
   letter-spacing: 0;
@@ -199,12 +144,7 @@
 }
 
 .rl-data-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 18px;
   line-height: 24px;
   letter-spacing: 0;
@@ -214,12 +154,7 @@
 
 /* Label */
 .rl-label-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.1px;
@@ -227,12 +162,7 @@
 }
 
 .rl-label-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.25px;
@@ -240,12 +170,7 @@
 }
 
 .rl-label-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.4px;
@@ -254,7 +179,7 @@
 
 /* Brand - 로고/브랜드용 (Exo 2) */
 .rl-brand {
-  font-family: 'Exo 2', 'Noto Sans KR', sans-serif;
+  font-family: var(--rl-font-brand);
   font-weight: 900;
   letter-spacing: -0.5px;
 }
@@ -265,12 +190,7 @@
 
 /* Display */
 .m3-display-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 57px;
   line-height: 64px;
   letter-spacing: -0.25px;
@@ -278,12 +198,7 @@
 }
 
 .m3-display-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 45px;
   line-height: 52px;
   letter-spacing: 0;
@@ -291,12 +206,7 @@
 }
 
 .m3-display-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 36px;
   line-height: 44px;
   letter-spacing: 0;
@@ -305,12 +215,7 @@
 
 /* Headline */
 .m3-headline-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 32px;
   line-height: 40px;
   letter-spacing: 0;
@@ -318,12 +223,7 @@
 }
 
 .m3-headline-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 28px;
   line-height: 36px;
   letter-spacing: 0;
@@ -331,12 +231,7 @@
 }
 
 .m3-headline-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 24px;
   line-height: 32px;
   letter-spacing: 0;
@@ -345,12 +240,7 @@
 
 /* Title */
 .m3-title-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 22px;
   line-height: 28px;
   letter-spacing: 0;
@@ -358,12 +248,7 @@
 }
 
 .m3-title-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
@@ -371,12 +256,7 @@
 }
 
 .m3-title-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.1px;
@@ -385,12 +265,7 @@
 
 /* Body */
 .m3-body-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: 0.5px;
@@ -398,12 +273,7 @@
 }
 
 .m3-body-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 14px;
   line-height: 1.5;
   letter-spacing: 0.25px;
@@ -411,12 +281,7 @@
 }
 
 .m3-body-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 12px;
   line-height: 1.5;
   letter-spacing: 0.4px;
@@ -425,12 +290,7 @@
 
 /* Label */
 .m3-label-large {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.1px;
@@ -438,12 +298,7 @@
 }
 
 .m3-label-medium {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.5px;
@@ -451,12 +306,7 @@
 }
 
 .m3-label-small {
-  font-family:
-    'Noto Sans KR',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    sans-serif;
+  font-family: var(--rl-font-sans);
   font-size: 11px;
   line-height: 16px;
   letter-spacing: 0.5px;
