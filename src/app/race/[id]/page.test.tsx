@@ -168,8 +168,10 @@ describe('RaceDetailPage', () => {
     it('should generate correct metadata for a race', async () => {
       const metadata = await generateMetadata({ params: { id: 'horse-1-1-20240115' } }, mockParent);
 
-      expect(metadata.title).toBe('서울 제1경주 - RaceLab');
-      expect(metadata.description).toContain('서울 제1경주 경마 상세 정보');
+      // Title now includes race type (경마) via centralized SEO utility
+      expect(metadata.title).toContain('서울 제1경주');
+      expect(metadata.title).toContain('RaceLab');
+      expect(metadata.description).toContain('서울 제1경주');
     });
 
     it('should generate default metadata if race is not found', async () => {

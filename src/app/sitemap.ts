@@ -4,55 +4,55 @@ import {
   fetchHorseRaceSchedules,
   fetchCycleRaceSchedules,
   fetchBoatRaceSchedules,
+  fetchHistoricalRaceIds,
 } from '@/lib/api';
+import { getStaticSitemapEntries, generateSitemapEntries } from '@/lib/seo';
+
+// ISR revalidation: regenerate sitemap every hour
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
+  // baseUrl is handled by SEO utilities
 
   // Get today's date in YYYYMMDD format
   const today = new Date();
   const rcDate = today.toISOString().split('T')[0].replace(/-/g, '');
 
-  // Fetch all races for today (handle API failures gracefully during build)
-  let horseRaces: Awaited<ReturnType<typeof fetchHorseRaceSchedules>> = [];
-  let cycleRaces: Awaited<ReturnType<typeof fetchCycleRaceSchedules>> = [];
-  let boatRaces: Awaited<ReturnType<typeof fetchBoatRaceSchedules>> = [];
+  // Fetch today's races and historical races in parallel
+  let todaysRaces: Array<{ id: string; status: string; date: string }> = [];
+  let historicalRaces: Array<{ id: string; status: string; date: string }> = [];
 
   try {
-    [horseRaces, cycleRaces, boatRaces] = await Promise.all([
+    const [horseRaces, cycleRaces, boatRaces, historical] = await Promise.all([
       fetchHorseRaceSchedules(rcDate).catch(() => []),
       fetchCycleRaceSchedules(rcDate).catch(() => []),
       fetchBoatRaceSchedules(rcDate).catch(() => []),
+      fetchHistoricalRaceIds(365).catch(() => []),
     ]);
+
+    // Map today's races to sitemap format
+    const allTodaysRaces = [...horseRaces, ...cycleRaces, ...boatRaces];
+    todaysRaces = allTodaysRaces.map((race) => ({
+      id: race.id,
+      status: race.status,
+      date: today.toISOString().split('T')[0],
+    }));
+
+    historicalRaces = historical;
   } catch {
     // API failures during build are expected - continue with static routes only
   }
 
-  const allRaces = [...horseRaces, ...cycleRaces, ...boatRaces];
+  // Combine today's races with historical (avoid duplicates)
+  const todayIds = new Set(todaysRaces.map((r) => r.id));
+  const uniqueHistorical = historicalRaces.filter((r) => !todayIds.has(r.id));
+  const allRaces = [...todaysRaces, ...uniqueHistorical];
 
-  // Static routes
-  const staticRoutes: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}/`,
-      lastModified: new Date(),
-      changeFrequency: 'hourly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/results`,
-      lastModified: new Date(),
-      changeFrequency: 'always', // 실시간 업데이트됨을 명시
-      priority: 0.9,
-    },
-  ];
+  // Generate static routes using SEO utility
+  const staticRoutes = getStaticSitemapEntries();
 
-  // Dynamic race routes
-  const raceRoutes: MetadataRoute.Sitemap = allRaces.map((race) => ({
-    url: `${baseUrl}/race/${race.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'hourly',
-    priority: 0.8,
-  }));
+  // Generate race routes using SEO utility (with proper priority/changeFrequency)
+  const raceRoutes = generateSitemapEntries(allRaces);
 
   return [...staticRoutes, ...raceRoutes];
 }

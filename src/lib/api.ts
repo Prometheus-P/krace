@@ -154,3 +154,65 @@ export async function fetchHorseEntryDetail(
   const race = await fetchRaceById(raceId);
   return race?.entries || null;
 }
+
+/**
+ * Fetch historical race IDs for sitemap generation
+ * Returns race IDs from the past N days for all race types
+ *
+ * @param days Number of days to look back (default 365)
+ * @param offset Starting offset for pagination
+ * @param limit Maximum number of results
+ */
+export interface RaceIdForSitemap {
+  id: string;
+  status: string;
+  date: string;
+  updatedAt?: string;
+}
+
+export async function fetchHistoricalRaceIds(
+  days: number = 365,
+  offset: number = 0,
+  limit: number = 10000
+): Promise<RaceIdForSitemap[]> {
+  const raceIds: RaceIdForSitemap[] = [];
+
+  // Get date range
+  const today = new Date();
+  const startDate = new Date(today);
+  startDate.setDate(startDate.getDate() - days);
+
+  // Use mock historical data for now (will be replaced with DB queries)
+  for (const race of MOCK_HISTORICAL_RACES) {
+    const raceDate = new Date(race.date);
+    if (raceDate >= startDate && raceDate <= today) {
+      raceIds.push({
+        id: race.id,
+        status: race.status,
+        date: race.date,
+      });
+    }
+  }
+
+  // Apply pagination
+  return raceIds.slice(offset, offset + limit);
+}
+
+/**
+ * Get total count of historical races for sitemap splitting
+ */
+export async function getHistoricalRaceCount(days: number = 365): Promise<number> {
+  const today = new Date();
+  const startDate = new Date(today);
+  startDate.setDate(startDate.getDate() - days);
+
+  let count = 0;
+  for (const race of MOCK_HISTORICAL_RACES) {
+    const raceDate = new Date(race.date);
+    if (raceDate >= startDate && raceDate <= today) {
+      count++;
+    }
+  }
+
+  return count;
+}
