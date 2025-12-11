@@ -107,3 +107,6 @@ report_data/
 report_unpacked/
 all_errors.md
 unzip_report.py
+
+.gemini/
+gha-creds-*.json
