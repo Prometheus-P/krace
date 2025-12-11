@@ -20,5 +20,7 @@ export {
   getStaticSitemapEntries,
   calculateSitemapCount,
   getSitemapChunkParams,
+  getChunkOffset,
+  sliceRacesForChunk,
   type RaceForSitemap,
 } from './sitemap';

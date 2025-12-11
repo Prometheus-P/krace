@@ -10,6 +10,8 @@ import {
   getStaticSitemapEntries,
   calculateSitemapCount,
   getSitemapChunkParams,
+  getChunkOffset,
+  sliceRacesForChunk,
   type RaceForSitemap,
 } from '@/lib/seo/sitemap';
 
@@ -197,5 +199,104 @@ describe('getSitemapChunkParams', () => {
     const params = getSitemapChunkParams(25000);
 
     expect(params).toHaveLength(3);
+  });
+});
+
+describe('getChunkOffset', () => {
+  it('returns 0 for first chunk', () => {
+    const offset = getChunkOffset(0, 10000);
+    expect(offset).toBe(0);
+  });
+
+  it('returns correct offset for second chunk', () => {
+    const offset = getChunkOffset(1, 10000);
+    expect(offset).toBe(10000);
+  });
+
+  it('returns correct offset for third chunk', () => {
+    const offset = getChunkOffset(2, 10000);
+    expect(offset).toBe(20000);
+  });
+
+  it('uses default chunk size of 10000', () => {
+    const offset = getChunkOffset(3);
+    expect(offset).toBe(30000);
+  });
+});
+
+describe('sliceRacesForChunk', () => {
+  const mockRaces: RaceForSitemap[] = Array.from({ length: 25 }, (_, i) => ({
+    id: `race-${i}`,
+    status: 'finished',
+    date: '2024-11-15',
+  }));
+
+  it('returns first chunk of races', () => {
+    const chunk = sliceRacesForChunk(mockRaces, 0, 10);
+
+    expect(chunk).toHaveLength(10);
+    expect(chunk[0].id).toBe('race-0');
+    expect(chunk[9].id).toBe('race-9');
+  });
+
+  it('returns second chunk of races', () => {
+    const chunk = sliceRacesForChunk(mockRaces, 1, 10);
+
+    expect(chunk).toHaveLength(10);
+    expect(chunk[0].id).toBe('race-10');
+    expect(chunk[9].id).toBe('race-19');
+  });
+
+  it('returns partial last chunk', () => {
+    const chunk = sliceRacesForChunk(mockRaces, 2, 10);
+
+    expect(chunk).toHaveLength(5);
+    expect(chunk[0].id).toBe('race-20');
+    expect(chunk[4].id).toBe('race-24');
+  });
+
+  it('returns empty array for out of range chunk', () => {
+    const chunk = sliceRacesForChunk(mockRaces, 10, 10);
+
+    expect(chunk).toHaveLength(0);
+  });
+
+  it('handles empty races array', () => {
+    const chunk = sliceRacesForChunk([], 0, 10);
+
+    expect(chunk).toHaveLength(0);
+  });
+});
+
+describe('Sitemap Index - Historical Race Splitting', () => {
+  // Tests for splitting historical races across multiple sitemap files
+  // Required for large datasets (50k+ URLs)
+
+  it('splits 60000 historical races into 6 chunks of 10000', () => {
+    const count = calculateSitemapCount(60000, 10000);
+    expect(count).toBe(6);
+  });
+
+  it('generates correct params for 100000 historical races', () => {
+    const params = getSitemapChunkParams(100000, 10000);
+
+    expect(params).toHaveLength(10);
+    expect(params[0].id).toBe('0');
+    expect(params[9].id).toBe('9');
+  });
+
+  it('handles edge case of exactly chunk size', () => {
+    const params = getSitemapChunkParams(10000, 10000);
+
+    expect(params).toHaveLength(1);
+  });
+
+  it('includes static pages in calculation', () => {
+    const staticEntries = getStaticSitemapEntries();
+    const totalUrls = staticEntries.length + 9998;
+    const count = calculateSitemapCount(totalUrls, 10000);
+
+    // 3 static + 9998 dynamic = 10001 → Math.ceil(10001/10000) = 2
+    expect(count).toBe(2);
   });
 });

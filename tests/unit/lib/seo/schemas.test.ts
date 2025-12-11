@@ -18,8 +18,8 @@ describe('generateSportsEventSchema', () => {
     status: 'upcoming',
     distance: 1600,
     entries: [
-      { no: 1, name: '스피드킹', jockey: '김철수', odds: 3.5, status: 'active' },
-      { no: 2, name: '골든에이스', jockey: '박영희', odds: 5.2, status: 'active' },
+      { no: 1, name: '스피드킹', jockey: '김철수', odds: 3.5 },
+      { no: 2, name: '골든에이스', jockey: '박영희', odds: 5.2 },
     ],
   };
 
@@ -136,7 +136,7 @@ describe('generateSportsEventSchema', () => {
     const cycleRace: Race = {
       ...mockRace,
       type: 'cycle',
-      entries: [{ no: 1, name: '선수A', status: 'active' }],
+      entries: [{ no: 1, name: '선수A' }],
     };
     const schema = generateSportsEventSchema(cycleRace);
 

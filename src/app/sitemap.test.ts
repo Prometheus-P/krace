@@ -1,9 +1,11 @@
 // src/app/sitemap.test.ts
-import sitemap from './sitemap';
+import sitemap, { generateSitemaps } from './sitemap';
 import {
   fetchHorseRaceSchedules,
   fetchCycleRaceSchedules,
   fetchBoatRaceSchedules,
+  fetchHistoricalRaceIds,
+  getHistoricalRaceCount,
 } from '@/lib/api';
 import { Race } from '@/types';
 
@@ -11,6 +13,8 @@ jest.mock('@/lib/api', () => ({
   fetchHorseRaceSchedules: jest.fn(),
   fetchCycleRaceSchedules: jest.fn(),
   fetchBoatRaceSchedules: jest.fn(),
+  fetchHistoricalRaceIds: jest.fn(),
+  getHistoricalRaceCount: jest.fn(),
 }));
 
 describe('sitemap', () => {
@@ -42,7 +46,9 @@ describe('sitemap', () => {
   beforeEach(() => {
     (fetchHorseRaceSchedules as jest.Mock).mockResolvedValue(mockHorseRaces);
     (fetchCycleRaceSchedules as jest.Mock).mockResolvedValue(mockCycleRaces);
-    (fetchBoatRaceSchedules as jest.Mock).mockResolvedValue([]); // No boat races for this test
+    (fetchBoatRaceSchedules as jest.Mock).mockResolvedValue([]);
+    (fetchHistoricalRaceIds as jest.Mock).mockResolvedValue([]);
+    (getHistoricalRaceCount as jest.Mock).mockResolvedValue(0);
   });
 
   afterEach(() => {
@@ -50,7 +56,7 @@ describe('sitemap', () => {
   });
 
   it('should generate a sitemap with static and dynamic routes', async () => {
-    const sitemapEntries = await sitemap();
+    const sitemapEntries = await sitemap({ id: 0 });
 
     const urls = sitemapEntries.map((entry) => entry.url);
 
@@ -63,5 +69,25 @@ describe('sitemap', () => {
 
     // Check that there are no boat races in the sitemap for this test
     expect(urls.some((url) => url.includes('/boat-'))).toBe(false);
+  });
+
+  it('should generate multiple sitemaps for large datasets', async () => {
+    (getHistoricalRaceCount as jest.Mock).mockResolvedValue(25000);
+
+    const sitemaps = await generateSitemaps();
+
+    // 3 static + 25000 races = 25003 → 3 chunks (10000 per chunk)
+    expect(sitemaps.length).toBe(3);
+    expect(sitemaps[0].id).toBe(0);
+    expect(sitemaps[2].id).toBe(2);
+  });
+
+  it('should fallback to single sitemap on error', async () => {
+    (getHistoricalRaceCount as jest.Mock).mockRejectedValue(new Error('API error'));
+
+    const sitemaps = await generateSitemaps();
+
+    expect(sitemaps.length).toBe(1);
+    expect(sitemaps[0].id).toBe(0);
   });
 });

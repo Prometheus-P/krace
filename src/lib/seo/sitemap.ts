@@ -82,3 +82,26 @@ export function getSitemapChunkParams(
   const chunkCount = calculateSitemapCount(total, urlsPerChunk);
   return Array.from({ length: chunkCount }, (_, i) => ({ id: String(i) }));
 }
+
+/**
+ * Calculate offset for a specific chunk index
+ */
+export function getChunkOffset(
+  chunkIndex: number,
+  urlsPerChunk: number = 10000
+): number {
+  return chunkIndex * urlsPerChunk;
+}
+
+/**
+ * Slice races array for a specific chunk
+ * Used for paginating large sitemap datasets
+ */
+export function sliceRacesForChunk(
+  races: RaceForSitemap[],
+  chunkIndex: number,
+  urlsPerChunk: number = 10000
+): RaceForSitemap[] {
+  const offset = getChunkOffset(chunkIndex, urlsPerChunk);
+  return races.slice(offset, offset + urlsPerChunk);
+}
