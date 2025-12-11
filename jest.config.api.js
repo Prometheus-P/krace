@@ -12,6 +12,7 @@ module.exports = {
     '**/tests/unit/ingestion/**/*.test.ts',
     '**/tests/unit/db/**/*.test.ts',
     '**/tests/unit/lib/**/*.test.ts',
+    '**/tests/unit/app/**/*.test.ts',
     '**/tests/integration/db/**/*.test.ts',
   ],
 };
