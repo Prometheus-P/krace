@@ -191,6 +191,78 @@ describe('generateSportsEventSchema', () => {
   });
 });
 
+describe('generateBreadcrumbListSchema', () => {
+  it('generates valid BreadcrumbList schema with required fields', () => {
+    const { generateBreadcrumbListSchema } = require('@/lib/seo/schemas');
+    const items = [
+      { name: '홈', url: '/' },
+      { name: '경마', url: '/horse' },
+      { name: '서울 제1경주', url: '/race/horse-sel-20251211-01' },
+    ];
+
+    const schema = generateBreadcrumbListSchema(items);
+
+    expect(schema['@context']).toBe('https://schema.org');
+    expect(schema['@type']).toBe('BreadcrumbList');
+    expect(schema.itemListElement).toHaveLength(3);
+  });
+
+  it('generates correct ListItem structure with position', () => {
+    const { generateBreadcrumbListSchema } = require('@/lib/seo/schemas');
+    const items = [
+      { name: '홈', url: '/' },
+      { name: '경마', url: '/horse' },
+    ];
+
+    const schema = generateBreadcrumbListSchema(items);
+
+    expect(schema.itemListElement[0]['@type']).toBe('ListItem');
+    expect(schema.itemListElement[0].position).toBe(1);
+    expect(schema.itemListElement[0].name).toBe('홈');
+    expect(schema.itemListElement[0].item).toContain('/');
+  });
+
+  it('generates positions in correct order', () => {
+    const { generateBreadcrumbListSchema } = require('@/lib/seo/schemas');
+    const items = [
+      { name: '홈', url: '/' },
+      { name: '경마', url: '/horse' },
+      { name: '서울', url: '/horse/seoul' },
+    ];
+
+    const schema = generateBreadcrumbListSchema(items);
+
+    expect(schema.itemListElement[0].position).toBe(1);
+    expect(schema.itemListElement[1].position).toBe(2);
+    expect(schema.itemListElement[2].position).toBe(3);
+  });
+
+  it('uses full URL for item field', () => {
+    const { generateBreadcrumbListSchema } = require('@/lib/seo/schemas');
+    const items = [{ name: '홈', url: '/' }];
+
+    const schema = generateBreadcrumbListSchema(items);
+
+    expect(schema.itemListElement[0].item).toMatch(/^https?:\/\//);
+  });
+
+  it('handles empty items array', () => {
+    const { generateBreadcrumbListSchema } = require('@/lib/seo/schemas');
+    const schema = generateBreadcrumbListSchema([]);
+
+    expect(schema.itemListElement).toHaveLength(0);
+  });
+
+  it('handles single item', () => {
+    const { generateBreadcrumbListSchema } = require('@/lib/seo/schemas');
+    const items = [{ name: '홈', url: '/' }];
+
+    const schema = generateBreadcrumbListSchema(items);
+
+    expect(schema.itemListElement).toHaveLength(1);
+  });
+});
+
 describe('generateFAQSchema', () => {
   const mockFAQs = [
     { question: '배당률이란 무엇인가요?', answer: '적중 시 받을 수 있는 배수입니다.' },

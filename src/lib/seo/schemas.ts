@@ -76,6 +76,17 @@ export interface FAQSchema {
   }>;
 }
 
+export interface BreadcrumbListSchema {
+  '@context': string;
+  '@type': string;
+  itemListElement: Array<{
+    '@type': string;
+    position: number;
+    name: string;
+    item: string;
+  }>;
+}
+
 /**
  * Generate SportsEvent JSON-LD schema for race pages
  */
@@ -143,6 +154,24 @@ export function generateFAQSchema(
         '@type': 'Answer',
         text: faq.answer,
       },
+    })),
+  };
+}
+
+/**
+ * Generate BreadcrumbList JSON-LD schema for navigation (FR-008)
+ */
+export function generateBreadcrumbListSchema(
+  items: Array<{ name: string; url: string }>
+): BreadcrumbListSchema {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url.startsWith('http') ? item.url : `${BASE_URL}${item.url}`,
     })),
   };
 }

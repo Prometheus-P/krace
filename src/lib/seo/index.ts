@@ -4,8 +4,10 @@
 export {
   generateSportsEventSchema,
   generateFAQSchema,
+  generateBreadcrumbListSchema,
   type SportsEventSchema,
   type FAQSchema,
+  type BreadcrumbListSchema,
 } from './schemas';
 
 export {

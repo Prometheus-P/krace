@@ -5,7 +5,7 @@ import Script from 'next/script';
 import { RaceResult, Dividend } from '@/types';
 import { RaceNotFound, BackNavigation } from './components';
 import { RaceSummaryCard, EntryTable, RaceResultsOdds, KeyInsightBlock } from '@/components/race-detail';
-import { generateRaceMetadata, generateSportsEventSchema } from '@/lib/seo';
+import { generateRaceMetadata, generateSportsEventSchema, generateBreadcrumbListSchema } from '@/lib/seo';
 import { AISummary } from '@/components/seo';
 
 type Props = {
@@ -81,30 +81,12 @@ export default async function RaceDetailPage({ params }: Props) {
   // Race type in Korean
   const raceTypeKorean = race.type === 'horse' ? '경마' : race.type === 'cycle' ? '경륜' : '경정';
 
-  // JSON-LD BreadcrumbList schema
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: '홈',
-        item: baseUrl,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: raceTypeKorean,
-        item: `${baseUrl}/?tab=${race.type}`,
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: `${race.track} 제${race.raceNo}경주`,
-      },
-    ],
-  };
+  // JSON-LD BreadcrumbList schema (FR-008) using centralized utility
+  const breadcrumbSchema = generateBreadcrumbListSchema([
+    { name: '홈', url: '/' },
+    { name: raceTypeKorean, url: `/?tab=${race.type}` },
+    { name: `${race.track} 제${race.raceNo}경주`, url: `/race/${race.id}` },
+  ]);
 
   // JSON-LD SportsEvent schema using centralized utility with ImageObject for AI crawlers
   const sportsEventSchemaBase = generateSportsEventSchema(race, results);
