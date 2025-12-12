@@ -79,11 +79,11 @@ src/
 └── types/
     └── index.ts                    # [MODIFY] RaceFetchStatus, TodayRacesData 타입 추가
 
-tests/
-├── unit/
-│   ├── date.test.ts                # [NEW] 날짜 유틸 테스트
-│   └── raceTypes.test.ts           # [NEW] config 테스트
-└── e2e/
+src/lib/utils/
+│   └── date.test.ts                # [EXISTING] 날짜 유틸 테스트 (tests added)
+src/config/
+│   └── __tests__/raceTypes.test.ts # [NEW] config 테스트
+e2e/tests/
     └── error-states.spec.ts        # [NEW] API 장애 시나리오 테스트
 ```
 

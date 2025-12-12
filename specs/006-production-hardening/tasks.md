@@ -54,9 +54,9 @@
 
 ### Tests for User Story 1
 
-- [ ] T011 [P] [US1] Write failing test for normalizeRaceDate in src/lib/utils/__tests__/date.test.ts
-- [ ] T012 [P] [US1] Write failing test for buildRaceStartDateTime in src/lib/utils/__tests__/date.test.ts
-- [ ] T013 [P] [US1] Write failing test for getFormattedKoreanDate in src/lib/utils/__tests__/date.test.ts
+- [ ] T011 [P] [US1] Write failing test for normalizeRaceDate in src/lib/utils/date.test.ts
+- [ ] T012 [P] [US1] Write failing test for buildRaceStartDateTime in src/lib/utils/date.test.ts
+- [ ] T013 [P] [US1] Write failing test for getFormattedKoreanDate in src/lib/utils/date.test.ts
 
 ### Implementation for User Story 1
 

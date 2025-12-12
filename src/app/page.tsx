@@ -5,6 +5,7 @@ import QuickStats from '@/components/QuickStats';
 import Link from 'next/link';
 import { RaceType } from '@/types';
 import { QuickStatsSkeleton, RaceListSkeleton } from '@/components/Skeletons';
+import { getFormattedKoreanDate, formatDate, getKoreanDate } from '@/lib/utils/date';
 import {
   RaceTypesGuide,
   OddsGuideSection,
@@ -95,14 +96,8 @@ function AnnouncementBanner() {
 }
 
 function PageHeader() {
-  const now = new Date();
-  const todayFormatted = now.toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    weekday: 'long',
-  });
-  const todayISO = now.toISOString().split('T')[0];
+  const todayFormatted = getFormattedKoreanDate();
+  const todayISO = formatDate(getKoreanDate());
 
   return (
     <header className="flex items-center justify-between">
