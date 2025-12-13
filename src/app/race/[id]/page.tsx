@@ -7,6 +7,7 @@ import { RaceNotFound, BackNavigation } from './components';
 import { RaceSummaryCard, EntryTable, RaceResultsOdds, KeyInsightBlock } from '@/components/race-detail';
 import { generateRaceMetadata, generateSportsEventSchema, generateBreadcrumbListSchema } from '@/lib/seo';
 import { AISummary } from '@/components/seo';
+import { getSiteUrl } from '@/lib/seo/siteUrl';
 
 type Props = {
   params: { id: string };
@@ -76,7 +77,7 @@ export default async function RaceDetailPage({ params }: Props) {
 
   const results = getMockResults(race.status, race.entries);
   const dividends = getMockDividends(race.status, results);
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
+  const baseUrl = getSiteUrl();
 
   // Race type in Korean
   const raceTypeKorean = race.type === 'horse' ? '경마' : race.type === 'cycle' ? '경륜' : '경정';

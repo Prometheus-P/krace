@@ -10,6 +10,7 @@ import { oddsSnapshots } from '@/lib/db/schema';
 import { fetchKraOdds } from '../clients/kraClient';
 import { fetchKspoOdds } from '../clients/kspoClient';
 import { mapKraOddsBatch, mapKspoOddsBatch } from '../mappers/oddsMapper';
+import { withRetryAndLogging } from '../utils/retry';
 
 export interface PollOddsOptions {
   raceIds: string[];
@@ -78,11 +79,37 @@ export async function pollOdds(options: PollOddsOptions): Promise<OddsIngestionR
       let mappedSnapshots;
 
       if (raceType === 'horse') {
-        const items = await fetchKraOdds(trackCode, raceNo, date);
-        mappedSnapshots = mapKraOddsBatch(items, raceId, timestamp);
+        const items = await withRetryAndLogging(
+          () => fetchKraOdds(trackCode, raceNo, date),
+          {
+            jobType: 'odds_poll',
+            entityType: 'odds',
+            entityId: raceId,
+            maxRetries: 2,
+            initialDelay: 400,
+          }
+        );
+        if (!items.success || !items.data) {
+          result.errors += 1;
+          continue;
+        }
+        mappedSnapshots = mapKraOddsBatch(items.data, raceId, timestamp);
       } else {
-        const items = await fetchKspoOdds(trackCode, raceNo, date, raceType);
-        mappedSnapshots = mapKspoOddsBatch(items, raceId, timestamp);
+        const items = await withRetryAndLogging(
+          () => fetchKspoOdds(trackCode, raceNo, date, raceType),
+          {
+            jobType: 'odds_poll',
+            entityType: 'odds',
+            entityId: raceId,
+            maxRetries: 2,
+            initialDelay: 400,
+          }
+        );
+        if (!items.success || !items.data) {
+          result.errors += 1;
+          continue;
+        }
+        mappedSnapshots = mapKspoOddsBatch(items.data, raceId, timestamp);
       }
 
       if (mappedSnapshots.length > 0) {

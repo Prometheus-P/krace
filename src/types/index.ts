@@ -8,6 +8,7 @@ export * from './race';
 export * from './entry';
 export * from './result';
 export * from './oddsSnapshot';
+export * from './entrant';
 
 export type DividendType = 'win' | 'place' | 'quinella';
 
