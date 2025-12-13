@@ -10,6 +10,7 @@ import { AISummary } from '@/components/seo';
 import ViewModeToggle from '@/components/shared/ViewModeToggle';
 import PrintPdfButton from '@/components/shared/PrintPdfButton';
 import RunnerTableDense from '@/components/race/RunnerTableDense';
+import RunnerTableExpert from '@/components/race/RunnerTableExpert';
 import { BookViewMode, RunnerVM } from '@/lib/view-models/bookVM';
 
 type Props = {
@@ -148,7 +149,11 @@ export default async function RaceDetailPage({ params, searchParams = {} }: Prop
         </div>
         <RaceSummaryCard race={race} />
         <KeyInsightBlock race={race} results={results} />
-        <RunnerTableDense runners={runnerVMs} viewMode={viewMode} />
+        {viewMode === 'expert' ? (
+          <RunnerTableExpert runners={runnerVMs} />
+        ) : (
+          <RunnerTableDense runners={runnerVMs} viewMode={viewMode} />
+        )}
         <EntryTable race={race} />
         <RaceResultsOdds race={race} results={results} dividends={dividends} />
       </div>
