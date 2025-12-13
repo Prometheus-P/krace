@@ -7,9 +7,14 @@ import { RaceNotFound, BackNavigation } from './components';
 import { RaceSummaryCard, EntryTable, RaceResultsOdds, KeyInsightBlock } from '@/components/race-detail';
 import { generateRaceMetadata, generateSportsEventSchema, generateBreadcrumbListSchema } from '@/lib/seo';
 import { AISummary } from '@/components/seo';
+import ViewModeToggle from '@/components/shared/ViewModeToggle';
+import PrintPdfButton from '@/components/shared/PrintPdfButton';
+import RunnerTableDense from '@/components/race/RunnerTableDense';
+import { BookViewMode, RunnerVM } from '@/lib/view-models/bookVM';
 
 type Props = {
   params: { id: string };
+  searchParams?: { view?: BookViewMode };
 };
 
 export async function generateMetadata(
@@ -67,7 +72,7 @@ function getMockDividends(raceStatus: string, results: RaceResult[]): Dividend[]
   ];
 }
 
-export default async function RaceDetailPage({ params }: Props) {
+export default async function RaceDetailPage({ params, searchParams = {} }: Props) {
   const race = await fetchRaceById(params.id);
 
   if (!race) {
@@ -103,6 +108,19 @@ export default async function RaceDetailPage({ params }: Props) {
     },
   };
 
+  const viewMode: BookViewMode = searchParams.view === 'expert' ? 'expert' : 'compact';
+  const runnerVMs: RunnerVM[] = race.entries.map((entry) => ({
+    number: entry.no,
+    name: entry.name,
+    age: entry.age,
+    sex: undefined,
+    jockey: entry.jockey,
+    trainer: entry.trainer,
+    odds: entry.odds,
+    popularity: undefined,
+    formLines: [],
+  }));
+
   return (
     <>
       {/* JSON-LD Structured Data */}
@@ -121,9 +139,16 @@ export default async function RaceDetailPage({ params }: Props) {
       <AISummary race={race} results={results} dividends={dividends} />
 
       <div className="space-y-6">
-        <BackNavigation raceType={race.type} />
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <BackNavigation raceType={race.type} />
+          <div className="flex flex-wrap items-center gap-2">
+            <ViewModeToggle viewMode={viewMode} />
+            <PrintPdfButton label="PDF/인쇄" />
+          </div>
+        </div>
         <RaceSummaryCard race={race} />
         <KeyInsightBlock race={race} results={results} />
+        <RunnerTableDense runners={runnerVMs} viewMode={viewMode} />
         <EntryTable race={race} />
         <RaceResultsOdds race={race} results={results} dividends={dividends} />
       </div>
