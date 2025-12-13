@@ -2,8 +2,9 @@
 // JSON-LD schema builders for SEO optimization
 
 import { Race, RaceResult } from '@/types';
+import { getSiteUrl } from './siteUrl';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://racelab.kr';
+const BASE_URL = getSiteUrl();
 
 const STATUS_MAP: Record<string, string> = {
   upcoming: 'https://schema.org/EventScheduled',

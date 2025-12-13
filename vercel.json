@@ -7,7 +7,11 @@
     },
     {
       "path": "/api/ingestion/cron/odds",
-      "schedule": "* * * * *"
+      "schedule": "*/2 * * * *"
+    },
+    {
+      "path": "/api/ingestion/cron/results",
+      "schedule": "*/5 * * * *"
     }
   ]
 }
